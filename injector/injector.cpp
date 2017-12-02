@@ -28,25 +28,18 @@ void output(const char *psz, ...)
     va_end(va);
 }
 
-// check the bits of OS and process
-inline bool BitsCheck(HANDLE hProcess)
+// check the bits of processor and process
+inline bool CheckBits(HANDLE hProcess)
 {
-    HMODULE hKernel32 = GetModuleHandle(TEXT("kernel32"));
-    ISWOW64PROCESS pIsWow64Process;
-    pIsWow64Process = (ISWOW64PROCESS)GetProcAddress(hKernel32, "IsWow64Process");
+    SYSTEM_INFO info;
+    GetSystemInfo(&info);
+    output("wProcessorArchitecture: %u\n", info.wProcessorArchitecture);
 
-    BOOL bIsOSWin64 = FALSE, bIsWow64 = FALSE;
-    if (pIsWow64Process)
-    {
-        bIsOSWin64 = TRUE;
-        (*pIsWow64Process)(hProcess, &bIsWow64);
-    }
-
-#ifdef _WIN64
-    return bIsOSWin64 && !bIsWow64;
-#else
-    return !bIsOSWin64 || bIsWow64;
-#endif
+    #ifdef _WIN64
+        return (info.wProcessorArchitecture == PROCESSOR_ARCHITECTURE_AMD64);
+    #else
+        return (info.wProcessorArchitecture == PROCESSOR_ARCHITECTURE_INTEL);
+    #endif
 }
 
 // do DLL injection to execute LoadLibraryA with parameter in the process
@@ -69,9 +62,9 @@ bool DllInjectByPid(int pid, const char *dll_name)
         return false;
     }
 
-    if (!BitsCheck(hProcess))
+    if (!CheckBits(hProcess))
     {
-        output("BitsCheck failed\n");
+        output("CheckBits failed\n");
         CloseHandle(hProcess);
         return false;
     }
