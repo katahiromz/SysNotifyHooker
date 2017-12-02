@@ -243,7 +243,7 @@ int main(int argc, char **argv)
     if (argc != 3)
     {
         show_help();
-        return 2;
+        return 1;
     }
 
     if (!EnableProcessPriviledge(SE_DEBUG_NAME))
@@ -251,20 +251,26 @@ int main(int argc, char **argv)
         output("Unable to enable priviledge\n");
     }
 
+    bool ok = false;
     if (lstrcmpiA(argv[1], "-p") == 0 || lstrcmpiA(argv[1], "/p") == 0)
     {
         int pid = atoi(argv[2]);
-        if (DllInjectByPid(pid, PAYLOAD_NAME ".dll"))
-            return 0;
+        ok = DllInjectByPid(pid, PAYLOAD_NAME ".dll");
     }
     else if (lstrcmpiA(argv[1], "-e") == 0 || lstrcmpiA(argv[1], "/e") == 0)
     {
-        if (DllInjectByExeName(argv[2], PAYLOAD_NAME ".dll"))
-            return 0;
+        ok = DllInjectByExeName(argv[2], PAYLOAD_NAME ".dll");
     }
     else
     {
         show_help();
+        return 2;
+    }
+
+    if (ok)
+    {
+        puts("Gotcha!");
+        return 0;
     }
 
     output("failed\n");
