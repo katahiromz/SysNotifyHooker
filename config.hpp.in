@@ -1,0 +1,2 @@
+#define PAYLOAD_NAME    "@PAYLOAD_NAME@"
+#define INJECTOR_NAME   "@INJECTOR_NAME@"
