@@ -48,6 +48,8 @@ std::string make_hwnd_text(HWND hwnd)
 #undef CHECK_HWND
 }
 
+#define HWND_TO_TEXT(hwnd) make_hwnd_text(hwnd).c_str()
+
 //////////////////////////////////////////////////////////////////////////////
 
 // output to console and debugger
