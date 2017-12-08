@@ -271,7 +271,7 @@ ApiHookModule(HMODULE hMod, const char *dll_name, const char *fn_name, FARPROC f
     for (; pImpDesc->Name; ++pImpDesc)
     {
         char *entry_dll_name = (char *)(pbMod + pImpDesc->Name);
-        output("entry_dll_name: %s, dll_name: %s\n", entry_dll_name, dll_name);
+        //output("entry_dll_name: %s, dll_name: %s\n", entry_dll_name, dll_name);
         if (!stricmp(entry_dll_name, dll_name))
             break;
     }
