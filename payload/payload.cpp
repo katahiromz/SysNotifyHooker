@@ -284,7 +284,8 @@ void STDAPICALLTYPE NewSHChangeNotify(LONG wEventId, UINT uFlags, LPCVOID dwItem
 //////////////////////////////////////////////////////////////////////////////
 
 FARPROC
-ApiHookModule(HMODULE hMod, const char *dll_name, const char *fn_name, FARPROC fnNew)
+ApiHookModule(HMODULE hMod, const char *dll_name,
+              const char *fn_name, FARPROC fnNew, BOOL bDoHook)
 {
     if (hMod == NULL)
         hMod = GetModuleHandle(NULL);
@@ -340,7 +341,11 @@ ApiHookModule(HMODULE hMod, const char *dll_name, const char *fn_name, FARPROC f
             FARPROC fnOld = (FARPROC)pIAT->u1.Function;
             pIAT->u1.Function = (DWORD_PTR)fnNew;
             VirtualProtect(&pIAT->u1.Function, dwSize, dwOldProtect, &dwOldProtect);
-            output("ApiHookModule: hooked: %s\n", fn_name);
+
+            if (bDoHook)
+                output("ApiHookModule: Hooked: %s\n", fn_name);
+            else
+                output("ApiHookModule: Unhooked: %s\n", fn_name);
             return fnOld;
         }
     }
@@ -352,7 +357,7 @@ ApiHookModule(HMODULE hMod, const char *dll_name, const char *fn_name, FARPROC f
 static BOOL hook(void)
 {
 #define DO_HOOK(dll_file, fn_type, fn) \
-    p##fn = (fn_type)ApiHookModule(NULL, dll_file, #fn, (FARPROC)New##fn)
+    p##fn = (fn_type)ApiHookModule(NULL, dll_file, #fn, (FARPROC)New##fn, TRUE)
 
     DO_HOOK("user32.dll", FN_MESSAGEBOXA, MessageBoxA);
     DO_HOOK("user32.dll", FN_MESSAGEBOXW, MessageBoxW);
@@ -373,7 +378,7 @@ static BOOL hook(void)
 static void unhook(void)
 {
 #define DO_UNHOOK(dll_file, fn_type, fn) do { \
-    ApiHookModule(NULL, dll_file, #fn, (FARPROC)p##fn); p##fn = NULL; \
+    ApiHookModule(NULL, dll_file, #fn, (FARPROC)p##fn, FALSE); p##fn = NULL; \
 } while (0)
 
     DO_UNHOOK("user32.dll", FN_MESSAGEBOXA, MessageBoxA);
