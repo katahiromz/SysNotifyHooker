@@ -16,6 +16,14 @@
 HINSTANCE g_hinstDLL;
 HINSTANCE g_hTargetEXE;
 
+HWND Shell_TrayWnd = NULL;
+HWND StartButton = NULL;
+HWND TrayNotifyWnd = NULL;
+HWND TrayClockWClass = NULL;
+HWND Progman = NULL;
+INT ExplorerWndCount = 0;
+HWND ExplorerWnd[32] = { NULL };
+
 //////////////////////////////////////////////////////////////////////////////
 
 // output to console and debugger
@@ -371,11 +379,13 @@ BOOL CALLBACK EnumExplorerProc(HWND hwnd, LPARAM lParam)
     {
         HWND CabinetWClass = hwnd;
         show_window_info("CabinetWClass", CabinetWClass);
+        ExplorerWnd[ExplorerWndCount++] = CabinetWClass;
     }
     else if (lstrcmpi(szClass, TEXT("ExploreWClass")) == 0)
     {
         HWND ExploreWClass = hwnd;
         show_window_info("ExploreWClass", ExploreWClass);
+        ExplorerWnd[ExplorerWndCount++] = ExploreWClass;
     }
     return TRUE;
 }
@@ -386,18 +396,21 @@ void show_info()
     output("SysNotifyHooker 2017.12.08 by ReactOS Team\n");
     output("------------------------------------------\n");
 
-    HWND Shell_TrayWnd = FindWindow(TEXT("Shell_TrayWnd"), NULL);
+    Shell_TrayWnd = FindWindow(TEXT("Shell_TrayWnd"), NULL);
     show_window_info("Shell_TrayWnd", Shell_TrayWnd);
 
-    HWND StartButton = FindWindowEx(Shell_TrayWnd, NULL, TEXT("BUTTON"), NULL);
+    StartButton = FindWindowEx(Shell_TrayWnd, NULL, TEXT("BUTTON"), NULL);
     if (StartButton == NULL)
         StartButton = FindWindowEx(Shell_TrayWnd, NULL, TEXT("Start"), NULL);
     show_window_info("StartButton", StartButton);
 
-    HWND TrayNotifyWnd = FindWindowEx(Shell_TrayWnd, NULL, TEXT("TrayNotifyWnd"), NULL);
+    TrayNotifyWnd = FindWindowEx(Shell_TrayWnd, NULL, TEXT("TrayNotifyWnd"), NULL);
     show_window_info("TrayNotifyWnd", TrayNotifyWnd);
 
-    HWND Progman = FindWindow(TEXT("Progman"), NULL);
+    TrayClockWClass = FindWindowEx(TrayNotifyWnd, NULL, TEXT("TrayClockWClass"), NULL);
+    show_window_info("TrayClockWClass", TrayClockWClass);
+
+    Progman = FindWindow(TEXT("Progman"), NULL);
     show_window_info("Progman", Progman);
 
     EnumWindows(EnumExplorerProc, 0);
