@@ -390,7 +390,12 @@ void show_info()
     show_window_info("Shell_TrayWnd", Shell_TrayWnd);
 
     HWND StartButton = FindWindowEx(Shell_TrayWnd, NULL, TEXT("BUTTON"), NULL);
+    if (StartButton == NULL)
+        StartButton = FindWindowEx(Shell_TrayWnd, NULL, TEXT("Start"), NULL);
     show_window_info("StartButton", StartButton);
+
+    HWND TrayNotifyWnd = FindWindowEx(Shell_TrayWnd, NULL, TEXT("TrayNotifyWnd"), NULL);
+    show_window_info("TrayNotifyWnd", TrayNotifyWnd);
 
     HWND Progman = FindWindow(TEXT("Progman"), NULL);
     show_window_info("Progman", Progman);
