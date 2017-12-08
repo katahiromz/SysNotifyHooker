@@ -314,12 +314,12 @@ ApiHookModule(HMODULE hMod, const char *dll_name, const char *fn_name, FARPROC f
             FARPROC fnOld = (FARPROC)pIAT->u1.Function;
             pIAT->u1.Function = (DWORD_PTR)fnNew;
             VirtualProtect(&pIAT->u1.Function, dwSize, dwOldProtect, &dwOldProtect);
-            output("ApiHookModule: success: %s\n", fn_name);
+            output("ApiHookModule: hooked: %s\n", fn_name);
             return fnOld;
         }
     }
 
-    output("ApiHookModule: %s: not found\n", fn_name);
+    //output("ApiHookModule: %s: not found\n", fn_name);
     return NULL;
 }
 
@@ -392,10 +392,7 @@ BOOL CALLBACK EnumExplorerProc(HWND hwnd, LPARAM lParam)
 
 void show_info()
 {
-    output(
-        "------------------------------------------\n"
-        "SysNotifyHooker 2017.12.08 by ReactOS Team\n"
-        "------------------------------------------\n");
+    output("### SysNotifyHooker 2017.12.08 by ReactOS Team ###\n");
 
     Shell_TrayWnd = FindWindow(TEXT("Shell_TrayWnd"), NULL);
     show_window_info("Shell_TrayWnd", Shell_TrayWnd);
