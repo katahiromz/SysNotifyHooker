@@ -51,7 +51,8 @@ void output(const char *fmt, ...)
         FILE *fp = _tfopen(szPath, TEXT("a"));
         if (fp)
         {
-            fprintf(fp, "PID:%08lX> ", GetCurrentProcessId());
+            fprintf(fp, "PID:%08lX:TID:%08lX> ",
+                    GetCurrentProcessId(), GetCurrentThreadId());
             fputs(buf, fp);
             fflush(fp);
             fclose(fp);
