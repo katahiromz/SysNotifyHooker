@@ -174,10 +174,8 @@ const char *GetPathTitleA(const char *path)
     return pch;
 }
 
-bool FindProcess(const char *exe_name, DWORD& pid)
+bool FindProcesses(const char *exe_name, std::vector<DWORD>& pids)
 {
-    pid = 0;
-
     HANDLE hSnapshot;
     hSnapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
     if (hSnapshot == INVALID_HANDLE_VALUE)
@@ -201,13 +199,12 @@ bool FindProcess(const char *exe_name, DWORD& pid)
             if (lstrcmpiA(pch, exe_name) != 0)
                 continue;
 
-            pid = pe32.th32ProcessID;
-            break;
+            pids.push_back(pe32.th32ProcessID);
         } while (Process32Next(hSnapshot, &pe32));
     }
     CloseHandle(hSnapshot);
 
-    return pid != 0;
+    return !pids.empty();
 }
 
 BOOL EnableProcessPriviledge(LPCTSTR pszSE_)
@@ -260,25 +257,33 @@ int main(int argc, char **argv)
     {
         DWORD pid = atoi(argv[2]);
         ok = DllInjectByPid(pid, PAYLOAD_NAME ".dll");
+        if (ok)
+        {
+            puts("Gotcha!");
+            return 0;
+        }
     }
     else if (lstrcmpiA(argv[1], "-e") == 0 || lstrcmpiA(argv[1], "/e") == 0)
     {
-        DWORD pid;
-        if (FindProcess(argv[2], pid))
+        std::vector<DWORD> pids;
+        if (FindProcesses(argv[2], pids))
         {
-            ok = DllInjectByPid(pid, PAYLOAD_NAME ".dll");
+            for (size_t i = 0; i < pids.size(); ++i)
+            {
+                if (DllInjectByPid(pids[i], PAYLOAD_NAME ".dll"))
+                {
+                    ok = true;
+                    puts("Gotcha!");
+                }
+            }
+            if (ok)
+                return 0;
         }
     }
     else
     {
         show_help();
         return 2;
-    }
-
-    if (ok)
-    {
-        puts("Gotcha!");
-        return 0;
     }
 
     output("failed\n");
