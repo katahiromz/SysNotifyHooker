@@ -316,94 +316,43 @@ ApiHookModule(HMODULE hMod, const char *dll_name, const char *fn_name, FARPROC f
 
 static BOOL hook(void)
 {
-    FARPROC fnOld;
+#define DO_HOOK(dll_file, fn_type, fn) \
+    p##fn = (fn_type)ApiHookModule(NULL, dll_file, #fn, (FARPROC)New##fn)
 
-    fnOld = ApiHookModule(NULL, "user32.dll", "MessageBoxA", (FARPROC)NewMessageBoxA);
-    pMessageBoxA = (FN_MESSAGEBOXA)fnOld;
-    if (!fnOld)
-        return FALSE;
-
-    fnOld = ApiHookModule(NULL, "user32.dll", "MessageBoxW", (FARPROC)NewMessageBoxW);
-    pMessageBoxW = (FN_MESSAGEBOXW)fnOld;
-    if (!fnOld)
-        return FALSE;
-
-    fnOld = ApiHookModule(NULL, "user32.dll", "PostMessageA", (FARPROC)NewPostMessageA);
-    pPostMessageA = (FN_POSTMESSAGEA)fnOld;
-    if (!fnOld)
-        return FALSE;
-
-    fnOld = ApiHookModule(NULL, "user32.dll", "PostMessageW", (FARPROC)NewPostMessageW);
-    pPostMessageW = (FN_POSTMESSAGEW)fnOld;
-    if (!fnOld)
-        return FALSE;
-
-    fnOld = ApiHookModule(NULL, "user32.dll", "SendMessageA", (FARPROC)NewSendMessageA);
-    pSendMessageA = (FN_SENDMESSAGEA)fnOld;
-    if (!fnOld)
-        return FALSE;
-
-    fnOld = ApiHookModule(NULL, "user32.dll", "SendMessageW", (FARPROC)NewSendMessageW);
-    pSendMessageW = (FN_SENDMESSAGEW)fnOld;
-    if (!fnOld)
-        return FALSE;
-
-    fnOld = ApiHookModule(NULL, "user32.dll", "SendNotifyMessageA", (FARPROC)NewSendNotifyMessageA);
-    pSendNotifyMessageA = (FN_SENDNOTIFYMESSAGEA)fnOld;
-    if (!fnOld)
-        return FALSE;
-
-    fnOld = ApiHookModule(NULL, "user32.dll", "SendNotifyMessageW", (FARPROC)NewSendNotifyMessageW);
-    pSendNotifyMessageW = (FN_SENDNOTIFYMESSAGEW)fnOld;
-    if (!fnOld)
-        return FALSE;
-
-    fnOld = ApiHookModule(NULL, "user32.dll", "BroadcastSystemMessageA", (FARPROC)NewBroadcastSystemMessageA);
-    pBroadcastSystemMessageA = (FN_BROADCASTSYSTEMMESSAGEA)fnOld;
-    if (!fnOld)
-        return FALSE;
-
-    fnOld = ApiHookModule(NULL, "user32.dll", "BroadcastSystemMessageW", (FARPROC)NewBroadcastSystemMessageW);
-    pBroadcastSystemMessageW = (FN_BROADCASTSYSTEMMESSAGEW)fnOld;
-    if (!fnOld)
-        return FALSE;
-
-    fnOld = ApiHookModule(NULL, "shell32.dll", "SHChangeNotify", (FARPROC)NewSHChangeNotify);
-    pSHChangeNotify = (FN_SHCHANGENOTIFY)fnOld;
-    if (!fnOld)
-        return FALSE;
+    DO_HOOK("user32.dll", FN_MESSAGEBOXA, MessageBoxA);
+    DO_HOOK("user32.dll", FN_MESSAGEBOXW, MessageBoxW);
+    DO_HOOK("user32.dll", FN_POSTMESSAGEA, PostMessageA);
+    DO_HOOK("user32.dll", FN_POSTMESSAGEW, PostMessageW);
+    DO_HOOK("user32.dll", FN_SENDMESSAGEA, SendMessageA);
+    DO_HOOK("user32.dll", FN_SENDMESSAGEW, SendMessageW);
+    DO_HOOK("user32.dll", FN_SENDNOTIFYMESSAGEA, SendNotifyMessageA);
+    DO_HOOK("user32.dll", FN_SENDNOTIFYMESSAGEW, SendNotifyMessageW);
+    DO_HOOK("user32.dll", FN_BROADCASTSYSTEMMESSAGEA, BroadcastSystemMessageA);
+    DO_HOOK("user32.dll", FN_BROADCASTSYSTEMMESSAGEW, BroadcastSystemMessageW);
+    DO_HOOK("shell32.dll", FN_SHCHANGENOTIFY, SHChangeNotify);
 
     return TRUE;
+#undef DO_HOOK
 }
 
 static void unhook(void)
 {
-    ApiHookModule(NULL, "user32.dll", "PostMessageA", (FARPROC)pPostMessageA);
-    pPostMessageA = NULL;
+#define DO_UNHOOK(dll_file, fn_type, fn) do { \
+    ApiHookModule(NULL, dll_file, #fn, (FARPROC)p##fn); p##fn = NULL; \
+} while (0)
 
-    ApiHookModule(NULL, "user32.dll", "PostMessageW", (FARPROC)pPostMessageW);
-    pPostMessageW = NULL;
-
-    ApiHookModule(NULL, "user32.dll", "SendMessageA", (FARPROC)pSendMessageA);
-    pSendMessageA = NULL;
-
-    ApiHookModule(NULL, "user32.dll", "SendMessageW", (FARPROC)pSendMessageW);
-    pSendMessageW = NULL;
-
-    ApiHookModule(NULL, "user32.dll", "SendNotifyMessageA", (FARPROC)pSendNotifyMessageA);
-    pSendNotifyMessageA = NULL;
-
-    ApiHookModule(NULL, "user32.dll", "SendNotifyMessageW", (FARPROC)pSendNotifyMessageW);
-    pSendNotifyMessageW = NULL;
-
-    ApiHookModule(NULL, "user32.dll", "BroadcastSystemMessageA", (FARPROC)pBroadcastSystemMessageA);
-    pBroadcastSystemMessageA = NULL;
-
-    ApiHookModule(NULL, "user32.dll", "BroadcastSystemMessageW", (FARPROC)pBroadcastSystemMessageW);
-    pBroadcastSystemMessageW = NULL;
-
-    ApiHookModule(NULL, "shell32.dll", "SHChangeNotify", (FARPROC)pSHChangeNotify);
-    pSHChangeNotify = NULL;
+    DO_UNHOOK("user32.dll", FN_MESSAGEBOXA, MessageBoxA);
+    DO_UNHOOK("user32.dll", FN_MESSAGEBOXW, MessageBoxW);
+    DO_UNHOOK("user32.dll", FN_POSTMESSAGEA, PostMessageA);
+    DO_UNHOOK("user32.dll", FN_POSTMESSAGEW, PostMessageW);
+    DO_UNHOOK("user32.dll", FN_SENDMESSAGEA, SendMessageA);
+    DO_UNHOOK("user32.dll", FN_SENDMESSAGEW, SendMessageW);
+    DO_UNHOOK("user32.dll", FN_SENDNOTIFYMESSAGEA, SendNotifyMessageA);
+    DO_UNHOOK("user32.dll", FN_SENDNOTIFYMESSAGEW, SendNotifyMessageW);
+    DO_UNHOOK("user32.dll", FN_BROADCASTSYSTEMMESSAGEA, BroadcastSystemMessageA);
+    DO_UNHOOK("user32.dll", FN_BROADCASTSYSTEMMESSAGEW, BroadcastSystemMessageW);
+    DO_UNHOOK("shell32.dll", FN_SHCHANGENOTIFY, SHChangeNotify);
+#undef DO_UNHOOK
 }
 
 extern "C"
