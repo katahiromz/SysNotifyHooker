@@ -32,7 +32,6 @@ HWND ExplorerWnd[MAX_EXPLORER] = { NULL };
 std::string make_hwnd_text(HWND hwnd)
 {
 #define CHECK_HWND(hwnd, var) if (hwnd == var) return #var;
-
     CHECK_HWND(hwnd, Shell_TrayWnd);
     CHECK_HWND(hwnd, StartButton);
     CHECK_HWND(hwnd, TrayNotifyWnd);
@@ -46,6 +45,7 @@ std::string make_hwnd_text(HWND hwnd)
     char buf[32];
     std::sprintf(buf, "%p", hwnd);
     return buf;
+#undef CHECK_HWND
 }
 
 //////////////////////////////////////////////////////////////////////////////
