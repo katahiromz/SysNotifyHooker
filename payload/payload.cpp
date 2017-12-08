@@ -355,6 +355,48 @@ static void unhook(void)
 #undef DO_UNHOOK
 }
 
+void show_window_info(const char *name, HWND hwnd)
+{
+    DWORD pid, tid;
+    tid = GetWindowThreadProcessId(hwnd, &pid);
+    output("%s: %p, PID: 0x%08lX, TID: 0x%08lX\n", hwnd, pid, tid);
+}
+
+BOOL CALLBACK EnumExplorerProc(HWND hwnd, LPARAM lParam)
+{
+    TCHAR szClass[128];
+    GetClassName(hwnd, szClass, 128);
+    if (lstrcmpi(szClass, TEXT("CabinetWClass")) == 0)
+    {
+        HWND CabinetWClass = hwnd;
+        show_window_info("CabinetWClass", CabinetWClass);
+    }
+    else if (lstrcmpi(szClass, TEXT("ExploreWClass")) == 0)
+    {
+        HWND ExploreWClass = hwnd;
+        show_window_info("ExploreWClass", ExploreWClass);
+    }
+    return TRUE;
+}
+
+void show_info()
+{
+    output("------------------------------------------\n");
+    output("SysNotifyHooker 2017.12.08 by ReactOS Team\n");
+    output("------------------------------------------\n");
+
+    HWND Shell_TrayWnd = FindWindow(TEXT("Shell_TrayWnd"), NULL);
+    show_window_info("Shell_TrayWnd", Shell_TrayWnd);
+
+    HWND StartButton = FindWindowEx(Shell_TrayWnd, NULL, TEXT("BUTTON"), NULL);
+    show_window_info("StartButton", StartButton);
+
+    HWND Progman = FindWindow(TEXT("Progman"), NULL);
+    show_window_info("Progman", Progman);
+
+    EnumWindows(EnumExplorerProc, 0);
+}
+
 extern "C"
 BOOL WINAPI
 DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpReserved)
@@ -364,6 +406,7 @@ DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpReserved)
     case DLL_PROCESS_ATTACH:
         g_hinstDLL = hinstDLL;
         output("DLL_PROCESS_ATTACH\n");
+        show_info();
         hook();
         break;
     case DLL_PROCESS_DETACH:
@@ -377,6 +420,5 @@ DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpReserved)
         output("DLL_THREAD_DETACH\n");
         break;
     }
-
     return TRUE;
 }
