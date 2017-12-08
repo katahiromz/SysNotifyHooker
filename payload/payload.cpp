@@ -303,7 +303,7 @@ ApiHookModule(HMODULE hMod, const char *dll_name, const char *fn_name, FARPROC f
     }
     if (!pImpDesc->Name)
     {
-        output("ApiHookModule: !pImpDesc->Name\n");
+        //output("ApiHookModule: !pImpDesc->Name\n");
         return NULL;
     }
 
