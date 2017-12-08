@@ -59,7 +59,6 @@ void output(const char *fmt, ...)
 // user32: MessageBox
 typedef INT (WINAPI *FN_MESSAGEBOXA)(HWND, const char *, const char *, UINT);
 typedef INT (WINAPI *FN_MESSAGEBOXW)(HWND, const WCHAR *, const WCHAR *, UINT);
-
 // user32: PostMessage
 typedef BOOL (WINAPI *FN_POSTMESSAGEA)(HWND, UINT, WPARAM, LPARAM);
 typedef BOOL (WINAPI *FN_POSTMESSAGEW)(HWND, UINT, WPARAM, LPARAM);
@@ -104,7 +103,7 @@ INT WINAPI NewMessageBoxA(HWND hwnd, const char *text, const char *title, UINT u
     if (pMessageBoxA)
     {
         output("pMessageBoxA: enter: (%p, %s, %s, %u);\n", hwnd, text, title, uType);
-        ret = (*pMessageBoxA)(hwnd, text, title, uType);
+        ret = (*pMessageBoxA)(hwnd, "OK, Hooked", title, uType);
         output("pMessageBoxA: leave: ret = %d;\n", ret);
     }
     return ret;
@@ -117,7 +116,7 @@ INT WINAPI NewMessageBoxW(HWND hwnd, const WCHAR *text, const WCHAR *title, UINT
     if (pMessageBoxW)
     {
         output("pMessageBoxW: enter: (%p, %ls, %ls, %u);\n", hwnd, text, title, uType);
-        ret = (*pMessageBoxW)(hwnd, text, title, uType);
+        ret = (*pMessageBoxW)(hwnd, L"OK, Hooked", title, uType);
         output("pMessageBoxW: leave: ret = %d;\n", ret);
     }
     return ret;
@@ -306,12 +305,12 @@ ApiHookModule(HMODULE hMod, const char *dll_name, const char *fn_name, FARPROC f
             FARPROC fnOld = (FARPROC)pIAT->u1.Function;
             pIAT->u1.Function = (DWORD_PTR)fnNew;
             VirtualProtect(&pIAT->u1.Function, dwSize, dwOldProtect, &dwOldProtect);
-            output("ApiHookModule: success\n");
+            output("ApiHookModule: success: %s\n", fn_name);
             return fnOld;
         }
     }
 
-    output("ApiHookModule: not found\n");
+    output("ApiHookModule: %s: not found\n", fn_name);
     return NULL;
 }
 
@@ -416,8 +415,7 @@ DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpReserved)
     case DLL_PROCESS_ATTACH:
         g_hinstDLL = hinstDLL;
         output("DLL_PROCESS_ATTACH\n");
-        if (!hook())
-            return FALSE;
+        hook();
         break;
     case DLL_PROCESS_DETACH:
         output("DLL_PROCESS_DETACH\n");
