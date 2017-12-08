@@ -43,6 +43,7 @@ void output(const char *fmt, ...)
         FILE *fp = _tfopen(szPath, TEXT("a"));
         if (fp)
         {
+            fprintf(fp, "PID:%08lX> ", GetCurrentProcessId());
             fputs(buf, fp);
             fflush(fp);
             fclose(fp);
