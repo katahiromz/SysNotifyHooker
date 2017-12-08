@@ -52,7 +52,7 @@ std::string make_hwnd_text(HWND hwnd)
 
 //////////////////////////////////////////////////////////////////////////////
 
-void output(const char *fmt, ...)
+void log_printf(const char *fmt, ...)
 {
     DWORD dwError = GetLastError();
 
@@ -137,9 +137,9 @@ INT WINAPI NewMessageBoxA(HWND hwnd, const char *text, const char *title, UINT u
     INT ret = 0;
     if (pMessageBoxA)
     {
-        output("MessageBoxA: enter: (%s, %s, %s, %u);\n", HWND2TEXT(hwnd), text, title, uType);
+        log_printf("MessageBoxA: enter: (%s, %s, %s, %u);\n", HWND2TEXT(hwnd), text, title, uType);
         ret = (*pMessageBoxA)(hwnd, "OK, Hooked", title, uType);
-        output("MessageBoxA: leave: ret = %d;\n", ret);
+        log_printf("MessageBoxA: leave: ret = %d;\n", ret);
     }
     return ret;
 }
@@ -150,9 +150,9 @@ INT WINAPI NewMessageBoxW(HWND hwnd, const WCHAR *text, const WCHAR *title, UINT
     INT ret = 0;
     if (pMessageBoxW)
     {
-        output("MessageBoxW: enter: (%s, %ls, %ls, %u);\n", HWND2TEXT(hwnd), text, title, uType);
+        log_printf("MessageBoxW: enter: (%s, %ls, %ls, %u);\n", HWND2TEXT(hwnd), text, title, uType);
         ret = (*pMessageBoxW)(hwnd, L"OK, Hooked", title, uType);
-        output("MessageBoxW: leave: ret = %d;\n", ret);
+        log_printf("MessageBoxW: leave: ret = %d;\n", ret);
     }
     return ret;
 }
@@ -163,9 +163,9 @@ BOOL WINAPI NewPostMessageA(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
     BOOL ret = 0;
     if (pPostMessageA)
     {
-        output("PostMessageA: enter: (%s, %u, %p, %p);\n", HWND2TEXT(hWnd), Msg, wParam, lParam);
+        log_printf("PostMessageA: enter: (%s, %u, %p, %p);\n", HWND2TEXT(hWnd), Msg, wParam, lParam);
         ret = (*pPostMessageA)(hWnd, Msg, wParam, lParam);
-        output("PostMessageA: leave: ret = %d;\n", ret);
+        log_printf("PostMessageA: leave: ret = %d;\n", ret);
     }
     return ret;
 }
@@ -176,9 +176,9 @@ BOOL WINAPI NewPostMessageW(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
     BOOL ret = FALSE;
     if (pPostMessageW)
     {
-        output("PostMessageW: enter: (%s, %u, %p, %p);\n", HWND2TEXT(hWnd), Msg, wParam, lParam);
+        log_printf("PostMessageW: enter: (%s, %u, %p, %p);\n", HWND2TEXT(hWnd), Msg, wParam, lParam);
         ret = (*pPostMessageW)(hWnd, Msg, wParam, lParam);
-        output("PostMessageW: leave: ret = %d;\n", ret);
+        log_printf("PostMessageW: leave: ret = %d;\n", ret);
     }
     return ret;
 }
@@ -189,9 +189,9 @@ LRESULT WINAPI NewSendMessageA(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam
     LRESULT ret = 0;
     if (pSendMessageA)
     {
-        output("SendMessageA: enter: (%s, %u, %p, %p);\n", HWND2TEXT(hWnd), Msg, wParam, lParam);
+        log_printf("SendMessageA: enter: (%s, %u, %p, %p);\n", HWND2TEXT(hWnd), Msg, wParam, lParam);
         ret = (*pSendMessageA)(hWnd, Msg, wParam, lParam);
-        output("SendMessageA: leave: ret = %d;\n", ret);
+        log_printf("SendMessageA: leave: ret = %d;\n", ret);
     }
     return ret;
 }
@@ -202,9 +202,9 @@ LRESULT WINAPI NewSendMessageW(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam
     LRESULT ret = FALSE;
     if (pSendMessageW)
     {
-        output("SendMessageW: enter: (%s, %u, %p, %p);\n", HWND2TEXT(hWnd), Msg, wParam, lParam);
+        log_printf("SendMessageW: enter: (%s, %u, %p, %p);\n", HWND2TEXT(hWnd), Msg, wParam, lParam);
         ret = (*pSendMessageW)(hWnd, Msg, wParam, lParam);
-        output("SendMessageW: leave: ret = %d;\n", ret);
+        log_printf("SendMessageW: leave: ret = %d;\n", ret);
     }
     return ret;
 }
@@ -215,9 +215,9 @@ BOOL WINAPI NewSendNotifyMessageA(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lPa
     BOOL ret = FALSE;
     if (pSendNotifyMessageA)
     {
-        output("SendNotifyMessageA: enter: (%s, %u, %p, %p);\n", HWND2TEXT(hWnd), Msg, wParam, lParam);
+        log_printf("SendNotifyMessageA: enter: (%s, %u, %p, %p);\n", HWND2TEXT(hWnd), Msg, wParam, lParam);
         ret = (*pSendNotifyMessageA)(hWnd, Msg, wParam, lParam);
-        output("SendNotifyMessageA: leave: ret = %d;\n", ret);
+        log_printf("SendNotifyMessageA: leave: ret = %d;\n", ret);
     }
     return ret;
 }
@@ -228,9 +228,9 @@ BOOL WINAPI NewSendNotifyMessageW(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lPa
     BOOL ret = FALSE;
     if (pSendNotifyMessageW)
     {
-        output("SendNotifyMessageW: enter: (%s, %u, %p, %p);\n", HWND2TEXT(hWnd), Msg, wParam, lParam);
+        log_printf("SendNotifyMessageW: enter: (%s, %u, %p, %p);\n", HWND2TEXT(hWnd), Msg, wParam, lParam);
         ret = (*pSendNotifyMessageW)(hWnd, Msg, wParam, lParam);
-        output("SendNotifyMessageW: leave: ret = %d;\n", ret);
+        log_printf("SendNotifyMessageW: leave: ret = %d;\n", ret);
     }
     return ret;
 }
@@ -241,9 +241,9 @@ INT WINAPI NewBroadcastSystemMessageA(DWORD dwFlags, LPDWORD lpdwRecipients, UIN
     INT nRet = 0;
     if (pBroadcastSystemMessageA)
     {
-        output("BroadcastSystemMessageA: enter: (0x%08lX, %p, %u, %p, %p);\n", dwFlags, lpdwRecipients, uiMessage, wParam, lParam);
+        log_printf("BroadcastSystemMessageA: enter: (0x%08lX, %p, %u, %p, %p);\n", dwFlags, lpdwRecipients, uiMessage, wParam, lParam);
         nRet = (*pBroadcastSystemMessageA)(dwFlags, lpdwRecipients, uiMessage, wParam, lParam);
-        output("BroadcastSystemMessageA: leave: nRet = %d;\n", nRet);
+        log_printf("BroadcastSystemMessageA: leave: nRet = %d;\n", nRet);
     }
     return nRet;
 }
@@ -254,9 +254,9 @@ INT WINAPI NewBroadcastSystemMessageW(DWORD dwFlags, LPDWORD lpdwRecipients, UIN
     INT nRet = 0;
     if (pBroadcastSystemMessageW)
     {
-        output("BroadcastSystemMessageW: enter: (0x%08lX, %p, %u, %p, %p);\n", dwFlags, lpdwRecipients, uiMessage, wParam, lParam);
+        log_printf("BroadcastSystemMessageW: enter: (0x%08lX, %p, %u, %p, %p);\n", dwFlags, lpdwRecipients, uiMessage, wParam, lParam);
         nRet = (*pBroadcastSystemMessageW)(dwFlags, lpdwRecipients, uiMessage, wParam, lParam);
-        output("BroadcastSystemMessageW: leave: nRet = %d;\n", nRet);
+        log_printf("BroadcastSystemMessageW: leave: nRet = %d;\n", nRet);
     }
     return nRet;
 }
@@ -273,9 +273,9 @@ void STDAPICALLTYPE NewSHChangeNotify(LONG wEventId, UINT uFlags, LPCVOID dwItem
 {
     if (pSHChangeNotify)
     {
-        output("SHChangeNotify: enter: (%ld, 0x%08lX, %p, %p);\n", wEventId, uFlags, dwItem1, dwItem2);
+        log_printf("SHChangeNotify: enter: (%ld, 0x%08lX, %p, %p);\n", wEventId, uFlags, dwItem1, dwItem2);
         (*pSHChangeNotify)(wEventId, uFlags, dwItem1, dwItem2);
-        output("SHChangeNotify: leave;\n");
+        log_printf("SHChangeNotify: leave;\n");
     }
 }
 
@@ -298,13 +298,13 @@ ApiHookModule(HMODULE hMod, const char *dll_name,
     for (; pImpDesc->Name; ++pImpDesc)
     {
         char *entry_dll_name = (char *)(pbMod + pImpDesc->Name);
-        //output("entry_dll_name: %s, dll_name: %s\n", entry_dll_name, dll_name);
+        //log_printf("entry_dll_name: %s, dll_name: %s\n", entry_dll_name, dll_name);
         if (!stricmp(entry_dll_name, dll_name))
             break;
     }
     if (!pImpDesc->Name)
     {
-        //output("ApiHookModule: !pImpDesc->Name\n");
+        //log_printf("ApiHookModule: !pImpDesc->Name\n");
         return NULL;
     }
 
@@ -343,14 +343,14 @@ ApiHookModule(HMODULE hMod, const char *dll_name,
             VirtualProtect(&pIAT->u1.Function, dwSize, dwOldProtect, &dwOldProtect);
 
             if (bDoHook)
-                output("ApiHookModule: Hooked: %s\n", fn_name);
+                log_printf("ApiHookModule: Hooked: %s\n", fn_name);
             else
-                output("ApiHookModule: Unhooked: %s\n", fn_name);
+                log_printf("ApiHookModule: Unhooked: %s\n", fn_name);
             return fnOld;
         }
     }
 
-    //output("ApiHookModule: %s: not found\n", fn_name);
+    //log_printf("ApiHookModule: %s: not found\n", fn_name);
     return NULL;
 }
 
@@ -399,7 +399,7 @@ void show_window_info(const char *name, HWND hwnd)
 {
     DWORD pid, tid;
     tid = GetWindowThreadProcessId(hwnd, &pid);
-    output("<%s> HWND: %p, PID: 0x%08lX, TID: 0x%08lX\n", name, hwnd, pid, tid);
+    log_printf("<%s> HWND: %p, PID: 0x%08lX, TID: 0x%08lX\n", name, hwnd, pid, tid);
 }
 
 BOOL CALLBACK EnumExplorerProc(HWND hwnd, LPARAM lParam)
@@ -427,7 +427,7 @@ BOOL CALLBACK EnumExplorerProc(HWND hwnd, LPARAM lParam)
 
 void show_info()
 {
-    output("### SysNotifyHooker 2017.12.08 by ReactOS Team ###\n");
+    log_printf("### SysNotifyHooker 2017.12.09 by ReactOS Team ###\n");
 
     Shell_TrayWnd = FindWindow(TEXT("Shell_TrayWnd"), NULL);
     show_window_info("Shell_TrayWnd", Shell_TrayWnd);
@@ -457,19 +457,19 @@ DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpReserved)
     {
     case DLL_PROCESS_ATTACH:
         g_hinstDLL = hinstDLL;
-        output("DLL_PROCESS_ATTACH\n");
+        log_printf("DLL_PROCESS_ATTACH\n");
         show_info();
         hook();
         break;
     case DLL_PROCESS_DETACH:
-        output("DLL_PROCESS_DETACH\n");
+        log_printf("DLL_PROCESS_DETACH\n");
         unhook();
         break;
     case DLL_THREAD_ATTACH:
-        output("DLL_THREAD_ATTACH\n");
+        log_printf("DLL_THREAD_ATTACH\n");
         break;
     case DLL_THREAD_DETACH:
-        output("DLL_THREAD_DETACH\n");
+        log_printf("DLL_THREAD_DETACH\n");
         break;
     }
     return TRUE;
