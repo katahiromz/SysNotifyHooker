@@ -34,7 +34,7 @@ void output(const char *fmt, ...)
     char buf[512];
     va_list va;
     va_start(va, fmt);
-    wvsprintfA(buf, fmt, va);
+    wvnsprintfA(buf, 512, fmt, va);
     va_end(va);
 
     TCHAR szPath[MAX_PATH];
