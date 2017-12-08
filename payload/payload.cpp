@@ -52,7 +52,6 @@ std::string make_hwnd_text(HWND hwnd)
 
 //////////////////////////////////////////////////////////////////////////////
 
-// output to console and debugger
 void output(const char *fmt, ...)
 {
     DWORD dwError = GetLastError();
