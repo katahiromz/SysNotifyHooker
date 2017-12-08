@@ -368,7 +368,7 @@ void show_window_info(const char *name, HWND hwnd)
 {
     DWORD pid, tid;
     tid = GetWindowThreadProcessId(hwnd, &pid);
-    output("%s: %p, PID: 0x%08lX, TID: 0x%08lX\n", hwnd, pid, tid);
+    output("<%s> HWND: %p, PID: 0x%08lX, TID: 0x%08lX\n", name, hwnd, pid, tid);
 }
 
 BOOL CALLBACK EnumExplorerProc(HWND hwnd, LPARAM lParam)
