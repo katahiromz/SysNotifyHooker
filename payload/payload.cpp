@@ -43,7 +43,7 @@ std::string make_hwnd_text(HWND hwnd)
     }
 
     char buf[32];
-    std::sprintf(buf, "%p", hwnd);
+    wsprintfA(buf, "%p", hwnd);
     return buf;
 #undef CHECK_HWND
 }
@@ -137,9 +137,9 @@ INT WINAPI NewMessageBoxA(HWND hwnd, const char *text, const char *title, UINT u
     INT ret = 0;
     if (pMessageBoxA)
     {
-        output("pMessageBoxA: enter: (%s, %s, %s, %u);\n", HWND2TEXT(hwnd), text, title, uType);
+        output("MessageBoxA: enter: (%s, %s, %s, %u);\n", HWND2TEXT(hwnd), text, title, uType);
         ret = (*pMessageBoxA)(hwnd, "OK, Hooked", title, uType);
-        output("pMessageBoxA: leave: ret = %d;\n", ret);
+        output("MessageBoxA: leave: ret = %d;\n", ret);
     }
     return ret;
 }
@@ -150,9 +150,9 @@ INT WINAPI NewMessageBoxW(HWND hwnd, const WCHAR *text, const WCHAR *title, UINT
     INT ret = 0;
     if (pMessageBoxW)
     {
-        output("pMessageBoxW: enter: (%s, %ls, %ls, %u);\n", HWND2TEXT(hwnd), text, title, uType);
+        output("MessageBoxW: enter: (%s, %ls, %ls, %u);\n", HWND2TEXT(hwnd), text, title, uType);
         ret = (*pMessageBoxW)(hwnd, L"OK, Hooked", title, uType);
-        output("pMessageBoxW: leave: ret = %d;\n", ret);
+        output("MessageBoxW: leave: ret = %d;\n", ret);
     }
     return ret;
 }
