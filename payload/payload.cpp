@@ -137,7 +137,7 @@ INT WINAPI NewMessageBoxA(HWND hwnd, const char *text, const char *title, UINT u
     INT ret = 0;
     if (pMessageBoxA)
     {
-        output("pMessageBoxA: enter: (%p, %s, %s, %u);\n", hwnd, text, title, uType);
+        output("pMessageBoxA: enter: (%s, %s, %s, %u);\n", HWND2TEXT(hwnd), text, title, uType);
         ret = (*pMessageBoxA)(hwnd, "OK, Hooked", title, uType);
         output("pMessageBoxA: leave: ret = %d;\n", ret);
     }
@@ -150,7 +150,7 @@ INT WINAPI NewMessageBoxW(HWND hwnd, const WCHAR *text, const WCHAR *title, UINT
     INT ret = 0;
     if (pMessageBoxW)
     {
-        output("pMessageBoxW: enter: (%p, %ls, %ls, %u);\n", hwnd, text, title, uType);
+        output("pMessageBoxW: enter: (%s, %ls, %ls, %u);\n", HWND2TEXT(hwnd), text, title, uType);
         ret = (*pMessageBoxW)(hwnd, L"OK, Hooked", title, uType);
         output("pMessageBoxW: leave: ret = %d;\n", ret);
     }
@@ -163,7 +163,7 @@ BOOL WINAPI NewPostMessageA(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
     BOOL ret = 0;
     if (pPostMessageA)
     {
-        output("PostMessageA: enter: (%p, %u, %p, %p);\n", hWnd, Msg, wParam, lParam);
+        output("PostMessageA: enter: (%s, %u, %p, %p);\n", HWND2TEXT(hWnd), Msg, wParam, lParam);
         ret = (*pPostMessageA)(hWnd, Msg, wParam, lParam);
         output("PostMessageA: leave: ret = %d;\n", ret);
     }
@@ -176,7 +176,7 @@ BOOL WINAPI NewPostMessageW(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
     BOOL ret = FALSE;
     if (pPostMessageW)
     {
-        output("PostMessageW: enter: (%p, %u, %p, %p);\n", hWnd, Msg, wParam, lParam);
+        output("PostMessageW: enter: (%s, %u, %p, %p);\n", HWND2TEXT(hWnd), Msg, wParam, lParam);
         ret = (*pPostMessageW)(hWnd, Msg, wParam, lParam);
         output("PostMessageW: leave: ret = %d;\n", ret);
     }
@@ -189,7 +189,7 @@ LRESULT WINAPI NewSendMessageA(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam
     LRESULT ret = 0;
     if (pSendMessageA)
     {
-        output("SendMessageA: enter: (%p, %u, %p, %p);\n", hWnd, Msg, wParam, lParam);
+        output("SendMessageA: enter: (%s, %u, %p, %p);\n", HWND2TEXT(hWnd), Msg, wParam, lParam);
         ret = (*pSendMessageA)(hWnd, Msg, wParam, lParam);
         output("SendMessageA: leave: ret = %d;\n", ret);
     }
@@ -202,7 +202,7 @@ LRESULT WINAPI NewSendMessageW(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam
     LRESULT ret = FALSE;
     if (pSendMessageW)
     {
-        output("SendMessageW: enter: (%p, %u, %p, %p);\n", hWnd, Msg, wParam, lParam);
+        output("SendMessageW: enter: (%s, %u, %p, %p);\n", HWND2TEXT(hWnd), Msg, wParam, lParam);
         ret = (*pSendMessageW)(hWnd, Msg, wParam, lParam);
         output("SendMessageW: leave: ret = %d;\n", ret);
     }
@@ -215,7 +215,7 @@ BOOL WINAPI NewSendNotifyMessageA(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lPa
     BOOL ret = FALSE;
     if (pSendNotifyMessageA)
     {
-        output("SendNotifyMessageA: enter: (%p, %u, %p, %p);\n", hWnd, Msg, wParam, lParam);
+        output("SendNotifyMessageA: enter: (%s, %u, %p, %p);\n", HWND2TEXT(hWnd), Msg, wParam, lParam);
         ret = (*pSendNotifyMessageA)(hWnd, Msg, wParam, lParam);
         output("SendNotifyMessageA: leave: ret = %d;\n", ret);
     }
@@ -228,7 +228,7 @@ BOOL WINAPI NewSendNotifyMessageW(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lPa
     BOOL ret = FALSE;
     if (pSendNotifyMessageW)
     {
-        output("SendNotifyMessageW: enter: (%p, %u, %p, %p);\n", hWnd, Msg, wParam, lParam);
+        output("SendNotifyMessageW: enter: (%s, %u, %p, %p);\n", HWND2TEXT(hWnd), Msg, wParam, lParam);
         ret = (*pSendNotifyMessageW)(hWnd, Msg, wParam, lParam);
         output("SendNotifyMessageW: leave: ret = %d;\n", ret);
     }
