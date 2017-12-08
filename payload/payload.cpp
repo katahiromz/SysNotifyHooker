@@ -21,8 +21,10 @@ HWND StartButton = NULL;
 HWND TrayNotifyWnd = NULL;
 HWND TrayClockWClass = NULL;
 HWND Progman = NULL;
+
+#define MAX_EXPLORER 16
 INT ExplorerWndCount = 0;
-HWND ExplorerWnd[32] = { NULL };
+HWND ExplorerWnd[MAX_EXPLORER] = { NULL };
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -374,6 +376,9 @@ void show_window_info(const char *name, HWND hwnd)
 
 BOOL CALLBACK EnumExplorerProc(HWND hwnd, LPARAM lParam)
 {
+    if (ExplorerWndCount >= MAX_EXPLORER)
+        return FALSE;   // stop
+
     TCHAR szClass[128];
     GetClassName(hwnd, szClass, 128);
     if (lstrcmpi(szClass, TEXT("CabinetWClass")) == 0)
@@ -388,7 +393,8 @@ BOOL CALLBACK EnumExplorerProc(HWND hwnd, LPARAM lParam)
         show_window_info("ExploreWClass", ExploreWClass);
         ExplorerWnd[ExplorerWndCount++] = ExploreWClass;
     }
-    return TRUE;
+
+    return TRUE;    // continue
 }
 
 void show_info()
