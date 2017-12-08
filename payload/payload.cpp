@@ -8,13 +8,16 @@
 #include <tchar.h>
 #include <cstdio>
 #include <cstring>
+#include <string>
 
 #ifndef _countof
     #define _countof(array)     (sizeof(array) / sizeof(array[0]))
 #endif
 
 HINSTANCE g_hinstDLL;
-HINSTANCE g_hTargetEXE;
+
+//////////////////////////////////////////////////////////////////////////////
+// window handle
 
 HWND Shell_TrayWnd = NULL;
 HWND StartButton = NULL;
@@ -25,6 +28,25 @@ HWND Progman = NULL;
 #define MAX_EXPLORER 16
 INT ExplorerWndCount = 0;
 HWND ExplorerWnd[MAX_EXPLORER] = { NULL };
+
+std::string make_hwnd_text(HWND hwnd)
+{
+#define CHECK_HWND(hwnd, var) if (hwnd == var) return #var;
+
+    CHECK_HWND(hwnd, Shell_TrayWnd);
+    CHECK_HWND(hwnd, StartButton);
+    CHECK_HWND(hwnd, TrayNotifyWnd);
+    CHECK_HWND(hwnd, TrayClockWClass);
+    CHECK_HWND(hwnd, Progman);
+    for (INT i = 0; i < ExplorerWndCount; ++i)
+    {
+        CHECK_HWND(hwnd, ExplorerWnd[i]);
+    }
+
+    char buf[32];
+    std::sprintf(buf, "%p", hwnd);
+    return buf;
+}
 
 //////////////////////////////////////////////////////////////////////////////
 
