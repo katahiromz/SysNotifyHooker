@@ -6,6 +6,7 @@
 #include <windows.h>
 #include <tlhelp32.h>
 #include <tchar.h>
+#include <vector>
 #include <cstdio>
 #include <cstring>
 #include <cassert>
@@ -129,7 +130,7 @@ bool DllInjectByPid(DWORD pid, const char *dll_name)
             HANDLE hThread = OpenThread(THREAD_SET_CONTEXT, FALSE, tids[i]);
             if (hThread)
             {
-                if (QueueUserAPC((PAPCFUNC)pLoadLibraryA, hThread, pParam))
+                if (QueueUserAPC((PAPCFUNC)pLoadLibraryA, hThread, (ULONG_PTR)pParam))
                     ret = true;
 
                 CloseHandle(hThread);
