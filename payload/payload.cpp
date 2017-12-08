@@ -56,6 +56,10 @@ void output(const char *fmt, ...)
 
 //////////////////////////////////////////////////////////////////////////////
 
+// user32: MessageBox
+typedef INT (WINAPI *FN_MESSAGEBOXA)(HWND, const char *, const char *, UINT);
+typedef INT (WINAPI *FN_MESSAGEBOXW)(HWND, const WCHAR *, const WCHAR *, UINT);
+
 // user32: PostMessage
 typedef BOOL (WINAPI *FN_POSTMESSAGEA)(HWND, UINT, WPARAM, LPARAM);
 typedef BOOL (WINAPI *FN_POSTMESSAGEW)(HWND, UINT, WPARAM, LPARAM);
@@ -70,6 +74,9 @@ typedef LONG (WINAPI *FN_BROADCASTSYSTEMMESSAGEA)(DWORD, LPDWORD, UINT, WPARAM, 
 typedef LONG (WINAPI *FN_BROADCASTSYSTEMMESSAGEW)(DWORD, LPDWORD, UINT, WPARAM, LPARAM);
 // shell32: SHChangeNotify
 typedef void (STDAPICALLTYPE *FN_SHCHANGENOTIFY)(LONG, UINT, LPCVOID, LPCVOID);
+
+FN_MESSAGEBOXA pMessageBoxA = NULL;
+FN_MESSAGEBOXW pMessageBoxW = NULL;
 
 FN_POSTMESSAGEA pPostMessageA = NULL;
 FN_POSTMESSAGEW pPostMessageW = NULL;
@@ -89,6 +96,32 @@ FN_SHCHANGENOTIFY pSHChangeNotify = NULL;
 // user32
 
 extern "C" {
+
+__declspec(dllexport)
+INT WINAPI NewMessageBoxA(HWND hwnd, const char *text, const char *title, UINT uType)
+{
+    INT ret = 0;
+    if (pMessageBoxA)
+    {
+        output("pMessageBoxA: enter: (%p, %s, %s, %u);\n", hwnd, text, title, uType);
+        ret = (*pMessageBoxA)(hwnd, text, title, uType);
+        output("pMessageBoxA: leave: ret = %d;\n", ret);
+    }
+    return ret;
+}
+
+__declspec(dllexport)
+INT WINAPI NewMessageBoxW(HWND hwnd, const WCHAR *text, const WCHAR *title, UINT uType)
+{
+    INT ret = 0;
+    if (pMessageBoxW)
+    {
+        output("pMessageBoxW: enter: (%p, %ls, %ls, %u);\n", hwnd, text, title, uType);
+        ret = (*pMessageBoxW)(hwnd, text, title, uType);
+        output("pMessageBoxW: leave: ret = %d;\n", ret);
+    }
+    return ret;
+}
 
 __declspec(dllexport)
 BOOL WINAPI NewPostMessageA(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
@@ -285,6 +318,16 @@ ApiHookModule(HMODULE hMod, const char *dll_name, const char *fn_name, FARPROC f
 static BOOL hook(void)
 {
     FARPROC fnOld;
+
+    fnOld = ApiHookModule(NULL, "user32.dll", "MessageBoxA", (FARPROC)NewMessageBoxA);
+    pMessageBoxA = (FN_MESSAGEBOXA)fnOld;
+    if (!fnOld)
+        return FALSE;
+
+    fnOld = ApiHookModule(NULL, "user32.dll", "MessageBoxW", (FARPROC)NewMessageBoxW);
+    pMessageBoxW = (FN_MESSAGEBOXW)fnOld;
+    if (!fnOld)
+        return FALSE;
 
     fnOld = ApiHookModule(NULL, "user32.dll", "PostMessageA", (FARPROC)NewPostMessageA);
     pPostMessageA = (FN_POSTMESSAGEA)fnOld;
