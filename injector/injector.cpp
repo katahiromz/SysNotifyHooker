@@ -42,9 +42,45 @@ inline bool CheckBits(HANDLE hProcess)
     #endif
 }
 
-// do DLL injection to execute LoadLibraryA with parameter in the process
-bool DllInjectByPid(int pid, const char *dll_name)
+bool GetProcessThreads(DWORD pid, std::vector<DWORD>& tids)
 {
+    HANDLE hSnapshot;
+    hSnapshot = CreateToolhelp32Snapshot(TH32CS_SNAPTHREAD, 0);
+    if (hSnapshot == INVALID_HANDLE_VALUE)
+    {
+        output("CreateToolhelp32Snapshot failed");
+        return false;
+    }
+
+    #undef THREADENTRY32
+    #undef Thread32First
+    #undef Thread32Next
+    THREADENTRY32 te32 = { sizeof(te32) };
+
+    if (Thread32First(hSnapshot, &te32))
+    {
+        do
+        {
+            if (te32.th32OwnerProcessID == pid)
+            {
+                tids.push_back(te32.th32ThreadID);
+            }
+        } while (Thread32Next(hSnapshot, &te32));
+    }
+
+    return !tids.empty();
+}
+
+// do DLL injection to execute LoadLibraryA with parameter in the process
+bool DllInjectByPid(DWORD pid, const char *dll_name)
+{
+    std::vector<DWORD> tids;
+    if (!GetProcessThreads(pid, tids))
+    {
+        output("GetProcessThreads failed\n");
+        return false;
+    }
+
     // get full path of payload DLL.
     char dll_path[MAX_PATH];
     GetModuleFileNameA(NULL, dll_path, MAX_PATH);
@@ -55,7 +91,7 @@ bool DllInjectByPid(int pid, const char *dll_name)
     output("dll_path: %s\n", dll_path);
 
     // get process handle
-    HANDLE hProcess = OpenProcess(PROCESS_ALL_ACCESS, FALSE, pid);
+    HANDLE hProcess = OpenProcess(PROCESS_VM_WRITE | PROCESS_VM_OPERATION, FALSE, pid);
     if (!hProcess)
     {
         output("pid is invalid\n");
@@ -71,7 +107,7 @@ bool DllInjectByPid(int pid, const char *dll_name)
 
     // create memory block in remote process
     DWORD size = (lstrlenA(dll_path) + 1) * sizeof(char);
-    LPVOID pParam = VirtualAllocEx(hProcess, NULL, size, MEM_COMMIT, PAGE_READWRITE);
+    LPVOID pParam = VirtualAllocEx(hProcess, NULL, size, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
     if (!pParam)
     {
         output("VirtualAllocEx failed\n");
@@ -88,29 +124,16 @@ bool DllInjectByPid(int pid, const char *dll_name)
     FARPROC pLoadLibraryA = GetProcAddress(hKernel32, "LoadLibraryA");
     if (pLoadLibraryA)
     {
-        // execute LoadLibraryA with parameter
-        HANDLE hThread = CreateRemoteThread(hProcess, NULL, 0,
-            (LPTHREAD_START_ROUTINE)pLoadLibraryA, pParam, 0, NULL);
-        if (hThread)
+        for (size_t i = 0; i < tids.size(); ++i)
         {
-            DWORD dwExitCode, dwError = GetLastError();
-            WaitForSingleObject(hThread, INFINITE);
-            GetExitCodeThread(hThread, &dwExitCode);
-            CloseHandle(hThread);
-            if (dwExitCode)
+            HANDLE hThread = OpenThread(THREAD_SET_CONTEXT, FALSE, tids[i]);
+            if (hThread)
             {
-                output("injected\n");
-                ret = true;
+                if (QueueUserAPC((PAPCFUNC)pLoadLibraryA, hThread, pParam))
+                    ret = true;
+
+                CloseHandle(hThread);
             }
-            else
-            {
-                output("LoadLibraryA failed: %ld\n", dwError);
-            }
-        }
-        else
-        {
-            DWORD dwError = GetLastError();
-            output("CreateRemoteThread failed: %ld\n", dwError);
         }
     }
     else
@@ -118,7 +141,7 @@ bool DllInjectByPid(int pid, const char *dll_name)
         output("GetProcAddress failed\n");
     }
 
-    VirtualFreeEx(hProcess, pParam, size, MEM_RELEASE);
+    VirtualFreeEx(hProcess, pParam, size, MEM_RELEASE | MEM_DECOMMIT);
     CloseHandle(hProcess);
 
     return ret;
@@ -150,8 +173,10 @@ const char *GetPathTitleA(const char *path)
     return pch;
 }
 
-bool DllInjectByExeName(const char *exe_name, const char *dll_name)
+bool FindProcess(const char *exe_name, DWORD& pid)
 {
+    pid = 0;
+
     HANDLE hSnapshot;
     hSnapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
     if (hSnapshot == INVALID_HANDLE_VALUE)
@@ -165,11 +190,8 @@ bool DllInjectByExeName(const char *exe_name, const char *dll_name)
     #undef Process32First
     #undef Process32Next
 
-    PROCESSENTRY32 pe32;
-    ZeroMemory(&pe32, sizeof(pe32));
-    pe32.dwSize = sizeof(pe32);
+    PROCESSENTRY32 pe32 = { sizeof(pe32) };
 
-    bool bFound = false, bSuccess = false;
     if (Process32First(hSnapshot, &pe32))
     {
         do
@@ -178,25 +200,13 @@ bool DllInjectByExeName(const char *exe_name, const char *dll_name)
             if (lstrcmpiA(pch, exe_name) != 0)
                 continue;
 
-            bFound = true;
-
-            DWORD pid = pe32.th32ProcessID;
-            if (DllInjectByPid(pid, dll_name))
-            {
-                bSuccess = true;
-            }
+            pid = pe32.th32ProcessID;
+            break;
         } while (Process32Next(hSnapshot, &pe32));
     }
     CloseHandle(hSnapshot);
 
-    if (!bFound)
-        output("process not found\n");
-    else if (!bSuccess)
-        output("DllInjectByPid failed\n");
-    else
-        output("DllInjectByExeName succeeded!\n");
-
-    return bSuccess;
+    return pid != 0;
 }
 
 BOOL EnableProcessPriviledge(LPCTSTR pszSE_)
@@ -247,12 +257,16 @@ int main(int argc, char **argv)
     bool ok = false;
     if (lstrcmpiA(argv[1], "-p") == 0 || lstrcmpiA(argv[1], "/p") == 0)
     {
-        int pid = atoi(argv[2]);
+        DWORD pid = atoi(argv[2]);
         ok = DllInjectByPid(pid, PAYLOAD_NAME ".dll");
     }
     else if (lstrcmpiA(argv[1], "-e") == 0 || lstrcmpiA(argv[1], "/e") == 0)
     {
-        ok = DllInjectByExeName(argv[2], PAYLOAD_NAME ".dll");
+        DWORD pid;
+        if (FindProcess(argv[2], pid))
+        {
+            ok = DllInjectByPid(pid, PAYLOAD_NAME ".dll");
+        }
     }
     else
     {
