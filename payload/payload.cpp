@@ -76,8 +76,8 @@ void log_printf(const char *fmt, ...)
         FILE *fp = _tfopen(szPath, TEXT("a"));
         if (fp)
         {
-            fprintf(fp, "PID:%08lX:TID:%08lX> ",
-                    GetCurrentProcessId(), GetCurrentThreadId());
+            fprintf(fp, "PID:%08lX:TID:%08lX:TIC:%08lX> ",
+                    GetCurrentProcessId(), GetCurrentThreadId(), GetTickCount());
             fputs(buf, fp);
             fflush(fp);
             fclose(fp);
