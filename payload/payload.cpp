@@ -392,9 +392,10 @@ BOOL CALLBACK EnumExplorerProc(HWND hwnd, LPARAM lParam)
 
 void show_info()
 {
-    output("------------------------------------------\n");
-    output("SysNotifyHooker 2017.12.08 by ReactOS Team\n");
-    output("------------------------------------------\n");
+    output(
+        "------------------------------------------\n"
+        "SysNotifyHooker 2017.12.08 by ReactOS Team\n"
+        "------------------------------------------\n");
 
     Shell_TrayWnd = FindWindow(TEXT("Shell_TrayWnd"), NULL);
     show_window_info("Shell_TrayWnd", Shell_TrayWnd);
