@@ -125,6 +125,8 @@ typedef BOOL (STDAPICALLTYPE *FN_SHCHANGENOTIFICATION_UNLOCK)(HANDLE);
 typedef ULONG (STDAPICALLTYPE *FN_SHCHANGENOTIFYREGISTER)(HWND, int, LONG, UINT, int, void *);
 // shell32: SHChangeNotifyDeregister
 typedef BOOL (STDAPICALLTYPE *FN_SHCHANGENOTIFYDEREGISTER)(ULONG);
+// shell32: SHChangeNotifySuspendResume
+typedef BOOL (STDAPICALLTYPE *FN_SHCHANGENOTIFYSUSPENDRESUME)(BOOL, LPITEMIDLIST, BOOL, LONG);
 // shell32: Shell_NotifyIconA
 typedef BOOL (STDAPICALLTYPE *FN_SHELL_NOTIFYICONA)(DWORD, PNOTIFYICONDATAA);
 // shell32: Shell_NotifyIconW
@@ -152,6 +154,8 @@ FN_SHCHANGENOTIFICATION_LOCK pSHChangeNotification_Lock = NULL;
 FN_SHCHANGENOTIFICATION_UNLOCK pSHChangeNotification_Unlock = NULL;
 FN_SHCHANGENOTIFYREGISTER pSHChangeNotifyRegister = NULL;
 FN_SHCHANGENOTIFYDEREGISTER pSHChangeNotifyDeregister= NULL;
+FN_SHCHANGENOTIFYSUSPENDRESUME pSHChangeNotifySuspendResume = NULL;
+
 FN_SHELL_NOTIFYICONA pShell_NotifyIconA = NULL;
 FN_SHELL_NOTIFYICONW pShell_NotifyIconW = NULL;
 
@@ -400,7 +404,7 @@ NewSHChangeNotifyRegister(
     void    *pshcne)
 {
     ULONG ret = 0;
-    if (pSHChangeNotifyDeregister)
+    if (pSHChangeNotifyRegister)
     {
         log_printf("SHChangeNotifyRegister: enter: (%p, %d, %ld, %u, %d, %p);\n", hwnd, fSources, fEvents, wMsg, cEntries, pshcne);
         ret = (*pSHChangeNotifyRegister)(hwnd, fSources, fEvents, wMsg, cEntries, pshcne);
@@ -419,6 +423,20 @@ NewSHChangeNotifyDeregister(ULONG ulID)
         log_printf("SHChangeNotifyDeregister: enter: (0x%08lX);\n", ulID);
         ret = (*pSHChangeNotifyDeregister)(ulID);
         log_printf("SHChangeNotifyDeregister: leave: ret = %d;\n", ret);
+    }
+    return ret;
+}
+
+__declspec(dllexport)
+BOOL STDAPICALLTYPE
+NewSHChangeNotifySuspendResume(BOOL b1, LPITEMIDLIST pidl, BOOL b2, LONG n)
+{
+    BOOL ret = FALSE;
+    if (pSHChangeNotifySuspendResume)
+    {
+        log_printf("SHChangeNotifySuspendResume: enter: (%d, %p, %d, %ld);\n", b1, pidl, p2, n);
+        ret = (*pSHChangeNotifySuspendResume)(b1, pidl, p2, n);
+        log_printf("SHChangeNotifySuspendResume: leave: ret = %d;\n", ret);
     }
     return ret;
 }
@@ -574,6 +592,7 @@ static BOOL hook(void)
     DO_HOOK("shell32.dll", FN_SHCHANGENOTIFICATION_UNLOCK, SHChangeNotification_Unlock);
     DO_HOOK("shell32.dll", FN_SHCHANGENOTIFYREGISTER, SHChangeNotifyRegister);
     DO_HOOK("shell32.dll", FN_SHCHANGENOTIFYDEREGISTER, SHChangeNotifyDeregister);
+    DO_HOOK("shell32.dll", FN_SHCHANGENOTIFYSUSPENDRESUME, SHChangeNotifySuspendResume);
     DO_HOOK("shell32.dll", FN_SHELL_NOTIFYICONA, Shell_NotifyIconA);
     DO_HOOK("shell32.dll", FN_SHELL_NOTIFYICONW, Shell_NotifyIconW);
     DO_HOOK("advapi32.dll", FN_REGNOTIFYCHANGEKEYVALUE, RegNotifyChangeKeyValue);
@@ -606,6 +625,7 @@ static void unhook(void)
     DO_UNHOOK("shell32.dll", FN_SHCHANGENOTIFICATION_UNLOCK, SHChangeNotification_Unlock);
     DO_UNHOOK("shell32.dll", FN_SHCHANGENOTIFYREGISTER, SHChangeNotifyRegister);
     DO_UNHOOK("shell32.dll", FN_SHCHANGENOTIFYDEREGISTER, SHChangeNotifyDeregister);
+    DO_UNHOOK("shell32.dll", FN_SHCHANGENOTIFYSUSPENDRESUME, SHChangeNotifySuspendResume);
     DO_UNHOOK("shell32.dll", FN_SHELL_NOTIFYICONA, Shell_NotifyIconA);
     DO_UNHOOK("shell32.dll", FN_SHELL_NOTIFYICONW, Shell_NotifyIconW);
     DO_UNHOOK("advapi32.dll", FN_REGNOTIFYCHANGEKEYVALUE, RegNotifyChangeKeyValue);
