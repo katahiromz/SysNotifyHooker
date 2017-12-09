@@ -535,11 +535,11 @@ static BOOL hook(void)
     DO_HOOK("user32.dll", FN_REGISTERDEVICENOTIFICATIONW, RegisterDeviceNotificationW);
     DO_HOOK("user32.dll", FN_UNREGISTERDEVICENOTIFICATION, UnregisterDeviceNotification);
     DO_HOOK("shell32.dll", FN_SHCHANGENOTIFY, SHChangeNotify);
+    DO_HOOK("shell32.dll", FN_SHCHANGENOTIFICATION_LOCK, SHChangeNotification_Lock);
+    DO_HOOK("shell32.dll", FN_SHCHANGENOTIFICATION_UNLOCK, SHChangeNotification_Unlock);
+    DO_HOOK("shell32.dll", FN_SHCHANGENOTIFYREGISTER, SHChangeNotifyRegister);
+    DO_HOOK("shell32.dll", FN_SHCHANGENOTIFYDEREGISTER, SHChangeNotifyDeregister);
     DO_HOOK("advapi32.dll", FN_REGNOTIFYCHANGEKEYVALUE, RegNotifyChangeKeyValue);
-    DO_HOOK("advapi32.dll", FN_SHCHANGENOTIFICATION_LOCK, SHChangeNotification_Lock);
-    DO_HOOK("advapi32.dll", FN_SHCHANGENOTIFICATION_UNLOCK, SHChangeNotification_Unlock);
-    DO_HOOK("advapi32.dll", FN_SHCHANGENOTIFYREGISTER, SHChangeNotifyRegister);
-    DO_HOOK("advapi32.dll", FN_SHCHANGENOTIFYDEREGISTER, SHChangeNotifyDeregister);
 
     return TRUE;
 #undef DO_HOOK
@@ -565,11 +565,11 @@ static void unhook(void)
     DO_UNHOOK("user32.dll", FN_REGISTERDEVICENOTIFICATIONW, RegisterDeviceNotificationW);
     DO_UNHOOK("user32.dll", FN_UNREGISTERDEVICENOTIFICATION, UnregisterDeviceNotification);
     DO_UNHOOK("shell32.dll", FN_SHCHANGENOTIFY, SHChangeNotify);
+    DO_UNHOOK("shell32.dll", FN_SHCHANGENOTIFICATION_LOCK, SHChangeNotification_Lock);
+    DO_UNHOOK("shell32.dll", FN_SHCHANGENOTIFICATION_UNLOCK, SHChangeNotification_Unlock);
+    DO_UNHOOK("shell32.dll", FN_SHCHANGENOTIFYREGISTER, SHChangeNotifyRegister);
+    DO_UNHOOK("shell32.dll", FN_SHCHANGENOTIFYDEREGISTER, SHChangeNotifyDeregister);
     DO_UNHOOK("advapi32.dll", FN_REGNOTIFYCHANGEKEYVALUE, RegNotifyChangeKeyValue);
-    DO_UNHOOK("advapi32.dll", FN_SHCHANGENOTIFICATION_LOCK, SHChangeNotification_Lock);
-    DO_UNHOOK("advapi32.dll", FN_SHCHANGENOTIFICATION_UNLOCK, SHChangeNotification_Unlock);
-    DO_UNHOOK("advapi32.dll", FN_SHCHANGENOTIFYREGISTER, SHChangeNotifyRegister);
-    DO_UNHOOK("advapi32.dll", FN_SHCHANGENOTIFYDEREGISTER, SHChangeNotifyDeregister);
 #undef DO_UNHOOK
 }
 
