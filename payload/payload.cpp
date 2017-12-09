@@ -5,6 +5,7 @@
 #include "targetver.h"
 #include <windows.h>
 #include <imagehlp.h>
+#include <shellapi.h>
 #include <shlobj.h>
 #include <tchar.h>
 #include <cstdio>
@@ -124,6 +125,10 @@ typedef BOOL (STDAPICALLTYPE *FN_SHCHANGENOTIFICATION_UNLOCK)(HANDLE);
 typedef ULONG (STDAPICALLTYPE *FN_SHCHANGENOTIFYREGISTER)(HWND, int, LONG, UINT, int, void *);
 // shell32: SHChangeNotifyDeregister
 typedef BOOL (STDAPICALLTYPE *FN_SHCHANGENOTIFYDEREGISTER)(ULONG);
+// shell32: Shell_NotifyIconA
+typedef BOOL (STDAPICALLTYPE *FN_SHELL_NOTIFYICONA)(DWORD, PNOTIFYICONDATAA);
+// shell32: Shell_NotifyIconW
+typedef BOOL (STDAPICALLTYPE *FN_SHELL_NOTIFYICONW)(DWORD, PNOTIFYICONDATAW);
 
 // advapi32: RegNotifyChangeKeyValue
 typedef LONG (WINAPI *FN_REGNOTIFYCHANGEKEYVALUE)(HKEY, BOOL, DWORD, HANDLE, BOOL);
@@ -147,6 +152,8 @@ FN_SHCHANGENOTIFICATION_LOCK pSHChangeNotification_Lock = NULL;
 FN_SHCHANGENOTIFICATION_UNLOCK pSHChangeNotification_Unlock = NULL;
 FN_SHCHANGENOTIFYREGISTER pSHChangeNotifyRegister = NULL;
 FN_SHCHANGENOTIFYDEREGISTER pSHChangeNotifyDeregister= NULL;
+FN_SHELL_NOTIFYICONA pShell_NotifyIconA = NULL;
+FN_SHELL_NOTIFYICONW pShell_NotifyIconW = NULL;
 
 FN_REGNOTIFYCHANGEKEYVALUE pRegNotifyChangeKeyValue = NULL;
 
@@ -416,6 +423,34 @@ NewSHChangeNotifyDeregister(ULONG ulID)
     return ret;
 }
 
+__declspec(dllexport)
+BOOL STDAPICALLTYPE
+NewShell_NotifyIconA(DWORD dwMessage, PNOTIFYICONDATAA lpdata)
+{
+    BOOL ret = FALSE;
+    if (pShell_NotifyIconA)
+    {
+        log_printf("Shell_NotifyIconA: enter: (0x%08lX, %p);\n", dwMessage, lpdata);
+        ret = (*pShell_NotifyIconA)(dwMessage, lpdata);
+        log_printf("Shell_NotifyIconA: leave: ret = %d;\n", ret);
+    }
+    return ret;
+}
+
+__declspec(dllexport)
+BOOL STDAPICALLTYPE
+NewShell_NotifyIconW(DWORD dwMessage, PNOTIFYICONDATAW lpdata)
+{
+    BOOL ret = FALSE;
+    if (pShell_NotifyIconW)
+    {
+        log_printf("Shell_NotifyIconW: enter: (0x%08lX, %p);\n", dwMessage, lpdata);
+        ret = (*pShell_NotifyIconW)(dwMessage, lpdata);
+        log_printf("Shell_NotifyIconW: leave: ret = %d;\n", ret);
+    }
+    return ret;
+}
+
 } // extern "C"
 
 //////////////////////////////////////////////////////////////////////////////
@@ -539,6 +574,8 @@ static BOOL hook(void)
     DO_HOOK("shell32.dll", FN_SHCHANGENOTIFICATION_UNLOCK, SHChangeNotification_Unlock);
     DO_HOOK("shell32.dll", FN_SHCHANGENOTIFYREGISTER, SHChangeNotifyRegister);
     DO_HOOK("shell32.dll", FN_SHCHANGENOTIFYDEREGISTER, SHChangeNotifyDeregister);
+    DO_HOOK("shell32.dll", FN_SHELL_NOTIFYICONA, Shell_NotifyIconA);
+    DO_HOOK("shell32.dll", FN_SHELL_NOTIFYICONW, Shell_NotifyIconW);
     DO_HOOK("advapi32.dll", FN_REGNOTIFYCHANGEKEYVALUE, RegNotifyChangeKeyValue);
 
     return TRUE;
@@ -569,6 +606,8 @@ static void unhook(void)
     DO_UNHOOK("shell32.dll", FN_SHCHANGENOTIFICATION_UNLOCK, SHChangeNotification_Unlock);
     DO_UNHOOK("shell32.dll", FN_SHCHANGENOTIFYREGISTER, SHChangeNotifyRegister);
     DO_UNHOOK("shell32.dll", FN_SHCHANGENOTIFYDEREGISTER, SHChangeNotifyDeregister);
+    DO_UNHOOK("shell32.dll", FN_SHELL_NOTIFYICONA, Shell_NotifyIconA);
+    DO_UNHOOK("shell32.dll", FN_SHELL_NOTIFYICONW, Shell_NotifyIconW);
     DO_UNHOOK("advapi32.dll", FN_REGNOTIFYCHANGEKEYVALUE, RegNotifyChangeKeyValue);
 #undef DO_UNHOOK
 }
