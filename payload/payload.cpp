@@ -434,8 +434,8 @@ NewSHChangeNotifySuspendResume(BOOL b1, LPITEMIDLIST pidl, BOOL b2, LONG n)
     BOOL ret = FALSE;
     if (pSHChangeNotifySuspendResume)
     {
-        log_printf("SHChangeNotifySuspendResume: enter: (%d, %p, %d, %ld);\n", b1, pidl, p2, n);
-        ret = (*pSHChangeNotifySuspendResume)(b1, pidl, p2, n);
+        log_printf("SHChangeNotifySuspendResume: enter: (%d, %p, %d, %ld);\n", b1, pidl, b2, n);
+        ret = (*pSHChangeNotifySuspendResume)(b1, pidl, b2, n);
         log_printf("SHChangeNotifySuspendResume: leave: ret = %d;\n", ret);
     }
     return ret;
