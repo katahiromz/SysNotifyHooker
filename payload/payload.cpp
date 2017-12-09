@@ -848,10 +848,10 @@ DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpReserved)
         unhook();
         break;
     case DLL_THREAD_ATTACH:
-        log_printf("DLL_THREAD_ATTACH\n");
+        log_printf("DLL_THREAD_ATTACH: %p\n", hinstDLL);
         break;
     case DLL_THREAD_DETACH:
-        log_printf("DLL_THREAD_DETACH\n");
+        log_printf("DLL_THREAD_DETACH: %p\n", hinstDLL);
         break;
     }
     return TRUE;
