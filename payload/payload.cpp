@@ -115,6 +115,8 @@ typedef BOOL (WINAPI *FN_UNREGISTERDEVICENOTIFICATION)(HDEVNOTIFY);
 
 // shell32: SHChangeNotify
 typedef void (STDAPICALLTYPE *FN_SHCHANGENOTIFY)(LONG, UINT, LPCVOID, LPCVOID);
+// shell32: SHChangeNotification_Lock
+typedef HANDLE (STDAPICALLTYPE *FN_SHCHANGENOTIFICATION_LOCK)(HANDLE, DWORD, LPITEMIDLIST **, LONG *);
 
 // advapi32: RegNotifyChangeKeyValue
 typedef LONG (WINAPI *FN_REGNOTIFYCHANGEKEYVALUE)(HKEY, BOOL, DWORD, HANDLE, BOOL);
@@ -134,6 +136,7 @@ FN_REGISTERDEVICENOTIFICATIONW pRegisterDeviceNotificationW = NULL;
 FN_UNREGISTERDEVICENOTIFICATION pUnregisterDeviceNotification = NULL;
 
 FN_SHCHANGENOTIFY pSHChangeNotify = NULL;
+FN_SHCHANGENOTIFICATION_LOCK pSHChangeNotification_Lock = NULL;
 
 FN_REGNOTIFYCHANGEKEYVALUE pRegNotifyChangeKeyValue = NULL;
 
@@ -326,7 +329,8 @@ NewUnregisterDeviceNotification(HDEVNOTIFY Handle)
 extern "C" {
 
 __declspec(dllexport)
-void STDAPICALLTYPE NewSHChangeNotify(LONG wEventId, UINT uFlags, LPCVOID dwItem1, LPCVOID dwItem2)
+void STDAPICALLTYPE
+NewSHChangeNotify(LONG wEventId, UINT uFlags, LPCVOID dwItem1, LPCVOID dwItem2)
 {
     if (pSHChangeNotify)
     {
@@ -334,6 +338,24 @@ void STDAPICALLTYPE NewSHChangeNotify(LONG wEventId, UINT uFlags, LPCVOID dwItem
         (*pSHChangeNotify)(wEventId, uFlags, dwItem1, dwItem2);
         log_printf("SHChangeNotify: leave;\n");
     }
+}
+
+__declspec(dllexport)
+HANDLE STDAPICALLTYPE
+NewSHChangeNotification_Lock(
+    HANDLE          hChange,
+    DWORD           dwProcId,
+    LPITEMIDLIST  **pppidl,
+    LONG           *plEvent)
+{
+    HANDLE ret = NULL;
+    if (pSHChangeNotification_Lock)
+    {
+        log_printf("SHChangeNotification_Lock: enter: (%p, 0x%08lX, %p, %p);\n", hChange, dwProcId, pppidl, plEvent);
+        ret = (*pSHChangeNotification_Lock)(hChange, dwProcId, pppidl, plEvent);
+        log_printf("SHChangeNotification_Lock: leave: ret = %p;\n", ret);
+    }
+    return ret;
 }
 
 } // extern "C"
@@ -456,6 +478,7 @@ static BOOL hook(void)
     DO_HOOK("user32.dll", FN_UNREGISTERDEVICENOTIFICATION, UnregisterDeviceNotification);
     DO_HOOK("shell32.dll", FN_SHCHANGENOTIFY, SHChangeNotify);
     DO_HOOK("advapi32.dll", FN_REGNOTIFYCHANGEKEYVALUE, RegNotifyChangeKeyValue);
+    DO_HOOK("advapi32.dll", FN_SHCHANGENOTIFICATION_LOCK, SHChangeNotification_Lock);
 
     return TRUE;
 #undef DO_HOOK
@@ -482,6 +505,7 @@ static void unhook(void)
     DO_UNHOOK("user32.dll", FN_UNREGISTERDEVICENOTIFICATION, UnregisterDeviceNotification);
     DO_UNHOOK("shell32.dll", FN_SHCHANGENOTIFY, SHChangeNotify);
     DO_UNHOOK("advapi32.dll", FN_REGNOTIFYCHANGEKEYVALUE, RegNotifyChangeKeyValue);
+    DO_UNHOOK("advapi32.dll", FN_SHCHANGENOTIFICATION_LOCK, SHChangeNotification_Lock);
 #undef DO_UNHOOK
 }
 
