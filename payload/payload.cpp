@@ -19,7 +19,7 @@
 HINSTANCE g_hinstDLL;
 
 //////////////////////////////////////////////////////////////////////////////
-// window handle
+// window handles
 
 HWND Shell_TrayWnd = NULL;
 HWND StartButton = NULL;
