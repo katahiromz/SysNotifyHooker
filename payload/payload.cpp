@@ -123,6 +123,10 @@ typedef void (WINAPI *FN_NOTIFYWINEVENT)(DWORD, HWND, LONG, LONG);
 typedef HDEVNOTIFY (WINAPI *FN_REGISTERDEVICENOTIFICATIONW)(HANDLE, LPVOID, DWORD);
 // user32: UnregisterDeviceNotification
 typedef BOOL (WINAPI *FN_UNREGISTERDEVICENOTIFICATION)(HDEVNOTIFY);
+// user32: SendDlgItemMessageA
+typedef LRESULT (WINAPI *FN_SENDDLGITEMMESSAGEA)(HWND, int, UINT, WPARAM, LPARAM);
+// user32: SendDlgItemMessageW
+typedef LRESULT (WINAPI *FN_SENDDLGITEMMESSAGEW)(HWND, int, UINT, WPARAM, LPARAM);
 
 // shell32: SHChangeNotify
 typedef void (STDAPICALLTYPE *FN_SHCHANGENOTIFY)(LONG, UINT, LPCVOID, LPCVOID);
@@ -161,6 +165,8 @@ FN_BROADCASTSYSTEMMESSAGEW pBroadcastSystemMessageW = NULL;
 FN_NOTIFYWINEVENT pNotifyWinEvent = NULL;
 FN_REGISTERDEVICENOTIFICATIONW pRegisterDeviceNotificationW = NULL;
 FN_UNREGISTERDEVICENOTIFICATION pUnregisterDeviceNotification = NULL;
+FN_SENDDLGITEMMESSAGEA pSendDlgItemMessageA = NULL;
+FN_SENDDLGITEMMESSAGEW pSendDlgItemMessageW = NULL;
 
 FN_SHCHANGENOTIFY pSHChangeNotify = NULL;
 FN_SHCHANGENOTIFICATION_LOCK pSHChangeNotification_Lock = NULL;
@@ -437,6 +443,34 @@ NewUnregisterDeviceNotification(HDEVNOTIFY Handle)
     return ret;
 }
 
+__declspec(dllexport)
+LRESULT WINAPI
+NewSendDlgItemMessageA(HWND hWnd, int nDlgItem, UINT uMsg, WPARAM wParam, LPARAM lParam)
+{
+    LONG ret = FALSE;
+    if (pSendDlgItemMessageA)
+    {
+        log_printf("SendDlgItemMessageA: enter: (%s, %d, %u, %p, %p);\n", HWND2TEXT(hWnd), nDlgItem, uMsg, wParam, lParam);
+        ret = (*pSendDlgItemMessageA)(hWnd, nDlgItem, uMsg, wParam, lParam);
+        log_printf("SendDlgItemMessageA: leave: ret = 0x%08lX;\n", ret);
+    }
+    return ret;
+}
+
+__declspec(dllexport)
+LRESULT WINAPI
+NewSendDlgItemMessageW(HWND hWnd, int nDlgItem, UINT uMsg, WPARAM wParam, LPARAM lParam)
+{
+    LONG ret = FALSE;
+    if (pSendDlgItemMessageW)
+    {
+        log_printf("SendDlgItemMessageW: enter: (%s, %d, %u, %p, %p);\n", HWND2TEXT(hWnd), nDlgItem, uMsg, wParam, lParam);
+        ret = (*pSendDlgItemMessageW)(hWnd, nDlgItem, uMsg, wParam, lParam);
+        log_printf("SendDlgItemMessageW: leave: ret = 0x%08lX;\n", ret);
+    }
+    return ret;
+}
+
 } // extern "C"
 
 //////////////////////////////////////////////////////////////////////////////
@@ -686,6 +720,9 @@ static BOOL hook(void)
     DO_HOOK("user32.dll", FN_NOTIFYWINEVENT, NotifyWinEvent);
     DO_HOOK("user32.dll", FN_REGISTERDEVICENOTIFICATIONW, RegisterDeviceNotificationW);
     DO_HOOK("user32.dll", FN_UNREGISTERDEVICENOTIFICATION, UnregisterDeviceNotification);
+    DO_HOOK("user32.dll", FN_SENDDLGITEMMESSAGEA, SendDlgItemMessageA);
+    DO_HOOK("user32.dll", FN_SENDDLGITEMMESSAGEW, SendDlgItemMessageW);
+
     DO_HOOK("shell32.dll", FN_SHCHANGENOTIFY, SHChangeNotify);
     DO_HOOK("shell32.dll", FN_SHCHANGENOTIFICATION_LOCK, SHChangeNotification_Lock);
     DO_HOOK("shell32.dll", FN_SHCHANGENOTIFICATION_UNLOCK, SHChangeNotification_Unlock);
@@ -694,6 +731,7 @@ static BOOL hook(void)
     DO_HOOK("shell32.dll", FN_SHCHANGENOTIFYSUSPENDRESUME, SHChangeNotifySuspendResume);
     DO_HOOK("shell32.dll", FN_SHELL_NOTIFYICONA, Shell_NotifyIconA);
     DO_HOOK("shell32.dll", FN_SHELL_NOTIFYICONW, Shell_NotifyIconW);
+
     DO_HOOK("advapi32.dll", FN_REGNOTIFYCHANGEKEYVALUE, RegNotifyChangeKeyValue);
 
     return TRUE;
@@ -723,6 +761,9 @@ static void unhook(void)
     DO_UNHOOK("user32.dll", FN_NOTIFYWINEVENT, NotifyWinEvent);
     DO_UNHOOK("user32.dll", FN_REGISTERDEVICENOTIFICATIONW, RegisterDeviceNotificationW);
     DO_UNHOOK("user32.dll", FN_UNREGISTERDEVICENOTIFICATION, UnregisterDeviceNotification);
+    DO_UNHOOK("user32.dll", FN_SENDDLGITEMMESSAGEA, SendDlgItemMessageA);
+    DO_UNHOOK("user32.dll", FN_SENDDLGITEMMESSAGEW, SendDlgItemMessageW);
+
     DO_UNHOOK("shell32.dll", FN_SHCHANGENOTIFY, SHChangeNotify);
     DO_UNHOOK("shell32.dll", FN_SHCHANGENOTIFICATION_LOCK, SHChangeNotification_Lock);
     DO_UNHOOK("shell32.dll", FN_SHCHANGENOTIFICATION_UNLOCK, SHChangeNotification_Unlock);
@@ -731,6 +772,7 @@ static void unhook(void)
     DO_UNHOOK("shell32.dll", FN_SHCHANGENOTIFYSUSPENDRESUME, SHChangeNotifySuspendResume);
     DO_UNHOOK("shell32.dll", FN_SHELL_NOTIFYICONA, Shell_NotifyIconA);
     DO_UNHOOK("shell32.dll", FN_SHELL_NOTIFYICONW, Shell_NotifyIconW);
+
     DO_UNHOOK("advapi32.dll", FN_REGNOTIFYCHANGEKEYVALUE, RegNotifyChangeKeyValue);
 #undef DO_UNHOOK
 }
