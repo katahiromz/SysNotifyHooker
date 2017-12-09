@@ -112,24 +112,24 @@ typedef void (WINAPI *FN_NOTIFYWINEVENT)(DWORD, HWND, LONG, LONG);
 // shell32: SHChangeNotify
 typedef void (STDAPICALLTYPE *FN_SHCHANGENOTIFY)(LONG, UINT, LPCVOID, LPCVOID);
 
+// advapi32: RegNotifyChangeKeyValue
+typedef LONG (WINAPI *FN_REGNOTIFYCHANGEKEYVALUE)(HKEY, BOOL, DWORD, HANDLE, BOOL);
+
 FN_MESSAGEBOXA pMessageBoxA = NULL;
 FN_MESSAGEBOXW pMessageBoxW = NULL;
-
 FN_POSTMESSAGEA pPostMessageA = NULL;
 FN_POSTMESSAGEW pPostMessageW = NULL;
-
 FN_SENDMESSAGEA pSendMessageA = NULL;
 FN_SENDMESSAGEW pSendMessageW = NULL;
-
 FN_SENDNOTIFYMESSAGEA pSendNotifyMessageA = NULL;
 FN_SENDNOTIFYMESSAGEW pSendNotifyMessageW = NULL;
-
 FN_BROADCASTSYSTEMMESSAGEA pBroadcastSystemMessageA = NULL;
 FN_BROADCASTSYSTEMMESSAGEW pBroadcastSystemMessageW = NULL;
-
 FN_NOTIFYWINEVENT pNotifyWinEvent = NULL;
 
 FN_SHCHANGENOTIFY pSHChangeNotify = NULL;
+
+FN_REGNOTIFYCHANGEKEYVALUE pRegNotifyChangeKeyValue = NULL;
 
 //////////////////////////////////////////////////////////////////////////////
 // user32
@@ -243,27 +243,27 @@ BOOL WINAPI NewSendNotifyMessageW(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lPa
 __declspec(dllexport)
 INT WINAPI NewBroadcastSystemMessageA(DWORD dwFlags, LPDWORD lpdwRecipients, UINT uiMessage, WPARAM wParam, LPARAM lParam)
 {
-    INT nRet = 0;
+    INT ret = 0;
     if (pBroadcastSystemMessageA)
     {
         log_printf("BroadcastSystemMessageA: enter: (0x%08lX, %p, %u, %p, %p);\n", dwFlags, lpdwRecipients, uiMessage, wParam, lParam);
-        nRet = (*pBroadcastSystemMessageA)(dwFlags, lpdwRecipients, uiMessage, wParam, lParam);
-        log_printf("BroadcastSystemMessageA: leave: nRet = %d;\n", nRet);
+        ret = (*pBroadcastSystemMessageA)(dwFlags, lpdwRecipients, uiMessage, wParam, lParam);
+        log_printf("BroadcastSystemMessageA: leave: ret = %d;\n", ret);
     }
-    return nRet;
+    return ret;
 }
 
 __declspec(dllexport)
 INT WINAPI NewBroadcastSystemMessageW(DWORD dwFlags, LPDWORD lpdwRecipients, UINT uiMessage, WPARAM wParam, LPARAM lParam)
 {
-    INT nRet = 0;
+    INT ret = 0;
     if (pBroadcastSystemMessageW)
     {
         log_printf("BroadcastSystemMessageW: enter: (0x%08lX, %p, %u, %p, %p);\n", dwFlags, lpdwRecipients, uiMessage, wParam, lParam);
-        nRet = (*pBroadcastSystemMessageW)(dwFlags, lpdwRecipients, uiMessage, wParam, lParam);
-        log_printf("BroadcastSystemMessageW: leave: nRet = %d;\n", nRet);
+        ret = (*pBroadcastSystemMessageW)(dwFlags, lpdwRecipients, uiMessage, wParam, lParam);
+        log_printf("BroadcastSystemMessageW: leave: ret = %d;\n", ret);
     }
-    return nRet;
+    return ret;
 }
 
 __declspec(dllexport)
@@ -297,6 +297,31 @@ void STDAPICALLTYPE NewSHChangeNotify(LONG wEventId, UINT uFlags, LPCVOID dwItem
         (*pSHChangeNotify)(wEventId, uFlags, dwItem1, dwItem2);
         log_printf("SHChangeNotify: leave;\n");
     }
+}
+
+} // extern "C"
+
+//////////////////////////////////////////////////////////////////////////////
+// advapi32
+
+extern "C" {
+
+__declspec(dllexport)
+LONG WINAPI NewRegNotifyChangeKeyValue(
+    HKEY hKey,
+    BOOL bWatchSubtree,
+    DWORD dwNotifyFilter,
+    HANDLE hEvent,
+    BOOL fAsynchronous)
+{
+    LONG ret = 0;
+    if (pRegNotifyChangeKeyValue)
+    {
+        log_printf("RegNotifyChangeKeyValue: enter: (%p, %d, 0x%08lX, %p, %d);\n", hKey, bWatchSubtree, dwNotifyFilter, hEvent, fAsynchronous);
+        ret = (*pRegNotifyChangeKeyValue)(hKey, bWatchSubtree, dwNotifyFilter, hEvent, fAsynchronous);
+        log_printf("RegNotifyChangeKeyValue: leave: ret = %ld;\n", ret);
+    }
+    return ret;
 }
 
 } // extern "C"
@@ -391,6 +416,7 @@ static BOOL hook(void)
     DO_HOOK("user32.dll", FN_BROADCASTSYSTEMMESSAGEW, BroadcastSystemMessageW);
     DO_HOOK("user32.dll", FN_NOTIFYWINEVENT, NotifyWinEvent);
     DO_HOOK("shell32.dll", FN_SHCHANGENOTIFY, SHChangeNotify);
+    DO_HOOK("advapi32.dll", FN_REGNOTIFYCHANGEKEYVALUE, RegNotifyChangeKeyValue);
 
     return TRUE;
 #undef DO_HOOK
@@ -414,6 +440,7 @@ static void unhook(void)
     DO_UNHOOK("user32.dll", FN_BROADCASTSYSTEMMESSAGEW, BroadcastSystemMessageW);
     DO_UNHOOK("user32.dll", FN_NOTIFYWINEVENT, NotifyWinEvent);
     DO_UNHOOK("shell32.dll", FN_SHCHANGENOTIFY, SHChangeNotify);
+    DO_UNHOOK("advapi32.dll", FN_REGNOTIFYCHANGEKEYVALUE, RegNotifyChangeKeyValue);
 #undef DO_UNHOOK
 }
 
