@@ -110,6 +110,8 @@ typedef LONG (WINAPI *FN_BROADCASTSYSTEMMESSAGEW)(DWORD, LPDWORD, UINT, WPARAM, 
 typedef void (WINAPI *FN_NOTIFYWINEVENT)(DWORD, HWND, LONG, LONG);
 // user32: RegisterDeviceNotificationW
 typedef HDEVNOTIFY (WINAPI *FN_REGISTERDEVICENOTIFICATIONW)(HANDLE, LPVOID, DWORD);
+// user32: UnregisterDeviceNotification
+typedef BOOL (WINAPI *FN_UNREGISTERDEVICENOTIFICATION)(HDEVNOTIFY);
 
 // shell32: SHChangeNotify
 typedef void (STDAPICALLTYPE *FN_SHCHANGENOTIFY)(LONG, UINT, LPCVOID, LPCVOID);
@@ -129,6 +131,7 @@ FN_BROADCASTSYSTEMMESSAGEA pBroadcastSystemMessageA = NULL;
 FN_BROADCASTSYSTEMMESSAGEW pBroadcastSystemMessageW = NULL;
 FN_NOTIFYWINEVENT pNotifyWinEvent = NULL;
 FN_REGISTERDEVICENOTIFICATIONW pRegisterDeviceNotificationW = NULL;
+FN_UNREGISTERDEVICENOTIFICATION pUnregisterDeviceNotification = NULL;
 
 FN_SHCHANGENOTIFY pSHChangeNotify = NULL;
 
@@ -301,6 +304,20 @@ NewRegisterDeviceNotificationW(
     return ret;
 }
 
+__declspec(dllexport)
+BOOL WINAPI
+NewUnregisterDeviceNotification(HDEVNOTIFY Handle)
+{
+    BOOL ret = FALSE;
+    if (pUnregisterDeviceNotification)
+    {
+        log_printf("UnregisterDeviceNotification: enter: (%p);\n", Handle);
+        ret = (*pUnregisterDeviceNotification)(Handle);
+        log_printf("UnregisterDeviceNotification: leave: ret = %d;\n", ret);
+    }
+    return ret;
+}
+
 } // extern "C"
 
 //////////////////////////////////////////////////////////////////////////////
@@ -436,6 +453,7 @@ static BOOL hook(void)
     DO_HOOK("user32.dll", FN_BROADCASTSYSTEMMESSAGEW, BroadcastSystemMessageW);
     DO_HOOK("user32.dll", FN_NOTIFYWINEVENT, NotifyWinEvent);
     DO_HOOK("user32.dll", FN_REGISTERDEVICENOTIFICATIONW, RegisterDeviceNotificationW);
+    DO_HOOK("user32.dll", FN_UNREGISTERDEVICENOTIFICATION, UnregisterDeviceNotification);
     DO_HOOK("shell32.dll", FN_SHCHANGENOTIFY, SHChangeNotify);
     DO_HOOK("advapi32.dll", FN_REGNOTIFYCHANGEKEYVALUE, RegNotifyChangeKeyValue);
 
@@ -461,6 +479,7 @@ static void unhook(void)
     DO_UNHOOK("user32.dll", FN_BROADCASTSYSTEMMESSAGEW, BroadcastSystemMessageW);
     DO_UNHOOK("user32.dll", FN_NOTIFYWINEVENT, NotifyWinEvent);
     DO_UNHOOK("user32.dll", FN_REGISTERDEVICENOTIFICATIONW, RegisterDeviceNotificationW);
+    DO_UNHOOK("user32.dll", FN_UNREGISTERDEVICENOTIFICATION, UnregisterDeviceNotification);
     DO_UNHOOK("shell32.dll", FN_SHCHANGENOTIFY, SHChangeNotify);
     DO_UNHOOK("advapi32.dll", FN_REGNOTIFYCHANGEKEYVALUE, RegNotifyChangeKeyValue);
 #undef DO_UNHOOK
