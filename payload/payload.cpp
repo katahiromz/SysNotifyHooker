@@ -106,6 +106,9 @@ typedef BOOL (WINAPI *FN_SENDNOTIFYMESSAGEW)(HWND, UINT, WPARAM, LPARAM);
 // user32: BroadcastSystemMessage
 typedef LONG (WINAPI *FN_BROADCASTSYSTEMMESSAGEA)(DWORD, LPDWORD, UINT, WPARAM, LPARAM);
 typedef LONG (WINAPI *FN_BROADCASTSYSTEMMESSAGEW)(DWORD, LPDWORD, UINT, WPARAM, LPARAM);
+// user32: NotifyWinEvent
+typedef void (WINAPI *FN_NOTIFYWINEVENT)(DWORD, HWND, LONG, LONG);
+
 // shell32: SHChangeNotify
 typedef void (STDAPICALLTYPE *FN_SHCHANGENOTIFY)(LONG, UINT, LPCVOID, LPCVOID);
 
@@ -123,6 +126,8 @@ FN_SENDNOTIFYMESSAGEW pSendNotifyMessageW = NULL;
 
 FN_BROADCASTSYSTEMMESSAGEA pBroadcastSystemMessageA = NULL;
 FN_BROADCASTSYSTEMMESSAGEW pBroadcastSystemMessageW = NULL;
+
+FN_NOTIFYWINEVENT pNotifyWinEvent = NULL;
 
 FN_SHCHANGENOTIFY pSHChangeNotify = NULL;
 
@@ -261,6 +266,21 @@ INT WINAPI NewBroadcastSystemMessageW(DWORD dwFlags, LPDWORD lpdwRecipients, UIN
     return nRet;
 }
 
+__declspec(dllexport)
+void WINAPI NewNotifyWinEvent(
+    DWORD event,
+    HWND  hwnd,
+    LONG  idObject,
+    LONG  idChild)
+{
+    if (pNotifyWinEvent)
+    {
+        log_printf("NotifyWinEvent: enter: (0x%08lX, %s, %ld, %ld);\n", event, HWND2TEXT(hwnd), idObject, idChild);
+        (*pNotifyWinEvent)(event, hwnd, idObject, idChild);
+        log_printf("NotifyWinEvent: leave;\n");
+    }
+}
+
 } // extern "C"
 
 //////////////////////////////////////////////////////////////////////////////
@@ -369,6 +389,7 @@ static BOOL hook(void)
     DO_HOOK("user32.dll", FN_SENDNOTIFYMESSAGEW, SendNotifyMessageW);
     DO_HOOK("user32.dll", FN_BROADCASTSYSTEMMESSAGEA, BroadcastSystemMessageA);
     DO_HOOK("user32.dll", FN_BROADCASTSYSTEMMESSAGEW, BroadcastSystemMessageW);
+    DO_HOOK("user32.dll", FN_NOTIFYWINEVENT, NotifyWinEvent);
     DO_HOOK("shell32.dll", FN_SHCHANGENOTIFY, SHChangeNotify);
 
     return TRUE;
@@ -391,6 +412,7 @@ static void unhook(void)
     DO_UNHOOK("user32.dll", FN_SENDNOTIFYMESSAGEW, SendNotifyMessageW);
     DO_UNHOOK("user32.dll", FN_BROADCASTSYSTEMMESSAGEA, BroadcastSystemMessageA);
     DO_UNHOOK("user32.dll", FN_BROADCASTSYSTEMMESSAGEW, BroadcastSystemMessageW);
+    DO_UNHOOK("user32.dll", FN_NOTIFYWINEVENT, NotifyWinEvent);
     DO_UNHOOK("shell32.dll", FN_SHCHANGENOTIFY, SHChangeNotify);
 #undef DO_UNHOOK
 }
