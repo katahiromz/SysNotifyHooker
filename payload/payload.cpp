@@ -5,6 +5,7 @@
 #include "targetver.h"
 #include <windows.h>
 #include <imagehlp.h>
+#include <shlobj.h>
 #include <tchar.h>
 #include <cstdio>
 #include <cstring>
