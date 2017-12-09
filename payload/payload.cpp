@@ -114,6 +114,10 @@ typedef void (WINAPI *FN_NOTIFYWINEVENT)(DWORD, HWND, LONG, LONG);
 typedef HDEVNOTIFY (WINAPI *FN_REGISTERDEVICENOTIFICATIONW)(HANDLE, LPVOID, DWORD);
 // user32: UnregisterDeviceNotification
 typedef BOOL (WINAPI *FN_UNREGISTERDEVICENOTIFICATION)(HDEVNOTIFY);
+// user32: SendMessageCallbackA
+typedef BOOL (WINAPI *FN_SENDMESSAGECALLBACKA)(HWND, UINT, WPARAM, LPARAM, SENDASYNCPROC, ULONG_PTR);
+// user32: SendMessageCallbackW
+typedef BOOL (WINAPI *FN_SENDMESSAGECALLBACKW)(HWND, UINT, WPARAM, LPARAM, SENDASYNCPROC, ULONG_PTR);
 
 // shell32: SHChangeNotify
 typedef void (STDAPICALLTYPE *FN_SHCHANGENOTIFY)(LONG, UINT, LPCVOID, LPCVOID);
@@ -148,6 +152,8 @@ FN_BROADCASTSYSTEMMESSAGEW pBroadcastSystemMessageW = NULL;
 FN_NOTIFYWINEVENT pNotifyWinEvent = NULL;
 FN_REGISTERDEVICENOTIFICATIONW pRegisterDeviceNotificationW = NULL;
 FN_UNREGISTERDEVICENOTIFICATION pUnregisterDeviceNotification = NULL;
+FN_SENDMESSAGECALLBACKA pSendMessageCallbackA = NULL;
+FN_SENDMESSAGECALLBACKW pSendMessageCallbackW = NULL;
 
 FN_SHCHANGENOTIFY pSHChangeNotify = NULL;
 FN_SHCHANGENOTIFICATION_LOCK pSHChangeNotification_Lock = NULL;
@@ -338,6 +344,46 @@ NewUnregisterDeviceNotification(HDEVNOTIFY Handle)
         log_printf("UnregisterDeviceNotification: enter: (%p);\n", Handle);
         ret = (*pUnregisterDeviceNotification)(Handle);
         log_printf("UnregisterDeviceNotification: leave: ret = %d;\n", ret);
+    }
+    return ret;
+}
+
+__declspec(dllexport)
+BOOL WINAPI
+NewSendMessageCallbackA(
+    HWND hWnd,
+    UINT uMsg,
+    WPARAM wParam,
+    LPARAM lParam,
+    SENDASYNCPROC fnCallback,
+    ULONG_PTR dwData)
+{
+    BOOL ret = FALSE;
+    if (pSendMessageCallbackA)
+    {
+        log_printf("SendMessageCallbackA: enter: (%s, %u, %p, %p, %p, %p);\n", HWND2TEXT(hWnd), uMsg, wParam, lParam, fnCallback, dwData);
+        ret = (*pSendMessageCallbackA)(hWnd, uMsg, wParam, lParam, fnCallback, dwData);
+        log_printf("SendMessageCallbackA: leave: ret = %d;\n", ret);
+    }
+    return ret;
+}
+
+__declspec(dllexport)
+BOOL WINAPI
+NewSendMessageCallbackW(
+    HWND hWnd,
+    UINT uMsg,
+    WPARAM wParam,
+    LPARAM lParam,
+    SENDASYNCPROC fnCallback,
+    ULONG_PTR dwData)
+{
+    BOOL ret = FALSE;
+    if (pSendMessageCallbackW)
+    {
+        log_printf("SendMessageCallbackW: enter: (%s, %u, %p, %p, %p, %p);\n", HWND2TEXT(hWnd), uMsg, wParam, lParam, fnCallback, dwData);
+        ret = (*pSendMessageCallbackW)(hWnd, uMsg, wParam, lParam, fnCallback, dwData);
+        log_printf("SendMessageCallbackW: leave: ret = %d;\n", ret);
     }
     return ret;
 }
@@ -587,6 +633,8 @@ static BOOL hook(void)
     DO_HOOK("user32.dll", FN_NOTIFYWINEVENT, NotifyWinEvent);
     DO_HOOK("user32.dll", FN_REGISTERDEVICENOTIFICATIONW, RegisterDeviceNotificationW);
     DO_HOOK("user32.dll", FN_UNREGISTERDEVICENOTIFICATION, UnregisterDeviceNotification);
+    DO_HOOK("user32.dll", FN_SENDMESSAGECALLBACKA, SendMessageCallbackA);
+    DO_HOOK("user32.dll", FN_SENDMESSAGECALLBACKW, SendMessageCallbackW);
     DO_HOOK("shell32.dll", FN_SHCHANGENOTIFY, SHChangeNotify);
     DO_HOOK("shell32.dll", FN_SHCHANGENOTIFICATION_LOCK, SHChangeNotification_Lock);
     DO_HOOK("shell32.dll", FN_SHCHANGENOTIFICATION_UNLOCK, SHChangeNotification_Unlock);
@@ -620,6 +668,8 @@ static void unhook(void)
     DO_UNHOOK("user32.dll", FN_NOTIFYWINEVENT, NotifyWinEvent);
     DO_UNHOOK("user32.dll", FN_REGISTERDEVICENOTIFICATIONW, RegisterDeviceNotificationW);
     DO_UNHOOK("user32.dll", FN_UNREGISTERDEVICENOTIFICATION, UnregisterDeviceNotification);
+    DO_UNHOOK("user32.dll", FN_SENDMESSAGECALLBACKA, SendMessageCallbackA);
+    DO_UNHOOK("user32.dll", FN_SENDMESSAGECALLBACKW, SendMessageCallbackW);
     DO_UNHOOK("shell32.dll", FN_SHCHANGENOTIFY, SHChangeNotify);
     DO_UNHOOK("shell32.dll", FN_SHCHANGENOTIFICATION_LOCK, SHChangeNotification_Lock);
     DO_UNHOOK("shell32.dll", FN_SHCHANGENOTIFICATION_UNLOCK, SHChangeNotification_Unlock);
