@@ -839,12 +839,12 @@ DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpReserved)
     {
     case DLL_PROCESS_ATTACH:
         g_hinstDLL = hinstDLL;
-        log_printf("DLL_PROCESS_ATTACH\n");
+        log_printf("DLL_PROCESS_ATTACH: %p\n", hinstDLL);
         show_info();
         hook();
         break;
     case DLL_PROCESS_DETACH:
-        log_printf("DLL_PROCESS_DETACH\n");
+        log_printf("DLL_PROCESS_DETACH: %p\n", hinstDLL);
         unhook();
         break;
     case DLL_THREAD_ATTACH:
