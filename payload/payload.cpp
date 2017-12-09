@@ -109,8 +109,13 @@ typedef BOOL (WINAPI *FN_SENDNOTIFYMESSAGEW)(HWND, UINT, WPARAM, LPARAM);
 typedef BOOL (WINAPI *FN_SENDMESSAGECALLBACKA)(HWND, UINT, WPARAM, LPARAM, SENDASYNCPROC, ULONG_PTR);
 // user32: SendMessageCallbackW
 typedef BOOL (WINAPI *FN_SENDMESSAGECALLBACKW)(HWND, UINT, WPARAM, LPARAM, SENDASYNCPROC, ULONG_PTR);
-// user32: BroadcastSystemMessage
+// user32: SendMessageTimeoutA
+typedef LRESULT (WINAPI *FN_SENDMESSAGETIMEOUTA)(HWND, UINT, WPARAM, LPARAM, UINT, UINT, LPDWORD);
+// user32: SendMessageTimeoutW
+typedef LRESULT (WINAPI *FN_SENDMESSAGETIMEOUTW)(HWND, UINT, WPARAM, LPARAM, UINT, UINT, LPDWORD);
+// user32: BroadcastSystemMessageA
 typedef LONG (WINAPI *FN_BROADCASTSYSTEMMESSAGEA)(DWORD, LPDWORD, UINT, WPARAM, LPARAM);
+// user32: BroadcastSystemMessageW
 typedef LONG (WINAPI *FN_BROADCASTSYSTEMMESSAGEW)(DWORD, LPDWORD, UINT, WPARAM, LPARAM);
 // user32: NotifyWinEvent
 typedef void (WINAPI *FN_NOTIFYWINEVENT)(DWORD, HWND, LONG, LONG);
@@ -149,6 +154,8 @@ FN_SENDNOTIFYMESSAGEA pSendNotifyMessageA = NULL;
 FN_SENDNOTIFYMESSAGEW pSendNotifyMessageW = NULL;
 FN_SENDMESSAGECALLBACKA pSendMessageCallbackA = NULL;
 FN_SENDMESSAGECALLBACKW pSendMessageCallbackW = NULL;
+FN_SENDMESSAGETIMEOUTA pSendMessageTimeoutA = NULL;
+FN_SENDMESSAGETIMEOUTW pSendMessageTimeoutW = NULL;
 FN_BROADCASTSYSTEMMESSAGEA pBroadcastSystemMessageA = NULL;
 FN_BROADCASTSYSTEMMESSAGEW pBroadcastSystemMessageW = NULL;
 FN_NOTIFYWINEVENT pNotifyWinEvent = NULL;
@@ -312,6 +319,48 @@ NewSendMessageCallbackW(
         log_printf("SendMessageCallbackW: enter: (%s, %u, %p, %p, %p, %p);\n", HWND2TEXT(hWnd), uMsg, wParam, lParam, fnCallback, dwData);
         ret = (*pSendMessageCallbackW)(hWnd, uMsg, wParam, lParam, fnCallback, dwData);
         log_printf("SendMessageCallbackW: leave: ret = %d;\n", ret);
+    }
+    return ret;
+}
+
+__declspec(dllexport)
+BOOL WINAPI
+NewSendMessageTimeoutA(
+    HWND hWnd,
+    UINT uMsg,
+    WPARAM wParam,
+    LPARAM lParam,
+    UINT fuFlags,
+    UINT uTimeout,
+    LPDWORD pdwResult)
+{
+    LRESULT ret = 0;
+    if (pSendMessageTimeoutA)
+    {
+        log_printf("SendMessageTimeoutA: enter: (%s, %u, %p, %p, %u, %u, %p);\n", HWND2TEXT(hWnd), uMsg, wParam, lParam, fuFlags, uTimeout, pdwResult);
+        ret = (*pSendMessageTimeoutA)(hWnd, uMsg, wParam, lParam, fuFlags, uTimeout, pdwResult);
+        log_printf("SendMessageTimeoutA: leave: ret = %d;\n", ret);
+    }
+    return ret;
+}
+
+__declspec(dllexport)
+BOOL WINAPI
+NewSendMessageTimeoutW(
+    HWND hWnd,
+    UINT uMsg,
+    WPARAM wParam,
+    LPARAM lParam,
+    UINT fuFlags,
+    UINT uTimeout,
+    LPDWORD pdwResult)
+{
+    LRESULT ret = 0;
+    if (pSendMessageTimeoutW)
+    {
+        log_printf("SendMessageTimeoutW: enter: (%s, %u, %p, %p, %u, %u, %p);\n", HWND2TEXT(hWnd), uMsg, wParam, lParam, fuFlags, uTimeout, pdwResult);
+        ret = (*pSendMessageTimeoutW)(hWnd, uMsg, wParam, lParam, fuFlags, uTimeout, pdwResult);
+        log_printf("SendMessageTimeoutW: leave: ret = %d;\n", ret);
     }
     return ret;
 }
@@ -630,6 +679,8 @@ static BOOL hook(void)
     DO_HOOK("user32.dll", FN_SENDNOTIFYMESSAGEW, SendNotifyMessageW);
     DO_HOOK("user32.dll", FN_SENDMESSAGECALLBACKA, SendMessageCallbackA);
     DO_HOOK("user32.dll", FN_SENDMESSAGECALLBACKW, SendMessageCallbackW);
+    DO_HOOK("user32.dll", FN_SENDMESSAGETIMEOUTA, SendMessageTimeoutA);
+    DO_HOOK("user32.dll", FN_SENDMESSAGETIMEOUTW, SendMessageTimeoutW);
     DO_HOOK("user32.dll", FN_BROADCASTSYSTEMMESSAGEA, BroadcastSystemMessageA);
     DO_HOOK("user32.dll", FN_BROADCASTSYSTEMMESSAGEW, BroadcastSystemMessageW);
     DO_HOOK("user32.dll", FN_NOTIFYWINEVENT, NotifyWinEvent);
@@ -665,6 +716,8 @@ static void unhook(void)
     DO_UNHOOK("user32.dll", FN_SENDNOTIFYMESSAGEW, SendNotifyMessageW);
     DO_UNHOOK("user32.dll", FN_SENDMESSAGECALLBACKA, SendMessageCallbackA);
     DO_UNHOOK("user32.dll", FN_SENDMESSAGECALLBACKW, SendMessageCallbackW);
+    DO_UNHOOK("user32.dll", FN_SENDMESSAGETIMEOUTA, SendMessageTimeoutA);
+    DO_UNHOOK("user32.dll", FN_SENDMESSAGETIMEOUTW, SendMessageTimeoutW);
     DO_UNHOOK("user32.dll", FN_BROADCASTSYSTEMMESSAGEA, BroadcastSystemMessageA);
     DO_UNHOOK("user32.dll", FN_BROADCASTSYSTEMMESSAGEW, BroadcastSystemMessageW);
     DO_UNHOOK("user32.dll", FN_NOTIFYWINEVENT, NotifyWinEvent);
