@@ -2,7 +2,7 @@
 /* Copyright (C) 2017 Katayama Hirofumi MZ. License: CC0. */
 
 #ifndef WINXX_H_
-#define WINXX_H_    1   /* Version 1 */
+#define WINXX_H_    2   /* Version 2 */
 
 #ifndef _INC_WINDOWS
     #include <windows.h>
