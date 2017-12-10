@@ -1,5 +1,5 @@
 // SysNotifyHooker injector by katahiromz
-//////////////////////////////////////////////////////////////////////////////
+// Copyright (C) 2017 Katayama Hirofumi MZ. License: CC0.
 
 #include "config.hpp"
 #include "targetver.h"

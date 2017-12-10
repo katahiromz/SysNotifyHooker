@@ -1,6 +1,5 @@
 /* winxx.h --- an inofficial extension of <windowsx.h> by katahiromz */
 /* Copyright (C) 2017 Katayama Hirofumi MZ. License: CC0. */
-/****************************************************************************/
 
 #ifndef WINXX_H_
 #define WINXX_H_    1   /* Version 1 */

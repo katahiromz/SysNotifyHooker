@@ -1,5 +1,5 @@
 // SysNotifyHooker payload by katahiromz
-//////////////////////////////////////////////////////////////////////////////
+// Copyright (C) 2017 Katayama Hirofumi MZ. License: CC0.
 
 #define _CRT_SECURE_NO_WARNINGS
 #include "config.hpp"

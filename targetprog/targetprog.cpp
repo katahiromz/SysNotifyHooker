@@ -1,5 +1,5 @@
 // targetprog.cpp --- the target program
-//////////////////////////////////////////////////////////////////////////////
+// Copyright (C) 2017 Katayama Hirofumi MZ. License: CC0.
 
 #include <windows.h>
 #include <windowsx.h>   // for HANDLE_MSG
