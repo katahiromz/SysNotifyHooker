@@ -1,5 +1,5 @@
 /* winxx.h --- an inofficial extension of <windowsx.h> by katahiromz */
-/* This file is part of DevTail. See ReadMe.txt and License.txt. */
+/* Copyright (C) 2017 Katayama Hirofumi MZ. License: CC0. */
 /****************************************************************************/
 
 #ifndef WINXX_H_

@@ -11,14 +11,13 @@
 #include <cstdio>
 #include <cstring>
 #include <string>
+#include "msgdump.hpp"
 
 #ifndef _countof
     #define _countof(array)     (sizeof(array) / sizeof(array[0]))
 #endif
 
 HINSTANCE g_hinstDLL;
-
-extern std::string md_dump(UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 //////////////////////////////////////////////////////////////////////////////
 // window handles

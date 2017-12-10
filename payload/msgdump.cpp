@@ -1,5 +1,10 @@
+// msgdump.cpp --- Dump the Windows message
+// Copyright (C) 2017 Katayama Hirofumi MZ. License: CC0.
+
 #include "winxx.h"
-#include <string>
+#include "msgdump.hpp"
+
+//////////////////////////////////////////////////////////////////////////////
 
 std::string *
 md_hwnd2string(HWND hwnd)
@@ -7,8 +12,8 @@ md_hwnd2string(HWND hwnd)
     return reinterpret_cast<std::string *>(hwnd);
 }
 
-/****************************************************************************/
-/* message details */
+//////////////////////////////////////////////////////////////////////////////
+// message details
 
 LRESULT
 md_OnUnknown(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
@@ -938,7 +943,7 @@ void md_OnHotKey(HWND hwnd, int idHotKey, UINT fuModifiers, UINT vk)
     *md_hwnd2string(hwnd) = buf;
 }
 
-/****************************************************************************/
+//////////////////////////////////////////////////////////////////////////////
 
 INT md_OnSetHotKey(HWND hwnd, INT nCode, UINT nOptions)
 {
@@ -1322,8 +1327,7 @@ BOOL md_OnAppCommand(HWND hwnd, HWND hwndTarget, UINT cmd, UINT nDevice, UINT nK
     *md_hwnd2string(hwnd) = buf;
 }
 
-/****************************************************************************/
-/* dumping */
+//////////////////////////////////////////////////////////////////////////////
 
 LRESULT md_process(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
@@ -1594,4 +1598,4 @@ std::string md_dump(UINT uMsg, WPARAM wParam, LPARAM lParam)
     return str;
 }
 
-/****************************************************************************/
+//////////////////////////////////////////////////////////////////////////////
