@@ -94,7 +94,8 @@ void log_printf(const char *fmt, ...)
 }
 
 //////////////////////////////////////////////////////////////////////////////
-// Task #1: Add function types
+// Task #1: Add function types.
+// NOTE: Please see the system header files if you don't know the function.
 
 // user32: MessageBox
 typedef INT (WINAPI *FN_MessageBoxA)(HWND, const char *, const char *, UINT);
@@ -147,7 +148,7 @@ typedef BOOL (STDAPICALLTYPE *FN_Shell_NotifyIconW)(DWORD, PNOTIFYICONDATAW);
 typedef LONG (WINAPI *FN_RegNotifyChangeKeyValue)(HKEY, BOOL, DWORD, HANDLE, BOOL);
 
 //////////////////////////////////////////////////////////////////////////////
-// Task #2: Add function variables
+// Task #2: Add function variables.
 
 #define ADD_FUNC_VAR(fn_name) \
     FN_##fn_name fn_##fn_name = NULL
@@ -186,7 +187,8 @@ ADD_FUNC_VAR(RegNotifyChangeKeyValue);
 extern "C" {
 
 //////////////////////////////////////////////////////////////////////////////
-// Task #3: Add new functions to hook
+// Task #3: Add new functions to hook.
+// NOTE: Add "New" at the beginning of the function name.
 
 __declspec(dllexport)
 INT WINAPI NewMessageBoxA(HWND hwnd, const char *text, const char *title, UINT uType)
@@ -620,7 +622,7 @@ LONG WINAPI NewRegNotifyChangeKeyValue(
 } // extern "C"
 
 //////////////////////////////////////////////////////////////////////////////
-// Task #4: Add hooking entries
+// Task #4: Add the hooking entries.
 
 struct HOOK_ENTRY
 {
