@@ -1,6 +1,7 @@
 // SysNotifyHooker payload by katahiromz
 //////////////////////////////////////////////////////////////////////////////
 
+#define _CRT_SECURE_NO_WARNINGS
 #include "config.hpp"
 #include "targetver.h"
 #include <windows.h>
@@ -119,8 +120,8 @@ typedef LONG (WINAPI *FN_BROADCASTSYSTEMMESSAGEW)(DWORD, LPDWORD, UINT, WPARAM, 
 typedef void (WINAPI *FN_NOTIFYWINEVENT)(DWORD, HWND, LONG, LONG);
 // user32: RegisterDeviceNotificationW
 // user32: UnregisterDeviceNotification
-typedef HDEVNOTIFY (WINAPI *FN_REGISTERDEVICENOTIFICATIONW)(HANDLE, LPVOID, DWORD);
-typedef BOOL (WINAPI *FN_UNREGISTERDEVICENOTIFICATION)(HDEVNOTIFY);
+typedef HANDLE (WINAPI *FN_REGISTERDEVICENOTIFICATIONW)(HANDLE, LPVOID, DWORD);
+typedef BOOL (WINAPI *FN_UNREGISTERDEVICENOTIFICATION)(HANDLE);
 // user32: SendDlgItemMessage
 typedef LRESULT (WINAPI *FN_SENDDLGITEMMESSAGEA)(HWND, int, UINT, WPARAM, LPARAM);
 typedef LRESULT (WINAPI *FN_SENDDLGITEMMESSAGEW)(HWND, int, UINT, WPARAM, LPARAM);
@@ -412,13 +413,13 @@ void WINAPI NewNotifyWinEvent(
 }
 
 __declspec(dllexport)
-HDEVNOTIFY WINAPI
+HANDLE WINAPI
 NewRegisterDeviceNotificationW(
     HANDLE hRecipient,
     LPVOID NotificationFilter,
     DWORD  Flags)
 {
-    HDEVNOTIFY ret = NULL;
+    HANDLE ret = NULL;
     if (pRegisterDeviceNotificationW)
     {
         log_printf("RegisterDeviceNotificationW: enter: (%p, %p, 0x%08lX);\n", hRecipient, NotificationFilter, Flags);
@@ -430,7 +431,7 @@ NewRegisterDeviceNotificationW(
 
 __declspec(dllexport)
 BOOL WINAPI
-NewUnregisterDeviceNotification(HDEVNOTIFY Handle)
+NewUnregisterDeviceNotification(HANDLE Handle)
 {
     BOOL ret = FALSE;
     if (pUnregisterDeviceNotification)
@@ -642,7 +643,7 @@ ApiHookModule(HMODULE hMod, const char *dll_name,
     {
         char *entry_dll_name = (char *)(pbMod + pImpDesc->Name);
         //log_printf("entry_dll_name: %s, dll_name: %s\n", entry_dll_name, dll_name);
-        if (!stricmp(entry_dll_name, dll_name))
+        if (!_stricmp(entry_dll_name, dll_name))
             break;
     }
     if (!pImpDesc->Name)
@@ -674,7 +675,7 @@ ApiHookModule(HMODULE hMod, const char *dll_name,
             IMAGE_IMPORT_BY_NAME *pName =
                 (IMAGE_IMPORT_BY_NAME *)(pbMod + pINT->u1.AddressOfData);
 
-            if (stricmp((char *)pName->Name, fn_name) != 0)
+            if (_stricmp((char *)pName->Name, fn_name) != 0)
                 continue;
         }
 

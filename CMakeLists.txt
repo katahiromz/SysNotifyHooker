@@ -8,6 +8,7 @@ cmake_minimum_required(VERSION 2.4)
 
 if(COMMAND cmake_policy)
     cmake_policy(SET CMP0003 NEW)
+    cmake_policy(SET CMP0054 NEW)
 endif(COMMAND cmake_policy)
 
 # project name and language
@@ -46,16 +47,16 @@ ENABLE_LANGUAGE(RC)
 # statically link
 
 set(BUILD_SHARED_LIBRARIES OFF)
-if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     message(FATAL_ERROR "clang is not supported yet")
-elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     # using GCC
     set(CMAKE_FIND_LIBRARY_SUFFIXES ".a")
     set(CMAKE_C_FLAGS "-static -static-libgcc -static-libstdc++")
     set(CMAKE_CXX_FLAGS "-static -static-libgcc -static-libstdc++")
-elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Intel")
+elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Intel")
     message(FATAL_ERROR "Intel C++ is not supported yet")
-elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
+elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     # using Visual Studio C++
     set(CompilerFlags
         CMAKE_C_FLAGS

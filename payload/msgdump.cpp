@@ -43,6 +43,7 @@ LRESULT
 md_OnNull(HWND hwnd)
 {
     *md_hwnd2string(hwnd) = "WM_NULL()";
+	return 0;
 }
 
 BOOL
@@ -124,11 +125,13 @@ INT md_OnGetText(HWND hwnd, int cchTextMax, LPTSTR lpszText)
     char buf[512];
     wsprintfA(buf, "WM_GETTEXT(cchTextMax:%d, lpszText:%p)", cchTextMax, lpszText);
     *md_hwnd2string(hwnd) = buf;
+	return 0;
 }
 
 INT md_OnGetTextLength(HWND hwnd)
 {
     *md_hwnd2string(hwnd) = "WM_GETTEXTLENGTH()";
+	return 0;
 }
 
 void md_OnPaint(HWND hwnd)
@@ -172,6 +175,7 @@ BOOL md_OnEraseBkgnd(HWND hwnd, HDC hdc)
     char buf[512];
     wsprintfA(buf, "WM_ERASEBKGND(hdc:%p)", hdc);
     *md_hwnd2string(hwnd) = buf;
+	return FALSE;
 }
 
 void md_OnSysColorChange(HWND hwnd)
@@ -325,6 +329,7 @@ int md_OnCharToItem(HWND hwnd, UINT ch, HWND hwndListbox, int iCaret)
     char buf[512];
     wsprintfA(buf, "WM_CHARTOITEM(ch:%u, hwndListbox:%p, iCaret:%d)", ch, hwndListbox, iCaret);
     *md_hwnd2string(hwnd) = buf;
+	return 0;
 }
 
 void md_OnSetFont(HWND hwndCtl, HFONT hfont, BOOL fRedraw)
@@ -469,6 +474,7 @@ UINT md_OnGetDlgCode(HWND hwnd, LPMSG lpmsg)
     char buf[512];
     wsprintfA(buf, "WM_GETDLGCODE(lpmsg:%p)", lpmsg);
     *md_hwnd2string(hwnd) = buf;
+	return 0;
 }
 
 void md_OnNCMouseMove(HWND hwnd, int x, int y, UINT codeHitTest)
@@ -582,6 +588,7 @@ BOOL md_OnInitDialog(HWND hwnd, HWND hwndFocus, LPARAM lParam)
     char buf[512];
     wsprintfA(buf, "WM_INITDIALOG(hwndFocus:%p, lParam:%p)", hwndFocus, lParam);
     *md_hwnd2string(hwnd) = buf;
+	return FALSE;
 }
 
 void md_OnCommand(HWND hwnd, int id, HWND hwndCtl, UINT codeNotify)
@@ -811,13 +818,15 @@ void md_MDIIconArrange(HWND hwnd)
 HWND md_MDIGetActive(HWND hwnd)
 {
     *md_hwnd2string(hwnd) = "WM_MDIGETACTIVE()";
+	return NULL;
 }
 
-HMENUmd_MDISetMenu(HWND hwnd, BOOL fRefresh, HMENU hmenuFrame, HMENU hmenuWindow)
+HMENU md_MDISetMenu(HWND hwnd, BOOL fRefresh, HMENU hmenuFrame, HMENU hmenuWindow)
 {
     char buf[512];
     wsprintfA(buf, "WM_MDISETMENU(fRefresh:%d, hmenuFrame:%p, hmenuWindow:%p)", fRefresh, hmenuFrame, hmenuWindow);
     *md_hwnd2string(hwnd) = buf;
+	return NULL;
 }
 
 void md_OnDropFiles(HWND hwnd, HDROP hdrop)
@@ -920,6 +929,7 @@ void md_OnHScrollClipboard(HWND hwnd, HWND hwndCBViewer, UINT code, int pos)
 BOOL md_OnQueryNewPalette(HWND hwnd)
 {
     *md_hwnd2string(hwnd) = "WM_QUERYNEWPALETTE()";
+	return FALSE;
 }
 
 void md_OnPaletteIsChanging(HWND hwnd, HWND hwndPaletteChange)
@@ -950,11 +960,13 @@ INT md_OnSetHotKey(HWND hwnd, INT nCode, UINT nOptions)
     char buf[512];
     wsprintfA(buf, "WM_SETHOTKEY(nCode:%d, nOptions:%u)", nCode, nOptions);
     *md_hwnd2string(hwnd) = buf;
+	return 0;
 }
 
 INT md_OnGetHotKey(HWND hwnd)
 {
     *md_hwnd2string(hwnd) = "WM_GETHOTKEY()";
+	return 0;
 }
 
 void md_OnPaintIcon(HWND hwnd)
@@ -1013,6 +1025,7 @@ INT md_OnNotifyFormat(HWND hwnd, HWND hwndTarget, INT nCommand)
     char buf[512];
     wsprintfA(buf, "WM_NOTIFYFORMAT(hwndTarget:%p, nCommand:%d)", hwndTarget, nCommand);
     *md_hwnd2string(hwnd) = buf;
+	return 0;
 }
 
 void md_OnStyleChanging(HWND hwnd, UINT nStyleType, LPSTYLESTRUCT lpStyleStruct)
@@ -1034,6 +1047,7 @@ HICON md_OnGetIcon(HWND hwnd, UINT nType, LPARAM dpi)
     char buf[512];
     wsprintfA(buf, "WM_GETICON(nType:%u, dpi:%p)", nType, dpi);
     *md_hwnd2string(hwnd) = buf;
+	return NULL;
 }
 
 HICON md_OnSetIcon(HWND hwnd, UINT nType, HICON hIcon)
@@ -1041,6 +1055,7 @@ HICON md_OnSetIcon(HWND hwnd, UINT nType, HICON hIcon)
     char buf[512];
     wsprintfA(buf, "WM_SETICON(nType:%u, hIcon:%p)", nType, hIcon);
     *md_hwnd2string(hwnd) = buf;
+	return NULL;
 }
 
 void md_OnSyncPaint(HWND hwnd)
@@ -1094,6 +1109,7 @@ UINT md_OnMenuDrag(HWND hwnd, UINT nPos, HMENU hMenu)
     char buf[512];
     wsprintfA(buf, "WM_MENUDRAG(nPos:%u, hMenu:%p)", nPos, hMenu);
     *md_hwnd2string(hwnd) = buf;
+	return 0;
 }
 
 UINT md_OnMenuGetObject(HWND hwnd, MENUGETOBJECTINFO *pmgoi)
@@ -1101,6 +1117,7 @@ UINT md_OnMenuGetObject(HWND hwnd, MENUGETOBJECTINFO *pmgoi)
     char buf[512];
     wsprintfA(buf, "WM_MENUGETOBJECT(pmgoi:%p)", pmgoi);
     *md_hwnd2string(hwnd) = buf;
+	return 0;
 }
 
 void md_OnUninitMenuPopup(HWND hwnd, HMENU hMenu, UINT nFlags)
@@ -1134,6 +1151,7 @@ void md_OnUpdateUIState(HWND hwnd, UINT nAction, UINT nUIElement)
 UINT md_OnQueryUIState(HWND hwnd)
 {
     *md_hwnd2string(hwnd) = "WM_QUERYUISTATE()";
+	return 0;
 }
 
 void md_OnXButtonDown(HWND hwnd, BOOL fDoubleClick, WORD fwKeys, WORD fwButton, INT xPos, INT yPos)
@@ -1200,6 +1218,7 @@ LRESULT md_OnPowerBroadcast(HWND hwnd, UINT nPowerEvent, UINT nEventData)
     char buf[512];
     wsprintfA(buf, "WM_POWERBROADCAST(nPowerEvent:%u, nEventData:%u)", nPowerEvent, nEventData);
     *md_hwnd2string(hwnd) = buf;
+	return 0;
 }
 
 void md_OnEnterSizeMove(HWND hwnd)
@@ -1215,13 +1234,7 @@ void md_OnExitSizeMove(HWND hwnd)
 HMENU md_MDIRefreshMenu(HWND hwnd)
 {
     *md_hwnd2string(hwnd) = "WM_MDIREFRESHMENU()";
-}
-
-HMENU md_MDISetMenu(HWND hwnd, BOOL fRefresh, HMENU hmenuFrame, HMENU hmenuWindow)
-{
-    char buf[512];
-    wsprintfA(buf, "WM_MDISETMENU(fRefresh:%d, hmenuFrame:%p, hmenuWindow:%p)", fRefresh, hmenuFrame, hmenuWindow);
-    *md_hwnd2string(hwnd) = buf;
+	return NULL;
 }
 
 BOOL md_OnImeSetContext(HWND hwnd, BOOL fActive, DWORD dwShow)
@@ -1229,6 +1242,7 @@ BOOL md_OnImeSetContext(HWND hwnd, BOOL fActive, DWORD dwShow)
     char buf[512];
     wsprintfA(buf, "WM_IME_SETCONTEXT(fActive:%d, dwShow:0x%08lX)", fActive, dwShow);
     *md_hwnd2string(hwnd) = buf;
+	return FALSE;
 }
 
 LRESULT md_OnImeNotify(HWND hwnd, WPARAM wSubMessage, LPARAM lParam)
@@ -1236,6 +1250,7 @@ LRESULT md_OnImeNotify(HWND hwnd, WPARAM wSubMessage, LPARAM lParam)
     char buf[512];
     wsprintfA(buf, "WM_IME_NOTIFY(wSubMessage:%p, lParam:%p)", wSubMessage, lParam);
     *md_hwnd2string(hwnd) = buf;
+	return 0;
 }
 
 LRESULT md_OnImeControl(HWND hwnd, WPARAM wSubMessage, LPVOID lpData)
@@ -1243,6 +1258,7 @@ LRESULT md_OnImeControl(HWND hwnd, WPARAM wSubMessage, LPVOID lpData)
     char buf[512];
     wsprintfA(buf, "WM_IME_CONTROL(wSubMessage:%p, lpData:%p)", wSubMessage, lpData);
     *md_hwnd2string(hwnd) = buf;
+	return 0;
 }
 
 void md_OnImeCompositionFull(HWND hwnd)
@@ -1325,6 +1341,7 @@ BOOL md_OnAppCommand(HWND hwnd, HWND hwndTarget, UINT cmd, UINT nDevice, UINT nK
     char buf[512];
     wsprintfA(buf, "WM_APPCOMMAND(hwndTarget:%p, cmd:%u, nDevice:%u, nKey:%u)", hwndTarget, cmd, nDevice, nKey);
     *md_hwnd2string(hwnd) = buf;
+	return FALSE;
 }
 
 //////////////////////////////////////////////////////////////////////////////
