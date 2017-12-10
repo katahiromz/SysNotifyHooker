@@ -50,10 +50,10 @@ DialogProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 //////////////////////////////////////////////////////////////////////////////
 
 extern "C"
-INT APIENTRY _tWinMain(
+INT APIENTRY WinMain(
     HINSTANCE   hInstance,
     HINSTANCE   hPrevInstance,
-    LPTSTR      lpCmdLine,
+    LPSTR       lpCmdLine,
     INT         nCmdShow)
 {
     DialogBox(hInstance, MAKEINTRESOURCE(1), NULL, DialogProc);

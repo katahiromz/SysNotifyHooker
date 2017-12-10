@@ -74,6 +74,7 @@ endif()
 
 ##############################################################################
 
+add_definitions(-DUNICODE -D_UNICODE)
 include_directories(. payload injector)
 
 if(CMAKE_SIZEOF_VOID_P EQUAL 8)
