@@ -71,7 +71,7 @@ void log_printf(const char *fmt, ...)
     TCHAR *pch = _tcsrchr(szPath, TEXT('\\'));
     if (pch == NULL)
         pch = _tcsrchr(szPath, TEXT('/'));
-    lstrcpy(pch + 1, TEXT("hookapi.txt"));
+    lstrcpy(pch + 1, TEXT("SysNotifyLog.txt"));
 
     HANDLE hMutex = CreateMutex(NULL, FALSE, TEXT("SysNotifyHooker Mutex"));
     WaitForSingleObject(hMutex, 800);
