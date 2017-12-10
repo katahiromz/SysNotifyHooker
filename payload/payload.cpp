@@ -97,89 +97,89 @@ void log_printf(const char *fmt, ...)
 // Task #1: Add function types
 
 // user32: MessageBox
-typedef INT (WINAPI *FN_MESSAGEBOXA)(HWND, const char *, const char *, UINT);
-typedef INT (WINAPI *FN_MESSAGEBOXW)(HWND, const WCHAR *, const WCHAR *, UINT);
+typedef INT (WINAPI *FN_MessageBoxA)(HWND, const char *, const char *, UINT);
+typedef INT (WINAPI *FN_MessageBoxW)(HWND, const WCHAR *, const WCHAR *, UINT);
 // user32: PostMessage
-typedef BOOL (WINAPI *FN_POSTMESSAGEA)(HWND, UINT, WPARAM, LPARAM);
-typedef BOOL (WINAPI *FN_POSTMESSAGEW)(HWND, UINT, WPARAM, LPARAM);
+typedef BOOL (WINAPI *FN_PostMessageA)(HWND, UINT, WPARAM, LPARAM);
+typedef BOOL (WINAPI *FN_PostMessageW)(HWND, UINT, WPARAM, LPARAM);
 // user32: SendMessage
-typedef LRESULT (WINAPI *FN_SENDMESSAGEA)(HWND, UINT, WPARAM, LPARAM);
-typedef LRESULT (WINAPI *FN_SENDMESSAGEW)(HWND, UINT, WPARAM, LPARAM);
+typedef LRESULT (WINAPI *FN_SendMessageA)(HWND, UINT, WPARAM, LPARAM);
+typedef LRESULT (WINAPI *FN_SendMessageW)(HWND, UINT, WPARAM, LPARAM);
 // user32: SendNotifyMessage
-typedef BOOL (WINAPI *FN_SENDNOTIFYMESSAGEA)(HWND, UINT, WPARAM, LPARAM);
-typedef BOOL (WINAPI *FN_SENDNOTIFYMESSAGEW)(HWND, UINT, WPARAM, LPARAM);
+typedef BOOL (WINAPI *FN_SendNotifyMessageA)(HWND, UINT, WPARAM, LPARAM);
+typedef BOOL (WINAPI *FN_SendNotifyMessageW)(HWND, UINT, WPARAM, LPARAM);
 // user32: SendMessageCallback
-typedef BOOL (WINAPI *FN_SENDMESSAGECALLBACKA)(HWND, UINT, WPARAM, LPARAM, SENDASYNCPROC, ULONG_PTR);
-typedef BOOL (WINAPI *FN_SENDMESSAGECALLBACKW)(HWND, UINT, WPARAM, LPARAM, SENDASYNCPROC, ULONG_PTR);
+typedef BOOL (WINAPI *FN_SendMessageCallbackA)(HWND, UINT, WPARAM, LPARAM, SENDASYNCPROC, ULONG_PTR);
+typedef BOOL (WINAPI *FN_SendMessageCallbackW)(HWND, UINT, WPARAM, LPARAM, SENDASYNCPROC, ULONG_PTR);
 // user32: SendMessageTimeout
-typedef LRESULT (WINAPI *FN_SENDMESSAGETIMEOUTA)(HWND, UINT, WPARAM, LPARAM, UINT, UINT, LPDWORD);
-typedef LRESULT (WINAPI *FN_SENDMESSAGETIMEOUTW)(HWND, UINT, WPARAM, LPARAM, UINT, UINT, LPDWORD);
+typedef LRESULT (WINAPI *FN_SendMessageTimeoutA)(HWND, UINT, WPARAM, LPARAM, UINT, UINT, LPDWORD);
+typedef LRESULT (WINAPI *FN_SendMessageTimeoutW)(HWND, UINT, WPARAM, LPARAM, UINT, UINT, LPDWORD);
 // user32: BroadcastSystemMessage
-typedef LONG (WINAPI *FN_BROADCASTSYSTEMMESSAGEA)(DWORD, LPDWORD, UINT, WPARAM, LPARAM);
-typedef LONG (WINAPI *FN_BROADCASTSYSTEMMESSAGEW)(DWORD, LPDWORD, UINT, WPARAM, LPARAM);
+typedef LONG (WINAPI *FN_BroadcastSystemMessageA)(DWORD, LPDWORD, UINT, WPARAM, LPARAM);
+typedef LONG (WINAPI *FN_BroadcastSystemMessageW)(DWORD, LPDWORD, UINT, WPARAM, LPARAM);
 // user32: NotifyWinEvent
-typedef void (WINAPI *FN_NOTIFYWINEVENT)(DWORD, HWND, LONG, LONG);
+typedef void (WINAPI *FN_NotifyWinEvent)(DWORD, HWND, LONG, LONG);
 // user32: RegisterDeviceNotificationW
 // user32: UnregisterDeviceNotification
-typedef HANDLE (WINAPI *FN_REGISTERDEVICENOTIFICATIONW)(HANDLE, LPVOID, DWORD);
-typedef BOOL (WINAPI *FN_UNREGISTERDEVICENOTIFICATION)(HANDLE);
+typedef HANDLE (WINAPI *FN_RegisterDeviceNotificationW)(HANDLE, LPVOID, DWORD);
+typedef BOOL (WINAPI *FN_UnregisterDeviceNotification)(HANDLE);
 // user32: SendDlgItemMessage
-typedef LRESULT (WINAPI *FN_SENDDLGITEMMESSAGEA)(HWND, int, UINT, WPARAM, LPARAM);
-typedef LRESULT (WINAPI *FN_SENDDLGITEMMESSAGEW)(HWND, int, UINT, WPARAM, LPARAM);
+typedef LRESULT (WINAPI *FN_SendDlgItemMessageA)(HWND, int, UINT, WPARAM, LPARAM);
+typedef LRESULT (WINAPI *FN_SendDlgItemMessageW)(HWND, int, UINT, WPARAM, LPARAM);
 
 // shell32: SHChangeNotify
-typedef void (STDAPICALLTYPE *FN_SHCHANGENOTIFY)(LONG, UINT, LPCVOID, LPCVOID);
+typedef void (STDAPICALLTYPE *FN_SHChangeNotify)(LONG, UINT, LPCVOID, LPCVOID);
 // shell32: SHChangeNotification_Lock
 // shell32: SHChangeNotification_Unlock
-typedef HANDLE (STDAPICALLTYPE *FN_SHCHANGENOTIFICATION_LOCK)(HANDLE, DWORD, LPITEMIDLIST **, LONG *);
-typedef BOOL (STDAPICALLTYPE *FN_SHCHANGENOTIFICATION_UNLOCK)(HANDLE);
+typedef HANDLE (STDAPICALLTYPE *FN_SHChangeNotification_Lock)(HANDLE, DWORD, LPITEMIDLIST **, LONG *);
+typedef BOOL (STDAPICALLTYPE *FN_SHChangeNotification_Unlock)(HANDLE);
 // shell32: SHChangeNotifyRegister
 // shell32: SHChangeNotifyDeregister
-typedef ULONG (STDAPICALLTYPE *FN_SHCHANGENOTIFYREGISTER)(HWND, int, LONG, UINT, int, void *);
-typedef BOOL (STDAPICALLTYPE *FN_SHCHANGENOTIFYDEREGISTER)(ULONG);
+typedef ULONG (STDAPICALLTYPE *FN_SHChangeNotifyRegister)(HWND, int, LONG, UINT, int, void *);
+typedef BOOL (STDAPICALLTYPE *FN_SHChangeNotifyDeregister)(ULONG);
 // shell32: SHChangeNotifySuspendResume
-typedef BOOL (STDAPICALLTYPE *FN_SHCHANGENOTIFYSUSPENDRESUME)(BOOL, LPITEMIDLIST, BOOL, LONG);
+typedef BOOL (STDAPICALLTYPE *FN_SHChangeNotifySuspendResume)(BOOL, LPITEMIDLIST, BOOL, LONG);
 // shell32: Shell_NotifyIcon
-typedef BOOL (STDAPICALLTYPE *FN_SHELL_NOTIFYICONA)(DWORD, PNOTIFYICONDATAA);
-typedef BOOL (STDAPICALLTYPE *FN_SHELL_NOTIFYICONW)(DWORD, PNOTIFYICONDATAW);
+typedef BOOL (STDAPICALLTYPE *FN_Shell_NotifyIconA)(DWORD, PNOTIFYICONDATAA);
+typedef BOOL (STDAPICALLTYPE *FN_Shell_NotifyIconW)(DWORD, PNOTIFYICONDATAW);
 
 // advapi32: RegNotifyChangeKeyValue
-typedef LONG (WINAPI *FN_REGNOTIFYCHANGEKEYVALUE)(HKEY, BOOL, DWORD, HANDLE, BOOL);
+typedef LONG (WINAPI *FN_RegNotifyChangeKeyValue)(HKEY, BOOL, DWORD, HANDLE, BOOL);
 
 //////////////////////////////////////////////////////////////////////////////
 // Task #2: Add function variables
 
-FN_MESSAGEBOXA pMessageBoxA = NULL;
-FN_MESSAGEBOXW pMessageBoxW = NULL;
-FN_POSTMESSAGEA pPostMessageA = NULL;
-FN_POSTMESSAGEW pPostMessageW = NULL;
-FN_SENDMESSAGEA pSendMessageA = NULL;
-FN_SENDMESSAGEW pSendMessageW = NULL;
-FN_SENDNOTIFYMESSAGEA pSendNotifyMessageA = NULL;
-FN_SENDNOTIFYMESSAGEW pSendNotifyMessageW = NULL;
-FN_SENDMESSAGECALLBACKA pSendMessageCallbackA = NULL;
-FN_SENDMESSAGECALLBACKW pSendMessageCallbackW = NULL;
-FN_SENDMESSAGETIMEOUTA pSendMessageTimeoutA = NULL;
-FN_SENDMESSAGETIMEOUTW pSendMessageTimeoutW = NULL;
-FN_BROADCASTSYSTEMMESSAGEA pBroadcastSystemMessageA = NULL;
-FN_BROADCASTSYSTEMMESSAGEW pBroadcastSystemMessageW = NULL;
-FN_NOTIFYWINEVENT pNotifyWinEvent = NULL;
-FN_REGISTERDEVICENOTIFICATIONW pRegisterDeviceNotificationW = NULL;
-FN_UNREGISTERDEVICENOTIFICATION pUnregisterDeviceNotification = NULL;
-FN_SENDDLGITEMMESSAGEA pSendDlgItemMessageA = NULL;
-FN_SENDDLGITEMMESSAGEW pSendDlgItemMessageW = NULL;
+FN_MessageBoxA pMessageBoxA = NULL;
+FN_MessageBoxW pMessageBoxW = NULL;
+FN_PostMessageA pPostMessageA = NULL;
+FN_PostMessageW pPostMessageW = NULL;
+FN_SendMessageA pSendMessageA = NULL;
+FN_SendMessageW pSendMessageW = NULL;
+FN_SendNotifyMessageA pSendNotifyMessageA = NULL;
+FN_SendNotifyMessageW pSendNotifyMessageW = NULL;
+FN_SendMessageCallbackA pSendMessageCallbackA = NULL;
+FN_SendMessageCallbackW pSendMessageCallbackW = NULL;
+FN_SendMessageTimeoutA pSendMessageTimeoutA = NULL;
+FN_SendMessageTimeoutW pSendMessageTimeoutW = NULL;
+FN_BroadcastSystemMessageA pBroadcastSystemMessageA = NULL;
+FN_BroadcastSystemMessageW pBroadcastSystemMessageW = NULL;
+FN_NotifyWinEvent pNotifyWinEvent = NULL;
+FN_RegisterDeviceNotificationW pRegisterDeviceNotificationW = NULL;
+FN_UnregisterDeviceNotification pUnregisterDeviceNotification = NULL;
+FN_SendDlgItemMessageA pSendDlgItemMessageA = NULL;
+FN_SendDlgItemMessageW pSendDlgItemMessageW = NULL;
 
-FN_SHCHANGENOTIFY pSHChangeNotify = NULL;
-FN_SHCHANGENOTIFICATION_LOCK pSHChangeNotification_Lock = NULL;
-FN_SHCHANGENOTIFICATION_UNLOCK pSHChangeNotification_Unlock = NULL;
-FN_SHCHANGENOTIFYREGISTER pSHChangeNotifyRegister = NULL;
-FN_SHCHANGENOTIFYDEREGISTER pSHChangeNotifyDeregister= NULL;
-FN_SHCHANGENOTIFYSUSPENDRESUME pSHChangeNotifySuspendResume = NULL;
+FN_SHChangeNotify pSHChangeNotify = NULL;
+FN_SHChangeNotification_Lock pSHChangeNotification_Lock = NULL;
+FN_SHChangeNotification_Unlock pSHChangeNotification_Unlock = NULL;
+FN_SHChangeNotifyRegister pSHChangeNotifyRegister = NULL;
+FN_SHChangeNotifyDeregister pSHChangeNotifyDeregister = NULL;
+FN_SHChangeNotifySuspendResume pSHChangeNotifySuspendResume = NULL;
 
-FN_SHELL_NOTIFYICONA pShell_NotifyIconA = NULL;
-FN_SHELL_NOTIFYICONW pShell_NotifyIconW = NULL;
+FN_Shell_NotifyIconA pShell_NotifyIconA = NULL;
+FN_Shell_NotifyIconW pShell_NotifyIconW = NULL;
 
-FN_REGNOTIFYCHANGEKEYVALUE pRegNotifyChangeKeyValue = NULL;
+FN_RegNotifyChangeKeyValue pRegNotifyChangeKeyValue = NULL;
 
 extern "C" {
 
@@ -691,87 +691,79 @@ ApiHookModule(HMODULE hMod, const char *dll_name,
 }
 
 //////////////////////////////////////////////////////////////////////////////
-// Task #4: Add hooking/unhooking codes
+// Task #4: Add hooking/unhooking entries
+
+struct HOOK_ENTRY
+{
+    const char *dll_file;
+    const char *fn_name;
+    FARPROC new_fn;
+    FARPROC& old_fn;
+};
+
+#define BEGIN_HOOK_ENTRIES() \
+    HOOK_ENTRY g_hook_entry[] = {
+
+#define ADD_HOOK_ENTRY(dll_file, fn_name) \
+        { dll_file, #fn_name, \
+          reinterpret_cast<FARPROC>(New##fn_name), \
+          reinterpret_cast<FARPROC&>(p##fn_name) },
+
+#define END_HOOK_ENTRIES() \
+    };
+
+BEGIN_HOOK_ENTRIES()
+    ADD_HOOK_ENTRY("user32.dll", MessageBoxA)
+    ADD_HOOK_ENTRY("user32.dll", MessageBoxW)
+    ADD_HOOK_ENTRY("user32.dll", PostMessageA)
+    ADD_HOOK_ENTRY("user32.dll", PostMessageW)
+    ADD_HOOK_ENTRY("user32.dll", SendMessageA)
+    ADD_HOOK_ENTRY("user32.dll", SendMessageW)
+    ADD_HOOK_ENTRY("user32.dll", SendNotifyMessageA)
+    ADD_HOOK_ENTRY("user32.dll", SendNotifyMessageW)
+    ADD_HOOK_ENTRY("user32.dll", SendMessageCallbackA)
+    ADD_HOOK_ENTRY("user32.dll", SendMessageCallbackW)
+    ADD_HOOK_ENTRY("user32.dll", SendMessageTimeoutA)
+    ADD_HOOK_ENTRY("user32.dll", SendMessageTimeoutW)
+    ADD_HOOK_ENTRY("user32.dll", BroadcastSystemMessageA)
+    ADD_HOOK_ENTRY("user32.dll", BroadcastSystemMessageW)
+    ADD_HOOK_ENTRY("user32.dll", NotifyWinEvent)
+    ADD_HOOK_ENTRY("user32.dll", RegisterDeviceNotificationW)
+    ADD_HOOK_ENTRY("user32.dll", UnregisterDeviceNotification)
+    ADD_HOOK_ENTRY("user32.dll", SendDlgItemMessageA)
+    ADD_HOOK_ENTRY("user32.dll", SendDlgItemMessageW)
+    ADD_HOOK_ENTRY("shell32.dll", SHChangeNotify)
+    ADD_HOOK_ENTRY("shell32.dll", SHChangeNotification_Lock)
+    ADD_HOOK_ENTRY("shell32.dll", SHChangeNotification_Unlock)
+    ADD_HOOK_ENTRY("shell32.dll", SHChangeNotifyRegister)
+    ADD_HOOK_ENTRY("shell32.dll", SHChangeNotifyDeregister)
+    ADD_HOOK_ENTRY("shell32.dll", SHChangeNotifySuspendResume)
+    ADD_HOOK_ENTRY("shell32.dll", Shell_NotifyIconA)
+    ADD_HOOK_ENTRY("shell32.dll", Shell_NotifyIconW)
+    ADD_HOOK_ENTRY("advapi32.dll", RegNotifyChangeKeyValue)
+END_HOOK_ENTRIES()
+
+//////////////////////////////////////////////////////////////////////////////
 
 static BOOL hook(void)
 {
-#define DO_HOOK(dll_file, fn_type, fn) \
-    p##fn = (fn_type)ApiHookModule(NULL, dll_file, #fn, (FARPROC)New##fn, TRUE)
-
-    DO_HOOK("user32.dll", FN_MESSAGEBOXA, MessageBoxA);
-    DO_HOOK("user32.dll", FN_MESSAGEBOXW, MessageBoxW);
-    DO_HOOK("user32.dll", FN_POSTMESSAGEA, PostMessageA);
-    DO_HOOK("user32.dll", FN_POSTMESSAGEW, PostMessageW);
-    DO_HOOK("user32.dll", FN_SENDMESSAGEA, SendMessageA);
-    DO_HOOK("user32.dll", FN_SENDMESSAGEW, SendMessageW);
-    DO_HOOK("user32.dll", FN_SENDNOTIFYMESSAGEA, SendNotifyMessageA);
-    DO_HOOK("user32.dll", FN_SENDNOTIFYMESSAGEW, SendNotifyMessageW);
-    DO_HOOK("user32.dll", FN_SENDMESSAGECALLBACKA, SendMessageCallbackA);
-    DO_HOOK("user32.dll", FN_SENDMESSAGECALLBACKW, SendMessageCallbackW);
-    DO_HOOK("user32.dll", FN_SENDMESSAGETIMEOUTA, SendMessageTimeoutA);
-    DO_HOOK("user32.dll", FN_SENDMESSAGETIMEOUTW, SendMessageTimeoutW);
-    DO_HOOK("user32.dll", FN_BROADCASTSYSTEMMESSAGEA, BroadcastSystemMessageA);
-    DO_HOOK("user32.dll", FN_BROADCASTSYSTEMMESSAGEW, BroadcastSystemMessageW);
-    DO_HOOK("user32.dll", FN_NOTIFYWINEVENT, NotifyWinEvent);
-    DO_HOOK("user32.dll", FN_REGISTERDEVICENOTIFICATIONW, RegisterDeviceNotificationW);
-    DO_HOOK("user32.dll", FN_UNREGISTERDEVICENOTIFICATION, UnregisterDeviceNotification);
-    DO_HOOK("user32.dll", FN_SENDDLGITEMMESSAGEA, SendDlgItemMessageA);
-    DO_HOOK("user32.dll", FN_SENDDLGITEMMESSAGEW, SendDlgItemMessageW);
-
-    DO_HOOK("shell32.dll", FN_SHCHANGENOTIFY, SHChangeNotify);
-    DO_HOOK("shell32.dll", FN_SHCHANGENOTIFICATION_LOCK, SHChangeNotification_Lock);
-    DO_HOOK("shell32.dll", FN_SHCHANGENOTIFICATION_UNLOCK, SHChangeNotification_Unlock);
-    DO_HOOK("shell32.dll", FN_SHCHANGENOTIFYREGISTER, SHChangeNotifyRegister);
-    DO_HOOK("shell32.dll", FN_SHCHANGENOTIFYDEREGISTER, SHChangeNotifyDeregister);
-    DO_HOOK("shell32.dll", FN_SHCHANGENOTIFYSUSPENDRESUME, SHChangeNotifySuspendResume);
-    DO_HOOK("shell32.dll", FN_SHELL_NOTIFYICONA, Shell_NotifyIconA);
-    DO_HOOK("shell32.dll", FN_SHELL_NOTIFYICONW, Shell_NotifyIconW);
-
-    DO_HOOK("advapi32.dll", FN_REGNOTIFYCHANGEKEYVALUE, RegNotifyChangeKeyValue);
-
+    for (size_t i = 0; i < _countof(g_hook_entry); ++i)
+    {
+        HOOK_ENTRY *entry = &g_hook_entry[i];
+        entry->old_fn = ApiHookModule(NULL, entry->dll_file, entry->fn_name, entry->new_fn, TRUE);
+    }
     return TRUE;
-#undef DO_HOOK
 }
 
 static void unhook(void)
 {
-#define DO_UNHOOK(dll_file, fn_type, fn) do { \
-    ApiHookModule(NULL, dll_file, #fn, (FARPROC)p##fn, FALSE); p##fn = NULL; \
-} while (0)
-    DO_UNHOOK("user32.dll", FN_MESSAGEBOXA, MessageBoxA);
-    DO_UNHOOK("user32.dll", FN_MESSAGEBOXW, MessageBoxW);
-    DO_UNHOOK("user32.dll", FN_POSTMESSAGEA, PostMessageA);
-    DO_UNHOOK("user32.dll", FN_POSTMESSAGEW, PostMessageW);
-    DO_UNHOOK("user32.dll", FN_SENDMESSAGEA, SendMessageA);
-    DO_UNHOOK("user32.dll", FN_SENDMESSAGEW, SendMessageW);
-    DO_UNHOOK("user32.dll", FN_SENDNOTIFYMESSAGEA, SendNotifyMessageA);
-    DO_UNHOOK("user32.dll", FN_SENDNOTIFYMESSAGEW, SendNotifyMessageW);
-    DO_UNHOOK("user32.dll", FN_SENDMESSAGECALLBACKA, SendMessageCallbackA);
-    DO_UNHOOK("user32.dll", FN_SENDMESSAGECALLBACKW, SendMessageCallbackW);
-    DO_UNHOOK("user32.dll", FN_SENDMESSAGETIMEOUTA, SendMessageTimeoutA);
-    DO_UNHOOK("user32.dll", FN_SENDMESSAGETIMEOUTW, SendMessageTimeoutW);
-    DO_UNHOOK("user32.dll", FN_BROADCASTSYSTEMMESSAGEA, BroadcastSystemMessageA);
-    DO_UNHOOK("user32.dll", FN_BROADCASTSYSTEMMESSAGEW, BroadcastSystemMessageW);
-    DO_UNHOOK("user32.dll", FN_NOTIFYWINEVENT, NotifyWinEvent);
-    DO_UNHOOK("user32.dll", FN_REGISTERDEVICENOTIFICATIONW, RegisterDeviceNotificationW);
-    DO_UNHOOK("user32.dll", FN_UNREGISTERDEVICENOTIFICATION, UnregisterDeviceNotification);
-    DO_UNHOOK("user32.dll", FN_SENDDLGITEMMESSAGEA, SendDlgItemMessageA);
-    DO_UNHOOK("user32.dll", FN_SENDDLGITEMMESSAGEW, SendDlgItemMessageW);
-
-    DO_UNHOOK("shell32.dll", FN_SHCHANGENOTIFY, SHChangeNotify);
-    DO_UNHOOK("shell32.dll", FN_SHCHANGENOTIFICATION_LOCK, SHChangeNotification_Lock);
-    DO_UNHOOK("shell32.dll", FN_SHCHANGENOTIFICATION_UNLOCK, SHChangeNotification_Unlock);
-    DO_UNHOOK("shell32.dll", FN_SHCHANGENOTIFYREGISTER, SHChangeNotifyRegister);
-    DO_UNHOOK("shell32.dll", FN_SHCHANGENOTIFYDEREGISTER, SHChangeNotifyDeregister);
-    DO_UNHOOK("shell32.dll", FN_SHCHANGENOTIFYSUSPENDRESUME, SHChangeNotifySuspendResume);
-    DO_UNHOOK("shell32.dll", FN_SHELL_NOTIFYICONA, Shell_NotifyIconA);
-    DO_UNHOOK("shell32.dll", FN_SHELL_NOTIFYICONW, Shell_NotifyIconW);
-
-    DO_UNHOOK("advapi32.dll", FN_REGNOTIFYCHANGEKEYVALUE, RegNotifyChangeKeyValue);
-#undef DO_UNHOOK
+    for (size_t i = 0; i < _countof(g_hook_entry); ++i)
+    {
+        HOOK_ENTRY *entry = &g_hook_entry[i];
+        ApiHookModule(NULL, entry->dll_file, entry->fn_name, (FARPROC)entry->old_fn, FALSE);
+        entry->old_fn = NULL;
+    }
 }
-
-//////////////////////////////////////////////////////////////////////////////
 
 void show_window_info(const char *name, HWND hwnd)
 {
