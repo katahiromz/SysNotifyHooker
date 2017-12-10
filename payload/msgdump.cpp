@@ -12,6 +12,16 @@ md_hwnd2string(HWND hwnd)
     return reinterpret_cast<std::string *>(hwnd);
 }
 
+std::string md_dump_rect(const RECT *prc)
+{
+    if (prc == NULL)
+        return "(null)";
+
+    char buf[64];
+    wsprintfA(buf, "(%ld, %ld, %ld, %ld)", prc->left, prc->top, prc->right, prc->bottom);
+    return buf;
+}
+
 //////////////////////////////////////////////////////////////////////////////
 // message details
 
@@ -901,7 +911,7 @@ void md_OnVScrollClipboard(HWND hwnd, HWND hwndCBViewer, UINT code, int pos)
 void md_OnSizeClipboard(HWND hwnd, HWND hwndCBViewer, const LPRECT lprc)
 {
     char buf[512];
-    wsprintfA(buf, "WM_SIZECLIPBOARD(hwndCBViewer:%p, lprc:%p)", hwndCBViewer, lprc);
+    wsprintfA(buf, "WM_SIZECLIPBOARD(hwndCBViewer:%p, lprc:%s)", hwndCBViewer, md_dump_rect(lprc).c_str());
     *md_hwnd2string(hwnd) = buf;
 }
 
@@ -1195,7 +1205,7 @@ void md_OnNextMenu(HWND hwnd, INT nCode, LPMDINEXTMENU lpMDINextMenu)
 void md_OnSizing(HWND hwnd, UINT nSide, LPRECT lpRect)
 {
     char buf[512];
-    wsprintfA(buf, "WM_SIZING(nSide:%u, lpRect:%p)", nSide, lpRect);
+    wsprintfA(buf, "WM_SIZING(nSide:%u, lpRect:%s)", nSide, md_dump_rect(lpRect).c_str());
     *md_hwnd2string(hwnd) = buf;
 }
 
@@ -1209,7 +1219,7 @@ void md_OnCaptureChanged(HWND hwnd, HWND hwndNewCapture)
 void md_OnMoving(HWND hwnd, UINT nSide, LPRECT lpRect)
 {
     char buf[512];
-    wsprintfA(buf, "WM_MOVING(nSide:%u, lpRect:%p)", nSide, lpRect);
+    wsprintfA(buf, "WM_MOVING(nSide:%u, lpRect:%s)", nSide, md_dump_rect(lpRect).c_str());
     *md_hwnd2string(hwnd) = buf;
 }
 
