@@ -503,6 +503,22 @@
     (void)((fn)((hwnd), WM_EXITSIZEMOVE, 0, 0L), 0L)
 #endif
 
+/* HICON Cls_OnQueryDragIcon(HWND hwnd) */
+#undef HANDLE_WM_QUERYDRAGICON
+#define HANDLE_WM_QUERYDRAGICON(hwnd, wParam, lParam, fn) \
+    (LRESULT)(DWORD)(UINT)(UINT_PTR)(fn)(hwnd)
+#undef FORWARD_WM_QUERYDRAGICON
+#define FORWARD_WM_QUERYDRAGICON(hwnd, fn) \
+    (HICON)(UINT_PTR)(UINT)(DWORD)(fn)((hwnd), WM_QUERYDRAGICON, 0L, 0L)
+
+/* HWND Cls_MDICreate(HWND hwnd, const LPMDICREATESTRUCT lpmcs) */
+#undef HANDLE_WM_MDICREATE
+#define HANDLE_WM_MDICREATE(hwnd, wParam, lParam, fn) \
+    (LRESULT)(DWORD)(UINT)(UINT_PTR)(fn)((hwnd), (LPMDICREATESTRUCT)(lParam))
+#undef FORWARD_WM_MDICREATE
+#define FORWARD_WM_MDICREATE(hwnd, lpmcs, fn) \
+    (HWND)(UINT_PTR)(fn)((hwnd), WM_MDICREATE, 0L, (LPARAM)(LPMDICREATESTRUCT)(lpmcs))
+
 /****************************************************************************/
 
 #endif  /* ndef WINXX_H_ */
