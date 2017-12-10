@@ -97,55 +97,36 @@ void log_printf(const char *fmt, ...)
 // Task #1: Add function types.
 // NOTE: Please see the system header files if you don't know the function.
 
-// user32: MessageBox
+// [[[types]]]
 typedef INT (WINAPI *FN_MessageBoxA)(HWND, const char *, const char *, UINT);
 typedef INT (WINAPI *FN_MessageBoxW)(HWND, const WCHAR *, const WCHAR *, UINT);
-// user32: PostMessage
 typedef BOOL (WINAPI *FN_PostMessageA)(HWND, UINT, WPARAM, LPARAM);
 typedef BOOL (WINAPI *FN_PostMessageW)(HWND, UINT, WPARAM, LPARAM);
-// user32: SendMessage
 typedef LRESULT (WINAPI *FN_SendMessageA)(HWND, UINT, WPARAM, LPARAM);
 typedef LRESULT (WINAPI *FN_SendMessageW)(HWND, UINT, WPARAM, LPARAM);
-// user32: SendNotifyMessage
 typedef BOOL (WINAPI *FN_SendNotifyMessageA)(HWND, UINT, WPARAM, LPARAM);
 typedef BOOL (WINAPI *FN_SendNotifyMessageW)(HWND, UINT, WPARAM, LPARAM);
-// user32: SendMessageCallback
 typedef BOOL (WINAPI *FN_SendMessageCallbackA)(HWND, UINT, WPARAM, LPARAM, SENDASYNCPROC, ULONG_PTR);
 typedef BOOL (WINAPI *FN_SendMessageCallbackW)(HWND, UINT, WPARAM, LPARAM, SENDASYNCPROC, ULONG_PTR);
-// user32: SendMessageTimeout
 typedef LRESULT (WINAPI *FN_SendMessageTimeoutA)(HWND, UINT, WPARAM, LPARAM, UINT, UINT, LPDWORD);
 typedef LRESULT (WINAPI *FN_SendMessageTimeoutW)(HWND, UINT, WPARAM, LPARAM, UINT, UINT, LPDWORD);
-// user32: BroadcastSystemMessage
 typedef LONG (WINAPI *FN_BroadcastSystemMessageA)(DWORD, LPDWORD, UINT, WPARAM, LPARAM);
 typedef LONG (WINAPI *FN_BroadcastSystemMessageW)(DWORD, LPDWORD, UINT, WPARAM, LPARAM);
-// user32: NotifyWinEvent
 typedef void (WINAPI *FN_NotifyWinEvent)(DWORD, HWND, LONG, LONG);
-// user32: RegisterDeviceNotificationW
-// user32: UnregisterDeviceNotification
 typedef HANDLE (WINAPI *FN_RegisterDeviceNotificationW)(HANDLE, LPVOID, DWORD);
 typedef BOOL (WINAPI *FN_UnregisterDeviceNotification)(HANDLE);
-// user32: SendDlgItemMessage
 typedef LRESULT (WINAPI *FN_SendDlgItemMessageA)(HWND, int, UINT, WPARAM, LPARAM);
 typedef LRESULT (WINAPI *FN_SendDlgItemMessageW)(HWND, int, UINT, WPARAM, LPARAM);
-
-// shell32: SHChangeNotify
 typedef void (STDAPICALLTYPE *FN_SHChangeNotify)(LONG, UINT, LPCVOID, LPCVOID);
-// shell32: SHChangeNotification_Lock
-// shell32: SHChangeNotification_Unlock
 typedef HANDLE (STDAPICALLTYPE *FN_SHChangeNotification_Lock)(HANDLE, DWORD, LPITEMIDLIST **, LONG *);
 typedef BOOL (STDAPICALLTYPE *FN_SHChangeNotification_Unlock)(HANDLE);
-// shell32: SHChangeNotifyRegister
-// shell32: SHChangeNotifyDeregister
 typedef ULONG (STDAPICALLTYPE *FN_SHChangeNotifyRegister)(HWND, int, LONG, UINT, int, void *);
 typedef BOOL (STDAPICALLTYPE *FN_SHChangeNotifyDeregister)(ULONG);
-// shell32: SHChangeNotifySuspendResume
 typedef BOOL (STDAPICALLTYPE *FN_SHChangeNotifySuspendResume)(BOOL, LPITEMIDLIST, BOOL, LONG);
-// shell32: Shell_NotifyIcon
 typedef BOOL (STDAPICALLTYPE *FN_Shell_NotifyIconA)(DWORD, PNOTIFYICONDATAA);
 typedef BOOL (STDAPICALLTYPE *FN_Shell_NotifyIconW)(DWORD, PNOTIFYICONDATAW);
-
-// advapi32: RegNotifyChangeKeyValue
 typedef LONG (WINAPI *FN_RegNotifyChangeKeyValue)(HKEY, BOOL, DWORD, HANDLE, BOOL);
+// [[[/types]]]
 
 //////////////////////////////////////////////////////////////////////////////
 // Task #2: Add function variables.
@@ -153,6 +134,7 @@ typedef LONG (WINAPI *FN_RegNotifyChangeKeyValue)(HKEY, BOOL, DWORD, HANDLE, BOO
 #define ADD_FUNC_VAR(fn_name) \
     FN_##fn_name fn_##fn_name = NULL
 
+// [[[vars]]]
 ADD_FUNC_VAR(MessageBoxA);
 ADD_FUNC_VAR(MessageBoxW);
 ADD_FUNC_VAR(PostMessageA);
@@ -181,6 +163,7 @@ ADD_FUNC_VAR(SHChangeNotifySuspendResume);
 ADD_FUNC_VAR(Shell_NotifyIconA);
 ADD_FUNC_VAR(Shell_NotifyIconW);
 ADD_FUNC_VAR(RegNotifyChangeKeyValue);
+// [[[/vars]]]
 
 #undef ADD_FUNC_VAR
 
@@ -190,6 +173,7 @@ extern "C" {
 // Task #3: Add new functions to hook.
 // NOTE: Add "New" at the beginning of the function name.
 
+// [[[funcs]]]
 __declspec(dllexport)
 INT WINAPI NewMessageBoxA(HWND hwnd, const char *text, const char *title, UINT uType)
 {
@@ -616,6 +600,7 @@ LONG WINAPI NewRegNotifyChangeKeyValue(
     }
     return ret;
 }
+// [[[/funcs]]]
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -644,6 +629,7 @@ struct HOOK_ENTRY
     };
 
 BEGIN_HOOK_ENTRIES()
+    // [[[entries]]]
     ADD_HOOK_ENTRY("user32.dll", MessageBoxA)
     ADD_HOOK_ENTRY("user32.dll", MessageBoxW)
     ADD_HOOK_ENTRY("user32.dll", PostMessageA)
@@ -672,6 +658,7 @@ BEGIN_HOOK_ENTRIES()
     ADD_HOOK_ENTRY("shell32.dll", Shell_NotifyIconA)
     ADD_HOOK_ENTRY("shell32.dll", Shell_NotifyIconW)
     ADD_HOOK_ENTRY("advapi32.dll", RegNotifyChangeKeyValue)
+    // [[[/entries]]]
 END_HOOK_ENTRIES()
 
 //////////////////////////////////////////////////////////////////////////////
