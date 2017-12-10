@@ -150,7 +150,7 @@ typedef LONG (WINAPI *FN_RegNotifyChangeKeyValue)(HKEY, BOOL, DWORD, HANDLE, BOO
 // Task #2: Add function variables
 
 #define ADD_FUNC_VAR(fn_name) \
-    FN_##fn_name p##fn_name = NULL
+    FN_##fn_name fn_##fn_name = NULL
 
 ADD_FUNC_VAR(MessageBoxA);
 ADD_FUNC_VAR(MessageBoxW);
@@ -192,10 +192,10 @@ __declspec(dllexport)
 INT WINAPI NewMessageBoxA(HWND hwnd, const char *text, const char *title, UINT uType)
 {
     INT ret = 0;
-    if (pMessageBoxA)
+    if (fn_MessageBoxA)
     {
         log_printf("MessageBoxA: enter: (%s, %s, %s, %u);\n", HWND2TEXT(hwnd), text, title, uType);
-        ret = (*pMessageBoxA)(hwnd, "OK, Hooked", title, uType);
+        ret = (*fn_MessageBoxA)(hwnd, "OK, Hooked", title, uType);
         log_printf("MessageBoxA: leave: ret = %d;\n", ret);
     }
     return ret;
@@ -205,10 +205,10 @@ __declspec(dllexport)
 INT WINAPI NewMessageBoxW(HWND hwnd, const WCHAR *text, const WCHAR *title, UINT uType)
 {
     INT ret = 0;
-    if (pMessageBoxW)
+    if (fn_MessageBoxW)
     {
         log_printf("MessageBoxW: enter: (%s, %ls, %ls, %u);\n", HWND2TEXT(hwnd), text, title, uType);
-        ret = (*pMessageBoxW)(hwnd, L"OK, Hooked", title, uType);
+        ret = (*fn_MessageBoxW)(hwnd, L"OK, Hooked", title, uType);
         log_printf("MessageBoxW: leave: ret = %d;\n", ret);
     }
     return ret;
@@ -221,10 +221,10 @@ __declspec(dllexport)
 BOOL WINAPI NewPostMessageA(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
     BOOL ret = 0;
-    if (pPostMessageA)
+    if (fn_PostMessageA)
     {
         log_printf("PostMessageA: enter: (%s, 0x%X, %p, %p): %s;\n", HWND2TEXT(hWnd), uMsg, wParam, lParam, GET_MSG_TEXT(FALSE));
-        ret = (*pPostMessageA)(hWnd, uMsg, wParam, lParam);
+        ret = (*fn_PostMessageA)(hWnd, uMsg, wParam, lParam);
         log_printf("PostMessageA: leave: ret = %d;\n", ret);
     }
     return ret;
@@ -234,10 +234,10 @@ __declspec(dllexport)
 BOOL WINAPI NewPostMessageW(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
     BOOL ret = FALSE;
-    if (pPostMessageW)
+    if (fn_PostMessageW)
     {
         log_printf("PostMessageW: enter: (%s, 0x%X, %p, %p): %s;\n", HWND2TEXT(hWnd), uMsg, wParam, lParam, GET_MSG_TEXT(TRUE));
-        ret = (*pPostMessageW)(hWnd, uMsg, wParam, lParam);
+        ret = (*fn_PostMessageW)(hWnd, uMsg, wParam, lParam);
         log_printf("PostMessageW: leave: ret = %d;\n", ret);
     }
     return ret;
@@ -247,10 +247,10 @@ __declspec(dllexport)
 LRESULT WINAPI NewSendMessageA(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
     LRESULT ret = 0;
-    if (pSendMessageA)
+    if (fn_SendMessageA)
     {
         log_printf("SendMessageA: enter: (%s, 0x%X, %p, %p): %s;\n", HWND2TEXT(hWnd), uMsg, wParam, lParam, GET_MSG_TEXT(FALSE));
-        ret = (*pSendMessageA)(hWnd, uMsg, wParam, lParam);
+        ret = (*fn_SendMessageA)(hWnd, uMsg, wParam, lParam);
         log_printf("SendMessageA: leave: ret = %d;\n", ret);
     }
     return ret;
@@ -260,10 +260,10 @@ __declspec(dllexport)
 LRESULT WINAPI NewSendMessageW(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
     LRESULT ret = FALSE;
-    if (pSendMessageW)
+    if (fn_SendMessageW)
     {
         log_printf("SendMessageW: enter: (%s, 0x%X, %p, %p): %s;\n", HWND2TEXT(hWnd), uMsg, wParam, lParam, GET_MSG_TEXT(TRUE));
-        ret = (*pSendMessageW)(hWnd, uMsg, wParam, lParam);
+        ret = (*fn_SendMessageW)(hWnd, uMsg, wParam, lParam);
         log_printf("SendMessageW: leave: ret = %d;\n", ret);
     }
     return ret;
@@ -273,10 +273,10 @@ __declspec(dllexport)
 BOOL WINAPI NewSendNotifyMessageA(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
     BOOL ret = FALSE;
-    if (pSendNotifyMessageA)
+    if (fn_SendNotifyMessageA)
     {
         log_printf("SendNotifyMessageA: enter: (%s, 0x%X, %p, %p): %s;\n", HWND2TEXT(hWnd), uMsg, wParam, lParam, GET_MSG_TEXT(FALSE));
-        ret = (*pSendNotifyMessageA)(hWnd, uMsg, wParam, lParam);
+        ret = (*fn_SendNotifyMessageA)(hWnd, uMsg, wParam, lParam);
         log_printf("SendNotifyMessageA: leave: ret = %d;\n", ret);
     }
     return ret;
@@ -286,10 +286,10 @@ __declspec(dllexport)
 BOOL WINAPI NewSendNotifyMessageW(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
     BOOL ret = FALSE;
-    if (pSendNotifyMessageW)
+    if (fn_SendNotifyMessageW)
     {
         log_printf("SendNotifyMessageW: enter: (%s, 0x%X, %p, %p): %s;\n", HWND2TEXT(hWnd), uMsg, wParam, lParam, GET_MSG_TEXT(TRUE));
-        ret = (*pSendNotifyMessageW)(hWnd, uMsg, wParam, lParam);
+        ret = (*fn_SendNotifyMessageW)(hWnd, uMsg, wParam, lParam);
         log_printf("SendNotifyMessageW: leave: ret = %d;\n", ret);
     }
     return ret;
@@ -306,10 +306,10 @@ NewSendMessageCallbackA(
     ULONG_PTR dwData)
 {
     BOOL ret = FALSE;
-    if (pSendMessageCallbackA)
+    if (fn_SendMessageCallbackA)
     {
         log_printf("SendMessageCallbackA: enter: (%s, 0x%X, %p, %p, %p, %p): %s;\n", HWND2TEXT(hWnd), uMsg, wParam, lParam, fnCallback, dwData, GET_MSG_TEXT(FALSE));
-        ret = (*pSendMessageCallbackA)(hWnd, uMsg, wParam, lParam, fnCallback, dwData);
+        ret = (*fn_SendMessageCallbackA)(hWnd, uMsg, wParam, lParam, fnCallback, dwData);
         log_printf("SendMessageCallbackA: leave: ret = %d;\n", ret);
     }
     return ret;
@@ -326,10 +326,10 @@ NewSendMessageCallbackW(
     ULONG_PTR dwData)
 {
     BOOL ret = FALSE;
-    if (pSendMessageCallbackW)
+    if (fn_SendMessageCallbackW)
     {
         log_printf("SendMessageCallbackW: enter: (%s, 0x%X, %p, %p, %p, %p): %s;\n", HWND2TEXT(hWnd), uMsg, wParam, lParam, fnCallback, dwData, GET_MSG_TEXT(TRUE));
-        ret = (*pSendMessageCallbackW)(hWnd, uMsg, wParam, lParam, fnCallback, dwData);
+        ret = (*fn_SendMessageCallbackW)(hWnd, uMsg, wParam, lParam, fnCallback, dwData);
         log_printf("SendMessageCallbackW: leave: ret = %d;\n", ret);
     }
     return ret;
@@ -347,10 +347,10 @@ NewSendMessageTimeoutA(
     LPDWORD pdwResult)
 {
     LRESULT ret = 0;
-    if (pSendMessageTimeoutA)
+    if (fn_SendMessageTimeoutA)
     {
         log_printf("SendMessageTimeoutA: enter: (%s, 0x%X, %p, %p, %u, %u, %p): %s;\n", HWND2TEXT(hWnd), uMsg, wParam, lParam, fuFlags, uTimeout, pdwResult, GET_MSG_TEXT(FALSE));
-        ret = (*pSendMessageTimeoutA)(hWnd, uMsg, wParam, lParam, fuFlags, uTimeout, pdwResult);
+        ret = (*fn_SendMessageTimeoutA)(hWnd, uMsg, wParam, lParam, fuFlags, uTimeout, pdwResult);
         log_printf("SendMessageTimeoutA: leave: ret = %d;\n", ret);
     }
     return ret;
@@ -368,10 +368,10 @@ NewSendMessageTimeoutW(
     LPDWORD pdwResult)
 {
     LRESULT ret = 0;
-    if (pSendMessageTimeoutW)
+    if (fn_SendMessageTimeoutW)
     {
         log_printf("SendMessageTimeoutW: enter: (%s, 0x%X, %p, %p, %u, %u, %p): %s;\n", HWND2TEXT(hWnd), uMsg, wParam, lParam, fuFlags, uTimeout, pdwResult, GET_MSG_TEXT(TRUE));
-        ret = (*pSendMessageTimeoutW)(hWnd, uMsg, wParam, lParam, fuFlags, uTimeout, pdwResult);
+        ret = (*fn_SendMessageTimeoutW)(hWnd, uMsg, wParam, lParam, fuFlags, uTimeout, pdwResult);
         log_printf("SendMessageTimeoutW: leave: ret = %d;\n", ret);
     }
     return ret;
@@ -381,10 +381,10 @@ __declspec(dllexport)
 INT WINAPI NewBroadcastSystemMessageA(DWORD dwFlags, LPDWORD lpdwRecipients, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
     INT ret = 0;
-    if (pBroadcastSystemMessageA)
+    if (fn_BroadcastSystemMessageA)
     {
         log_printf("BroadcastSystemMessageA: enter: (0x%08lX, %p, 0x%X, %p, %p): %s;\n", dwFlags, lpdwRecipients, uMsg, wParam, lParam, GET_MSG_TEXT(FALSE));
-        ret = (*pBroadcastSystemMessageA)(dwFlags, lpdwRecipients, uMsg, wParam, lParam);
+        ret = (*fn_BroadcastSystemMessageA)(dwFlags, lpdwRecipients, uMsg, wParam, lParam);
         log_printf("BroadcastSystemMessageA: leave: ret = %d;\n", ret);
     }
     return ret;
@@ -394,10 +394,10 @@ __declspec(dllexport)
 INT WINAPI NewBroadcastSystemMessageW(DWORD dwFlags, LPDWORD lpdwRecipients, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
     INT ret = 0;
-    if (pBroadcastSystemMessageW)
+    if (fn_BroadcastSystemMessageW)
     {
         log_printf("BroadcastSystemMessageW: enter: (0x%08lX, %p, 0x%X, %p, %p): %s;\n", dwFlags, lpdwRecipients, uMsg, wParam, lParam, GET_MSG_TEXT(TRUE));
-        ret = (*pBroadcastSystemMessageW)(dwFlags, lpdwRecipients, uMsg, wParam, lParam);
+        ret = (*fn_BroadcastSystemMessageW)(dwFlags, lpdwRecipients, uMsg, wParam, lParam);
         log_printf("BroadcastSystemMessageW: leave: ret = %d;\n", ret);
     }
     return ret;
@@ -410,10 +410,10 @@ void WINAPI NewNotifyWinEvent(
     LONG  idObject,
     LONG  idChild)
 {
-    if (pNotifyWinEvent)
+    if (fn_NotifyWinEvent)
     {
         log_printf("NotifyWinEvent: enter: (0x%08lX, %s, %ld, %ld);\n", event, HWND2TEXT(hwnd), idObject, idChild);
-        (*pNotifyWinEvent)(event, hwnd, idObject, idChild);
+        (*fn_NotifyWinEvent)(event, hwnd, idObject, idChild);
         log_printf("NotifyWinEvent: leave;\n");
     }
 }
@@ -426,10 +426,10 @@ NewRegisterDeviceNotificationW(
     DWORD  Flags)
 {
     HANDLE ret = NULL;
-    if (pRegisterDeviceNotificationW)
+    if (fn_RegisterDeviceNotificationW)
     {
         log_printf("RegisterDeviceNotificationW: enter: (%p, %p, 0x%08lX);\n", hRecipient, NotificationFilter, Flags);
-        ret = (*pRegisterDeviceNotificationW)(hRecipient, NotificationFilter, Flags);
+        ret = (*fn_RegisterDeviceNotificationW)(hRecipient, NotificationFilter, Flags);
         log_printf("RegisterDeviceNotificationW: leave: ret = %p;\n", ret);
     }
     return ret;
@@ -440,10 +440,10 @@ BOOL WINAPI
 NewUnregisterDeviceNotification(HANDLE Handle)
 {
     BOOL ret = FALSE;
-    if (pUnregisterDeviceNotification)
+    if (fn_UnregisterDeviceNotification)
     {
         log_printf("UnregisterDeviceNotification: enter: (%p);\n", Handle);
-        ret = (*pUnregisterDeviceNotification)(Handle);
+        ret = (*fn_UnregisterDeviceNotification)(Handle);
         log_printf("UnregisterDeviceNotification: leave: ret = %d;\n", ret);
     }
     return ret;
@@ -454,10 +454,10 @@ LRESULT WINAPI
 NewSendDlgItemMessageA(HWND hWnd, int nDlgItem, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
     LONG ret = FALSE;
-    if (pSendDlgItemMessageA)
+    if (fn_SendDlgItemMessageA)
     {
         log_printf("SendDlgItemMessageA: enter: (%s, %d, 0x%X, %p, %p): %s;\n", HWND2TEXT(hWnd), nDlgItem, uMsg, wParam, lParam, GET_MSG_TEXT(FALSE));
-        ret = (*pSendDlgItemMessageA)(hWnd, nDlgItem, uMsg, wParam, lParam);
+        ret = (*fn_SendDlgItemMessageA)(hWnd, nDlgItem, uMsg, wParam, lParam);
         log_printf("SendDlgItemMessageA: leave: ret = 0x%08lX;\n", ret);
     }
     return ret;
@@ -468,10 +468,10 @@ LRESULT WINAPI
 NewSendDlgItemMessageW(HWND hWnd, int nDlgItem, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
     LONG ret = FALSE;
-    if (pSendDlgItemMessageW)
+    if (fn_SendDlgItemMessageW)
     {
         log_printf("SendDlgItemMessageW: enter: (%s, %d, 0x%X, %p, %p): %s;\n", HWND2TEXT(hWnd), nDlgItem, uMsg, wParam, lParam, GET_MSG_TEXT(TRUE));
-        ret = (*pSendDlgItemMessageW)(hWnd, nDlgItem, uMsg, wParam, lParam);
+        ret = (*fn_SendDlgItemMessageW)(hWnd, nDlgItem, uMsg, wParam, lParam);
         log_printf("SendDlgItemMessageW: leave: ret = 0x%08lX;\n", ret);
     }
     return ret;
@@ -481,10 +481,10 @@ __declspec(dllexport)
 void STDAPICALLTYPE
 NewSHChangeNotify(LONG wEventId, UINT uFlags, LPCVOID dwItem1, LPCVOID dwItem2)
 {
-    if (pSHChangeNotify)
+    if (fn_SHChangeNotify)
     {
         log_printf("SHChangeNotify: enter: (%ld, 0x%08lX, %p, %p);\n", wEventId, uFlags, dwItem1, dwItem2);
-        (*pSHChangeNotify)(wEventId, uFlags, dwItem1, dwItem2);
+        (*fn_SHChangeNotify)(wEventId, uFlags, dwItem1, dwItem2);
         log_printf("SHChangeNotify: leave;\n");
     }
 }
@@ -498,10 +498,10 @@ NewSHChangeNotification_Lock(
     LONG           *plEvent)
 {
     HANDLE ret = NULL;
-    if (pSHChangeNotification_Lock)
+    if (fn_SHChangeNotification_Lock)
     {
         log_printf("SHChangeNotification_Lock: enter: (%p, 0x%08lX, %p, %p);\n", hChange, dwProcId, pppidl, plEvent);
-        ret = (*pSHChangeNotification_Lock)(hChange, dwProcId, pppidl, plEvent);
+        ret = (*fn_SHChangeNotification_Lock)(hChange, dwProcId, pppidl, plEvent);
         log_printf("SHChangeNotification_Lock: leave: ret = %p;\n", ret);
     }
     return ret;
@@ -512,10 +512,10 @@ BOOL STDAPICALLTYPE
 NewSHChangeNotification_Unlock(HANDLE hLock)
 {
     BOOL ret = FALSE;
-    if (pSHChangeNotification_Unlock)
+    if (fn_SHChangeNotification_Unlock)
     {
         log_printf("SHChangeNotification_Unlock: enter: (%p);\n", hLock);
-        ret = (*pSHChangeNotification_Unlock)(hLock);
+        ret = (*fn_SHChangeNotification_Unlock)(hLock);
         log_printf("SHChangeNotification_Unlock: leave: ret = %d;\n", ret);
     }
     return ret;
@@ -532,10 +532,10 @@ NewSHChangeNotifyRegister(
     void    *pshcne)
 {
     ULONG ret = 0;
-    if (pSHChangeNotifyRegister)
+    if (fn_SHChangeNotifyRegister)
     {
         log_printf("SHChangeNotifyRegister: enter: (%p, %d, %ld, %u, %d, %p);\n", hwnd, fSources, fEvents, wMsg, cEntries, pshcne);
-        ret = (*pSHChangeNotifyRegister)(hwnd, fSources, fEvents, wMsg, cEntries, pshcne);
+        ret = (*fn_SHChangeNotifyRegister)(hwnd, fSources, fEvents, wMsg, cEntries, pshcne);
         log_printf("SHChangeNotifyRegister: leave: ret = 0x%08lX;\n", ret);
     }
     return ret;
@@ -546,10 +546,10 @@ BOOL STDAPICALLTYPE
 NewSHChangeNotifyDeregister(ULONG ulID)
 {
     BOOL ret = FALSE;
-    if (pSHChangeNotifyDeregister)
+    if (fn_SHChangeNotifyDeregister)
     {
         log_printf("SHChangeNotifyDeregister: enter: (0x%08lX);\n", ulID);
-        ret = (*pSHChangeNotifyDeregister)(ulID);
+        ret = (*fn_SHChangeNotifyDeregister)(ulID);
         log_printf("SHChangeNotifyDeregister: leave: ret = %d;\n", ret);
     }
     return ret;
@@ -560,10 +560,10 @@ BOOL STDAPICALLTYPE
 NewSHChangeNotifySuspendResume(BOOL b1, LPITEMIDLIST pidl, BOOL b2, LONG n)
 {
     BOOL ret = FALSE;
-    if (pSHChangeNotifySuspendResume)
+    if (fn_SHChangeNotifySuspendResume)
     {
         log_printf("SHChangeNotifySuspendResume: enter: (%d, %p, %d, %ld);\n", b1, pidl, b2, n);
-        ret = (*pSHChangeNotifySuspendResume)(b1, pidl, b2, n);
+        ret = (*fn_SHChangeNotifySuspendResume)(b1, pidl, b2, n);
         log_printf("SHChangeNotifySuspendResume: leave: ret = %d;\n", ret);
     }
     return ret;
@@ -574,10 +574,10 @@ BOOL STDAPICALLTYPE
 NewShell_NotifyIconA(DWORD dwMessage, PNOTIFYICONDATAA lpdata)
 {
     BOOL ret = FALSE;
-    if (pShell_NotifyIconA)
+    if (fn_Shell_NotifyIconA)
     {
         log_printf("Shell_NotifyIconA: enter: (0x%08lX, %p);\n", dwMessage, lpdata);
-        ret = (*pShell_NotifyIconA)(dwMessage, lpdata);
+        ret = (*fn_Shell_NotifyIconA)(dwMessage, lpdata);
         log_printf("Shell_NotifyIconA: leave: ret = %d;\n", ret);
     }
     return ret;
@@ -588,10 +588,10 @@ BOOL STDAPICALLTYPE
 NewShell_NotifyIconW(DWORD dwMessage, PNOTIFYICONDATAW lpdata)
 {
     BOOL ret = FALSE;
-    if (pShell_NotifyIconW)
+    if (fn_Shell_NotifyIconW)
     {
         log_printf("Shell_NotifyIconW: enter: (0x%08lX, %p);\n", dwMessage, lpdata);
-        ret = (*pShell_NotifyIconW)(dwMessage, lpdata);
+        ret = (*fn_Shell_NotifyIconW)(dwMessage, lpdata);
         log_printf("Shell_NotifyIconW: leave: ret = %d;\n", ret);
     }
     return ret;
@@ -606,10 +606,10 @@ LONG WINAPI NewRegNotifyChangeKeyValue(
     BOOL fAsynchronous)
 {
     LONG ret = 0;
-    if (pRegNotifyChangeKeyValue)
+    if (fn_RegNotifyChangeKeyValue)
     {
         log_printf("RegNotifyChangeKeyValue: enter: (%p, %d, 0x%08lX, %p, %d);\n", hKey, bWatchSubtree, dwNotifyFilter, hEvent, fAsynchronous);
-        ret = (*pRegNotifyChangeKeyValue)(hKey, bWatchSubtree, dwNotifyFilter, hEvent, fAsynchronous);
+        ret = (*fn_RegNotifyChangeKeyValue)(hKey, bWatchSubtree, dwNotifyFilter, hEvent, fAsynchronous);
         log_printf("RegNotifyChangeKeyValue: leave: ret = %ld;\n", ret);
     }
     return ret;
@@ -636,7 +636,7 @@ struct HOOK_ENTRY
 #define ADD_HOOK_ENTRY(dll_file, fn_name) \
         { dll_file, #fn_name, \
           reinterpret_cast<FARPROC>(New##fn_name), \
-          reinterpret_cast<FARPROC&>(p##fn_name) },
+          reinterpret_cast<FARPROC&>(fn_##fn_name) },
 
 #define END_HOOK_ENTRIES() \
     };
