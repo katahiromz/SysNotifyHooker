@@ -74,15 +74,6 @@ endif()
 
 ##############################################################################
 
-option(USE_UNICODE "Use Unicode" ON)
-
-if (USE_UNICODE)
-    add_definitions(-DUNICODE -D_UNICODE)
-    message(STATUS "Unicode will be used")
-else()
-    message(STATUS "Unicode won't be used")
-endif()
-
 include_directories(. payload injector)
 
 if(CMAKE_SIZEOF_VOID_P EQUAL 8)

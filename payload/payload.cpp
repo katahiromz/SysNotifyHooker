@@ -208,8 +208,8 @@ INT WINAPI NewMessageBoxW(HWND hwnd, const WCHAR *text, const WCHAR *title, UINT
     return ret;
 }
 
-#define GET_MSG_TEXT() \
-    md_dump(uMsg, wParam, lParam).c_str()
+#define GET_MSG_TEXT(bUnicode) \
+    md_dump(bUnicode, uMsg, wParam, lParam).c_str()
 
 __declspec(dllexport)
 BOOL WINAPI NewPostMessageA(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
@@ -217,7 +217,7 @@ BOOL WINAPI NewPostMessageA(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
     BOOL ret = 0;
     if (pPostMessageA)
     {
-        log_printf("PostMessageA: enter: (%s, 0x%X, %p, %p): %s;\n", HWND2TEXT(hWnd), uMsg, wParam, lParam, GET_MSG_TEXT());
+        log_printf("PostMessageA: enter: (%s, 0x%X, %p, %p): %s;\n", HWND2TEXT(hWnd), uMsg, wParam, lParam, GET_MSG_TEXT(FALSE));
         ret = (*pPostMessageA)(hWnd, uMsg, wParam, lParam);
         log_printf("PostMessageA: leave: ret = %d;\n", ret);
     }
@@ -230,7 +230,7 @@ BOOL WINAPI NewPostMessageW(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
     BOOL ret = FALSE;
     if (pPostMessageW)
     {
-        log_printf("PostMessageW: enter: (%s, 0x%X, %p, %p): %s;\n", HWND2TEXT(hWnd), uMsg, wParam, lParam, GET_MSG_TEXT());
+        log_printf("PostMessageW: enter: (%s, 0x%X, %p, %p): %s;\n", HWND2TEXT(hWnd), uMsg, wParam, lParam, GET_MSG_TEXT(TRUE));
         ret = (*pPostMessageW)(hWnd, uMsg, wParam, lParam);
         log_printf("PostMessageW: leave: ret = %d;\n", ret);
     }
@@ -243,7 +243,7 @@ LRESULT WINAPI NewSendMessageA(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPara
     LRESULT ret = 0;
     if (pSendMessageA)
     {
-        log_printf("SendMessageA: enter: (%s, 0x%X, %p, %p): %s;\n", HWND2TEXT(hWnd), uMsg, wParam, lParam, GET_MSG_TEXT());
+        log_printf("SendMessageA: enter: (%s, 0x%X, %p, %p): %s;\n", HWND2TEXT(hWnd), uMsg, wParam, lParam, GET_MSG_TEXT(FALSE));
         ret = (*pSendMessageA)(hWnd, uMsg, wParam, lParam);
         log_printf("SendMessageA: leave: ret = %d;\n", ret);
     }
@@ -256,7 +256,7 @@ LRESULT WINAPI NewSendMessageW(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPara
     LRESULT ret = FALSE;
     if (pSendMessageW)
     {
-        log_printf("SendMessageW: enter: (%s, 0x%X, %p, %p): %s;\n", HWND2TEXT(hWnd), uMsg, wParam, lParam, GET_MSG_TEXT());
+        log_printf("SendMessageW: enter: (%s, 0x%X, %p, %p): %s;\n", HWND2TEXT(hWnd), uMsg, wParam, lParam, GET_MSG_TEXT(TRUE));
         ret = (*pSendMessageW)(hWnd, uMsg, wParam, lParam);
         log_printf("SendMessageW: leave: ret = %d;\n", ret);
     }
@@ -269,7 +269,7 @@ BOOL WINAPI NewSendNotifyMessageA(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
     BOOL ret = FALSE;
     if (pSendNotifyMessageA)
     {
-        log_printf("SendNotifyMessageA: enter: (%s, 0x%X, %p, %p): %s;\n", HWND2TEXT(hWnd), uMsg, wParam, lParam, GET_MSG_TEXT());
+        log_printf("SendNotifyMessageA: enter: (%s, 0x%X, %p, %p): %s;\n", HWND2TEXT(hWnd), uMsg, wParam, lParam, GET_MSG_TEXT(FALSE));
         ret = (*pSendNotifyMessageA)(hWnd, uMsg, wParam, lParam);
         log_printf("SendNotifyMessageA: leave: ret = %d;\n", ret);
     }
@@ -282,7 +282,7 @@ BOOL WINAPI NewSendNotifyMessageW(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
     BOOL ret = FALSE;
     if (pSendNotifyMessageW)
     {
-        log_printf("SendNotifyMessageW: enter: (%s, 0x%X, %p, %p): %s;\n", HWND2TEXT(hWnd), uMsg, wParam, lParam, GET_MSG_TEXT());
+        log_printf("SendNotifyMessageW: enter: (%s, 0x%X, %p, %p): %s;\n", HWND2TEXT(hWnd), uMsg, wParam, lParam, GET_MSG_TEXT(TRUE));
         ret = (*pSendNotifyMessageW)(hWnd, uMsg, wParam, lParam);
         log_printf("SendNotifyMessageW: leave: ret = %d;\n", ret);
     }
@@ -302,7 +302,7 @@ NewSendMessageCallbackA(
     BOOL ret = FALSE;
     if (pSendMessageCallbackA)
     {
-        log_printf("SendMessageCallbackA: enter: (%s, 0x%X, %p, %p, %p, %p): %s;\n", HWND2TEXT(hWnd), uMsg, wParam, lParam, fnCallback, dwData, GET_MSG_TEXT());
+        log_printf("SendMessageCallbackA: enter: (%s, 0x%X, %p, %p, %p, %p): %s;\n", HWND2TEXT(hWnd), uMsg, wParam, lParam, fnCallback, dwData, GET_MSG_TEXT(FALSE));
         ret = (*pSendMessageCallbackA)(hWnd, uMsg, wParam, lParam, fnCallback, dwData);
         log_printf("SendMessageCallbackA: leave: ret = %d;\n", ret);
     }
@@ -322,7 +322,7 @@ NewSendMessageCallbackW(
     BOOL ret = FALSE;
     if (pSendMessageCallbackW)
     {
-        log_printf("SendMessageCallbackW: enter: (%s, 0x%X, %p, %p, %p, %p): %s;\n", HWND2TEXT(hWnd), uMsg, wParam, lParam, fnCallback, dwData, GET_MSG_TEXT());
+        log_printf("SendMessageCallbackW: enter: (%s, 0x%X, %p, %p, %p, %p): %s;\n", HWND2TEXT(hWnd), uMsg, wParam, lParam, fnCallback, dwData, GET_MSG_TEXT(TRUE));
         ret = (*pSendMessageCallbackW)(hWnd, uMsg, wParam, lParam, fnCallback, dwData);
         log_printf("SendMessageCallbackW: leave: ret = %d;\n", ret);
     }
@@ -343,7 +343,7 @@ NewSendMessageTimeoutA(
     LRESULT ret = 0;
     if (pSendMessageTimeoutA)
     {
-        log_printf("SendMessageTimeoutA: enter: (%s, 0x%X, %p, %p, %u, %u, %p): %s;\n", HWND2TEXT(hWnd), uMsg, wParam, lParam, fuFlags, uTimeout, pdwResult, GET_MSG_TEXT());
+        log_printf("SendMessageTimeoutA: enter: (%s, 0x%X, %p, %p, %u, %u, %p): %s;\n", HWND2TEXT(hWnd), uMsg, wParam, lParam, fuFlags, uTimeout, pdwResult, GET_MSG_TEXT(FALSE));
         ret = (*pSendMessageTimeoutA)(hWnd, uMsg, wParam, lParam, fuFlags, uTimeout, pdwResult);
         log_printf("SendMessageTimeoutA: leave: ret = %d;\n", ret);
     }
@@ -364,7 +364,7 @@ NewSendMessageTimeoutW(
     LRESULT ret = 0;
     if (pSendMessageTimeoutW)
     {
-        log_printf("SendMessageTimeoutW: enter: (%s, 0x%X, %p, %p, %u, %u, %p): %s;\n", HWND2TEXT(hWnd), uMsg, wParam, lParam, fuFlags, uTimeout, pdwResult, GET_MSG_TEXT());
+        log_printf("SendMessageTimeoutW: enter: (%s, 0x%X, %p, %p, %u, %u, %p): %s;\n", HWND2TEXT(hWnd), uMsg, wParam, lParam, fuFlags, uTimeout, pdwResult, GET_MSG_TEXT(TRUE));
         ret = (*pSendMessageTimeoutW)(hWnd, uMsg, wParam, lParam, fuFlags, uTimeout, pdwResult);
         log_printf("SendMessageTimeoutW: leave: ret = %d;\n", ret);
     }
@@ -377,7 +377,7 @@ INT WINAPI NewBroadcastSystemMessageA(DWORD dwFlags, LPDWORD lpdwRecipients, UIN
     INT ret = 0;
     if (pBroadcastSystemMessageA)
     {
-        log_printf("BroadcastSystemMessageA: enter: (0x%08lX, %p, 0x%X, %p, %p): %s;\n", dwFlags, lpdwRecipients, uMsg, wParam, lParam, GET_MSG_TEXT());
+        log_printf("BroadcastSystemMessageA: enter: (0x%08lX, %p, 0x%X, %p, %p): %s;\n", dwFlags, lpdwRecipients, uMsg, wParam, lParam, GET_MSG_TEXT(FALSE));
         ret = (*pBroadcastSystemMessageA)(dwFlags, lpdwRecipients, uMsg, wParam, lParam);
         log_printf("BroadcastSystemMessageA: leave: ret = %d;\n", ret);
     }
@@ -390,7 +390,7 @@ INT WINAPI NewBroadcastSystemMessageW(DWORD dwFlags, LPDWORD lpdwRecipients, UIN
     INT ret = 0;
     if (pBroadcastSystemMessageW)
     {
-        log_printf("BroadcastSystemMessageW: enter: (0x%08lX, %p, 0x%X, %p, %p): %s;\n", dwFlags, lpdwRecipients, uMsg, wParam, lParam, GET_MSG_TEXT());
+        log_printf("BroadcastSystemMessageW: enter: (0x%08lX, %p, 0x%X, %p, %p): %s;\n", dwFlags, lpdwRecipients, uMsg, wParam, lParam, GET_MSG_TEXT(TRUE));
         ret = (*pBroadcastSystemMessageW)(dwFlags, lpdwRecipients, uMsg, wParam, lParam);
         log_printf("BroadcastSystemMessageW: leave: ret = %d;\n", ret);
     }
@@ -450,7 +450,7 @@ NewSendDlgItemMessageA(HWND hWnd, int nDlgItem, UINT uMsg, WPARAM wParam, LPARAM
     LONG ret = FALSE;
     if (pSendDlgItemMessageA)
     {
-        log_printf("SendDlgItemMessageA: enter: (%s, %d, 0x%X, %p, %p): %s;\n", HWND2TEXT(hWnd), nDlgItem, uMsg, wParam, lParam, GET_MSG_TEXT());
+        log_printf("SendDlgItemMessageA: enter: (%s, %d, 0x%X, %p, %p): %s;\n", HWND2TEXT(hWnd), nDlgItem, uMsg, wParam, lParam, GET_MSG_TEXT(FALSE));
         ret = (*pSendDlgItemMessageA)(hWnd, nDlgItem, uMsg, wParam, lParam);
         log_printf("SendDlgItemMessageA: leave: ret = 0x%08lX;\n", ret);
     }
@@ -464,7 +464,7 @@ NewSendDlgItemMessageW(HWND hWnd, int nDlgItem, UINT uMsg, WPARAM wParam, LPARAM
     LONG ret = FALSE;
     if (pSendDlgItemMessageW)
     {
-        log_printf("SendDlgItemMessageW: enter: (%s, %d, 0x%X, %p, %p): %s;\n", HWND2TEXT(hWnd), nDlgItem, uMsg, wParam, lParam, GET_MSG_TEXT());
+        log_printf("SendDlgItemMessageW: enter: (%s, %d, 0x%X, %p, %p): %s;\n", HWND2TEXT(hWnd), nDlgItem, uMsg, wParam, lParam, GET_MSG_TEXT(TRUE));
         ret = (*pSendDlgItemMessageW)(hWnd, nDlgItem, uMsg, wParam, lParam);
         log_printf("SendDlgItemMessageW: leave: ret = 0x%08lX;\n", ret);
     }
