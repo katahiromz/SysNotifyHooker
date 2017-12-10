@@ -44,7 +44,7 @@ BOOL
 md_OnCreate(HWND hwnd, LPCREATESTRUCT lpCreateStruct)
 {
     char buf[512];
-    wsprintfA(buf, "WM_CREATE(%p)", lpCreateStruct);
+    wsprintfA(buf, "WM_CREATE(lpCreateStruct:%p)", lpCreateStruct);
     *md_hwnd2string(hwnd) = buf;
     return TRUE;
 }
@@ -57,49 +57,49 @@ void md_OnDestroy(HWND hwnd)
 void md_OnMove(HWND hwnd, int x, int y)
 {
     char buf[512];
-    wsprintfA(buf, "WM_MOVE(%d, %d)", x, y);
+    wsprintfA(buf, "WM_MOVE(x:%d, y:%d)", x, y);
     *md_hwnd2string(hwnd) = buf;
 }
 
 void md_OnSize(HWND hwnd, UINT state, int cx, int cy)
 {
     char buf[512];
-    wsprintfA(buf, "WM_SIZE(%u, %d, %d)", state, cx, cy);
+    wsprintfA(buf, "WM_SIZE(state:%u, cx:%d, cy:%d)", state, cx, cy);
     *md_hwnd2string(hwnd) = buf;
 }
 
 void md_OnActivate(HWND hwnd, UINT state, HWND hwndActDeact, BOOL fMinimized)
 {
     char buf[512];
-    wsprintfA(buf, "WM_ACTIVATE(%u, %p, %d)", state, hwndActDeact, fMinimized);
+    wsprintfA(buf, "WM_ACTIVATE(state:%u, hwndActDeact:%p, fMinimized:%d)", state, hwndActDeact, fMinimized);
     *md_hwnd2string(hwnd) = buf;
 }
 
 void md_OnSetFocus(HWND hwnd, HWND hwndOldFocus)
 {
     char buf[512];
-    wsprintfA(buf, "WM_SETFOCUS(%p)", hwndOldFocus);
+    wsprintfA(buf, "WM_SETFOCUS(hwndOldFocus:%p)", hwndOldFocus);
     *md_hwnd2string(hwnd) = buf;
 }
 
 void md_OnKillFocus(HWND hwnd, HWND hwndNewFocus)
 {
     char buf[512];
-    wsprintfA(buf, "WM_KILLFOCUS(%p)", hwndNewFocus);
+    wsprintfA(buf, "WM_KILLFOCUS(hwndNewFocus:%p)", hwndNewFocus);
     *md_hwnd2string(hwnd) = buf;
 }
 
 void md_OnEnable(HWND hwnd, BOOL fEnable)
 {
     char buf[512];
-    wsprintfA(buf, "WM_ENABLE(%d)", fEnable);
+    wsprintfA(buf, "WM_ENABLE(fEnable:%d)", fEnable);
     *md_hwnd2string(hwnd) = buf;
 }
 
 void md_OnSetRedraw(HWND hwnd, BOOL fRedraw)
 {
     char buf[512];
-    wsprintfA(buf, "WM_SETREDRAW(%d)", fRedraw);
+    wsprintfA(buf, "WM_SETREDRAW(fRedraw:%d)", fRedraw);
     *md_hwnd2string(hwnd) = buf;
 }
 
@@ -107,9 +107,9 @@ void md_OnSetText(HWND hwnd, LPCTSTR lpszText)
 {
     char buf[512];
     #ifdef UNICODE
-        wsprintfA(buf, "WM_SETTEXT(%ls)", lpszText);
+        wsprintfA(buf, "WM_SETTEXT(lpszText:%ls)", lpszText);
     #else
-        wsprintfA(buf, "WM_SETTEXT(%s)", lpszText);
+        wsprintfA(buf, "WM_SETTEXT(lpszText:%s)", lpszText);
     #endif
     *md_hwnd2string(hwnd) = buf;
 }
@@ -117,7 +117,7 @@ void md_OnSetText(HWND hwnd, LPCTSTR lpszText)
 INT md_OnGetText(HWND hwnd, int cchTextMax, LPTSTR lpszText)
 {
     char buf[512];
-    wsprintfA(buf, "WM_GETTEXT(%d, %p)", cchTextMax, lpszText);
+    wsprintfA(buf, "WM_GETTEXT(cchTextMax:%d, lpszText:%p)", cchTextMax, lpszText);
     *md_hwnd2string(hwnd) = buf;
 }
 
@@ -151,21 +151,21 @@ BOOL md_OnQueryOpen(HWND hwnd)
 void md_OnEndSession(HWND hwnd, BOOL fEnding)
 {
     char buf[512];
-    wsprintfA(buf, "WM_ENDSESSION(%d)", fEnding);
+    wsprintfA(buf, "WM_ENDSESSION(fEnding:%d)", fEnding);
     *md_hwnd2string(hwnd) = buf;
 }
 
 void md_OnQuit(HWND hwnd, int exitCode)
 {
     char buf[512];
-    wsprintfA(buf, "WM_QUIT(%d)", exitCode);
+    wsprintfA(buf, "WM_QUIT(exitCode:%d)", exitCode);
     *md_hwnd2string(hwnd) = buf;
 }
 
 BOOL md_OnEraseBkgnd(HWND hwnd, HDC hdc)
 {
     char buf[512];
-    wsprintfA(buf, "WM_ERASEBKGND(%p)", hdc);
+    wsprintfA(buf, "WM_ERASEBKGND(hdc:%p)", hdc);
     *md_hwnd2string(hwnd) = buf;
 }
 
@@ -177,7 +177,7 @@ void md_OnSysColorChange(HWND hwnd)
 void md_OnShowWindow(HWND hwnd, BOOL fShow, UINT status)
 {
     char buf[512];
-    wsprintfA(buf, "WM_SHOWWINDOW(%d, %u)", fShow, status);
+    wsprintfA(buf, "WM_SHOWWINDOW(fShow:%d, status:%u)", fShow, status);
     *md_hwnd2string(hwnd) = buf;
 }
 
@@ -185,9 +185,9 @@ void md_OnWinIniChange(HWND hwnd, LPCTSTR lpszSectionName)
 {
     char buf[512];
     #ifdef UNICODE
-        wsprintfA(buf, "WM_WININICHANGE(%ls)", lpszSectionName);
+        wsprintfA(buf, "WM_WININICHANGE(lpszSectionName:%ls)", lpszSectionName);
     #else
-        wsprintfA(buf, "WM_WININICHANGE(%s)", lpszSectionName);
+        wsprintfA(buf, "WM_WININICHANGE(lpszSectionName:%s)", lpszSectionName);
     #endif
     *md_hwnd2string(hwnd) = buf;
 }
@@ -201,9 +201,9 @@ void md_OnDevModeChange(HWND hwnd, LPCTSTR lpszDeviceName)
 {
     char buf[512];
     #ifdef UNICODE
-        wsprintfA(buf, "WM_DEVMODECHANGE(%s)", lpszDeviceName);
+        wsprintfA(buf, "WM_DEVMODECHANGE(lpszDeviceName:%ls)", lpszDeviceName);
     #else
-        wsprintfA(buf, "WM_DEVMODECHANGE(%ls)", lpszDeviceName);
+        wsprintfA(buf, "WM_DEVMODECHANGE(lpszDeviceName:%s)", lpszDeviceName);
     #endif
     *md_hwnd2string(hwnd) = buf;
 }
@@ -211,7 +211,7 @@ void md_OnDevModeChange(HWND hwnd, LPCTSTR lpszDeviceName)
 void md_OnActivateApp(HWND hwnd, BOOL fActivate, DWORD dwThreadId)
 {
     char buf[512];
-    wsprintfA(buf, "WM_ACTIVATEAPP(%d, 0x%08lX)", fActivate, dwThreadId);
+    wsprintfA(buf, "WM_ACTIVATEAPP(fActivate:%d, dwThreadId:0x%08lX)", fActivate, dwThreadId);
     *md_hwnd2string(hwnd) = buf;
 }
 
@@ -233,7 +233,7 @@ void md_OnCancelMode(HWND hwnd)
 BOOL md_OnSetCursor(HWND hwnd, HWND hwndCursor, UINT codeHitTest, UINT msg)
 {
     char buf[512];
-    wsprintfA(buf, "WM_SETCURSOR(%p, %u, %u)", hwndCursor, codeHitTest, msg);
+    wsprintfA(buf, "WM_SETCURSOR(hwndCursor:%p, codeHitTest:%u, msg:%u)", hwndCursor, codeHitTest, msg);
     *md_hwnd2string(hwnd) = buf;
     return FALSE;
 }
@@ -241,7 +241,7 @@ BOOL md_OnSetCursor(HWND hwnd, HWND hwndCursor, UINT codeHitTest, UINT msg)
 int md_OnMouseActivate(HWND hwnd, HWND hwndTopLevel, UINT codeHitTest, UINT msg)
 {
     char buf[512];
-    wsprintfA(buf, "WM_MOUSEACTIVATE(%p, %u, %u)", hwndTopLevel, codeHitTest, msg);
+    wsprintfA(buf, "WM_MOUSEACTIVATE(hwndTopLevel:%p, codeHitTest:%u, msg:%u)", hwndTopLevel, codeHitTest, msg);
     *md_hwnd2string(hwnd) = buf;
     return 0;
 }
@@ -259,14 +259,14 @@ void md_OnQueueSync(HWND hwnd)
 void md_OnGetMinMaxInfo(HWND hwnd, LPMINMAXINFO lpMinMaxInfo)
 {
     char buf[512];
-    wsprintfA(buf, "WM_GETMINMAXINFO(%p)", lpMinMaxInfo);
+    wsprintfA(buf, "WM_GETMINMAXINFO(lpMinMaxInfo:%p)", lpMinMaxInfo);
     *md_hwnd2string(hwnd) = buf;
 }
 
 BOOL md_OnIconEraseBkgnd(HWND hwnd, HDC hdc)
 {
     char buf[512];
-    wsprintfA(buf, "WM_ICONERASEBKGND(%p)", hdc);
+    wsprintfA(buf, "WM_ICONERASEBKGND(hdc:%p)", hdc);
     *md_hwnd2string(hwnd) = buf;
     return FALSE;
 }
@@ -274,7 +274,7 @@ BOOL md_OnIconEraseBkgnd(HWND hwnd, HDC hdc)
 HWND md_OnNextDlgCtl(HWND hwnd, HWND hwndSetFocus, BOOL fNext)
 {
     char buf[512];
-    wsprintfA(buf, "WM_NEXTDLGCTL(%p, %d)", hwndSetFocus, fNext);
+    wsprintfA(buf, "WM_NEXTDLGCTL(hwndSetFocus:%p, fNext:%d)", hwndSetFocus, fNext);
     *md_hwnd2string(hwnd) = buf;
     return NULL;
 }
@@ -282,35 +282,35 @@ HWND md_OnNextDlgCtl(HWND hwnd, HWND hwndSetFocus, BOOL fNext)
 void md_OnSpoolerStatus(HWND hwnd, UINT status, int cJobInQueue)
 {
     char buf[512];
-    wsprintfA(buf, "WM_SPOOLERSTATUS(%u, %d)", status, cJobInQueue);
+    wsprintfA(buf, "WM_SPOOLERSTATUS(status:%u, cJobInQueue:%d)", status, cJobInQueue);
     *md_hwnd2string(hwnd) = buf;
 }
 
 void md_OnDrawItem(HWND hwnd, const DRAWITEMSTRUCT * lpDrawItem)
 {
     char buf[512];
-    wsprintfA(buf, "WM_DRAWITEM(%p)", lpDrawItem);
+    wsprintfA(buf, "WM_DRAWITEM(lpDrawItem:%p)", lpDrawItem);
     *md_hwnd2string(hwnd) = buf;
 }
 
 void md_OnMeasureItem(HWND hwnd, MEASUREITEMSTRUCT * lpMeasureItem)
 {
     char buf[512];
-    wsprintfA(buf, "WM_MEASUREITEM(%p)", lpMeasureItem);
+    wsprintfA(buf, "WM_MEASUREITEM(lpMeasureItem:%p)", lpMeasureItem);
     *md_hwnd2string(hwnd) = buf;
 }
 
 void md_OnDeleteItem(HWND hwnd, const DELETEITEMSTRUCT * lpDeleteItem)
 {
     char buf[512];
-    wsprintfA(buf, "WM_DELETEITEM(%p)", lpDeleteItem);
+    wsprintfA(buf, "WM_DELETEITEM(lpDeleteItem:%p)", lpDeleteItem);
     *md_hwnd2string(hwnd) = buf;
 }
 
 int md_OnVkeyToItem(HWND hwnd, UINT vk, HWND hwndListbox, int iCaret)
 {
     char buf[512];
-    wsprintfA(buf, "WM_VKEYTOITEM(%u, %p, iCaret)", vk, hwndListbox, iCaret);
+    wsprintfA(buf, "WM_VKEYTOITEM(vk:%u, hwndListbox:%p, iCaret:%d)", vk, hwndListbox, iCaret);
     *md_hwnd2string(hwnd) = buf;
     return 0;
 }
@@ -318,14 +318,14 @@ int md_OnVkeyToItem(HWND hwnd, UINT vk, HWND hwndListbox, int iCaret)
 int md_OnCharToItem(HWND hwnd, UINT ch, HWND hwndListbox, int iCaret)
 {
     char buf[512];
-    wsprintfA(buf, "WM_CHARTOITEM(%u, %p, iCaret)", ch, hwndListbox, iCaret);
+    wsprintfA(buf, "WM_CHARTOITEM(ch:%u, hwndListbox:%p, iCaret:%d)", ch, hwndListbox, iCaret);
     *md_hwnd2string(hwnd) = buf;
 }
 
 void md_OnSetFont(HWND hwndCtl, HFONT hfont, BOOL fRedraw)
 {
     char buf[512];
-    wsprintfA(buf, "WM_SETFONT(%p, %d)", hfont, fRedraw);
+    wsprintfA(buf, "WM_SETFONT(hfont:%p, fRedraw:%d)", hfont, fRedraw);
     *md_hwnd2string(hwndCtl) = buf;
 }
 
@@ -344,7 +344,7 @@ HICON md_OnQueryDragIcon(HWND hwnd)
 int md_OnCompareItem(HWND hwnd, const COMPAREITEMSTRUCT * lpCompareItem)
 {
     char buf[512];
-    wsprintfA(buf, "WM_COMPAREITEM(%p)", lpCompareItem);
+    wsprintfA(buf, "WM_COMPAREITEM(lpCompareItem:%p)", lpCompareItem);
     *md_hwnd2string(hwnd) = buf;
     return 0;
 }
@@ -352,21 +352,21 @@ int md_OnCompareItem(HWND hwnd, const COMPAREITEMSTRUCT * lpCompareItem)
 void md_OnCompacting(HWND hwnd, UINT compactRatio)
 {
     char buf[512];
-    wsprintfA(buf, "WM_COMPACTING(%u)", compactRatio);
+    wsprintfA(buf, "WM_COMPACTING(compactRatio:%u)", compactRatio);
     *md_hwnd2string(hwnd) = buf;
 }
 
 void md_OnCommNotify(HWND hwnd, int cid, UINT flags)
 {
     char buf[512];
-    wsprintfA(buf, "WM_COMMNOTIFY(%d, %u)", cid, flags);
+    wsprintfA(buf, "WM_COMMNOTIFY(cid:%d, flags:%u)", cid, flags);
     *md_hwnd2string(hwnd) = buf;
 }
 
 BOOL md_OnWindowPosChanging(HWND hwnd, LPWINDOWPOS lpwpos)
 {
     char buf[512];
-    wsprintfA(buf, "WM_WINDOWPOSCHANGING(%p)", lpwpos);
+    wsprintfA(buf, "WM_WINDOWPOSCHANGING(lpwpos:%p)", lpwpos);
     *md_hwnd2string(hwnd) = buf;
     return FALSE;
 }
@@ -374,21 +374,21 @@ BOOL md_OnWindowPosChanging(HWND hwnd, LPWINDOWPOS lpwpos)
 void md_OnWindowPosChanged(HWND hwnd, const LPWINDOWPOS lpwpos)
 {
     char buf[512];
-    wsprintfA(buf, "WM_WINDOWPOSCHANGED(%p)", lpwpos);
+    wsprintfA(buf, "WM_WINDOWPOSCHANGED(lpwpos:%p)", lpwpos);
     *md_hwnd2string(hwnd) = buf;
 }
 
 void md_OnPower(HWND hwnd, int code)
 {
     char buf[512];
-    wsprintfA(buf, "WM_POWER(%d)", code);
+    wsprintfA(buf, "WM_POWER(code:%d)", code);
     *md_hwnd2string(hwnd) = buf;
 }
 
 BOOL md_OnCopyData(HWND hwnd, HWND hwndFrom, PCOPYDATASTRUCT pcds)
 {
     char buf[512];
-    wsprintfA(buf, "WM_COPYDATA(%p, %p)", hwndFrom, pcds);
+    wsprintfA(buf, "WM_COPYDATA(hwndFrom:%p, pcds:%p)", hwndFrom, pcds);
     *md_hwnd2string(hwnd) = buf;
     return FALSE;
 }
@@ -396,7 +396,7 @@ BOOL md_OnCopyData(HWND hwnd, HWND hwndFrom, PCOPYDATASTRUCT pcds)
 LRESULT md_OnNotify(HWND hwnd, int idFrom, LPNMHDR pnmhdr)
 {
     char buf[512];
-    wsprintfA(buf, "WM_NOTIFY(%d, %p)", idFrom, pnmhdr);
+    wsprintfA(buf, "WM_NOTIFY(idFrom:%d, pnmhdr:%p)", idFrom, pnmhdr);
     *md_hwnd2string(hwnd) = buf;
     return 0;
 }
@@ -404,21 +404,21 @@ LRESULT md_OnNotify(HWND hwnd, int idFrom, LPNMHDR pnmhdr)
 void md_OnContextMenu(HWND hwnd, HWND hwndContext, UINT xPos, UINT yPos)
 {
     char buf[512];
-    wsprintfA(buf, "WM_CONTEXTMENU(%p, %u, %u)", hwndContext, xPos, yPos);
+    wsprintfA(buf, "WM_CONTEXTMENU(hwndContext:%p, xPos:%u, yPos:%u)", hwndContext, xPos, yPos);
     *md_hwnd2string(hwnd) = buf;
 }
 
 void md_OnDisplayChange(HWND hwnd, UINT bitsPerPixel, UINT cxScreen, UINT cyScreen)
 {
     char buf[512];
-    wsprintfA(buf, "WM_DISPLAYCHANGE(%u, %u, %u)", bitsPerPixel, cxScreen, cyScreen);
+    wsprintfA(buf, "WM_DISPLAYCHANGE(bitsPerPixel:%u, cxScreen:%u, cyScreen:%u)", bitsPerPixel, cxScreen, cyScreen);
     *md_hwnd2string(hwnd) = buf;
 }
 
 BOOL md_OnNCCreate(HWND hwnd, LPCREATESTRUCT lpCreateStruct)
 {
     char buf[512];
-    wsprintfA(buf, "WM_NCCREATE(%p)", lpCreateStruct);
+    wsprintfA(buf, "WM_NCCREATE(lpCreateStruct:%p)", lpCreateStruct);
     *md_hwnd2string(hwnd) = buf;
     return FALSE;
 }
@@ -431,7 +431,7 @@ void md_OnNCDestroy(HWND hwnd)
 UINT md_OnNCCalcSize(HWND hwnd, BOOL fCalcValidRects, NCCALCSIZE_PARAMS * lpcsp)
 {
     char buf[512];
-    wsprintfA(buf, "WM_NCCALCSIZE(%d, %p)", fCalcValidRects, lpcsp);
+    wsprintfA(buf, "WM_NCCALCSIZE(fCalcValidRects:%d, lpcsp:%p)", fCalcValidRects, lpcsp);
     *md_hwnd2string(hwnd) = buf;
     return 0;
 }
@@ -439,7 +439,7 @@ UINT md_OnNCCalcSize(HWND hwnd, BOOL fCalcValidRects, NCCALCSIZE_PARAMS * lpcsp)
 UINT md_OnNCHitTest(HWND hwnd, int x, int y)
 {
     char buf[512];
-    wsprintfA(buf, "WM_NCHITTEST(%d, %d)", x, y);
+    wsprintfA(buf, "WM_NCHITTEST(x:%d, y:%d)", x, y);
     *md_hwnd2string(hwnd) = buf;
     return 0;
 }
@@ -447,14 +447,14 @@ UINT md_OnNCHitTest(HWND hwnd, int x, int y)
 void md_OnNCPaint(HWND hwnd, HRGN hrgn)
 {
     char buf[512];
-    wsprintfA(buf, "WM_NCPAINT(%p)", hrgn);
+    wsprintfA(buf, "WM_NCPAINT(hrgn:%p)", hrgn);
     *md_hwnd2string(hwnd) = buf;
 }
 
 BOOL md_OnNCActivate(HWND hwnd, BOOL fActive, HWND hwndActDeact, BOOL fMinimized)
 {
     char buf[512];
-    wsprintfA(buf, "WM_NCACTIVATE(%d, %p, %d)", fActive, hwndActDeact, fMinimized);
+    wsprintfA(buf, "WM_NCACTIVATE(fActive:%d, hwndActDeact:%p, fMinimized:%d)", fActive, hwndActDeact, fMinimized);
     *md_hwnd2string(hwnd) = buf;
     return FALSE;
 }
@@ -462,56 +462,65 @@ BOOL md_OnNCActivate(HWND hwnd, BOOL fActive, HWND hwndActDeact, BOOL fMinimized
 UINT md_OnGetDlgCode(HWND hwnd, LPMSG lpmsg)
 {
     char buf[512];
-    wsprintfA(buf, "WM_GETDLGCODE(%p)", lpmsg);
+    wsprintfA(buf, "WM_GETDLGCODE(lpmsg:%p)", lpmsg);
     *md_hwnd2string(hwnd) = buf;
 }
 
 void md_OnNCMouseMove(HWND hwnd, int x, int y, UINT codeHitTest)
 {
     char buf[512];
-    wsprintfA(buf, "WM_NCMOUSEMOVE(%d, %d, %u)", x, y, codeHitTest);
+    wsprintfA(buf, "WM_NCMOUSEMOVE(x:%d, y:%d, codeHitTest:%u)", x, y, codeHitTest);
     *md_hwnd2string(hwnd) = buf;
 }
 
 void md_OnNCLButtonDown(HWND hwnd, BOOL fDoubleClick, int x, int y, UINT codeHitTest)
 {
     char buf[512];
-    wsprintfA(buf, "WM_NCLBUTTONDOWN(%d, %d, %d, %u)", fDoubleClick, x, y, codeHitTest);
+    if (fDoubleClick)
+        wsprintfA(buf, "WM_NCLBUTTONDBLCLK(x:%d, y:%d, codeHitTest:%u)", x, y, codeHitTest);
+    else
+        wsprintfA(buf, "WM_NCLBUTTONDOWN(x:%d, y:%d, codeHitTest:%u)", x, y, codeHitTest);
     *md_hwnd2string(hwnd) = buf;
 }
 
 void md_OnNCLButtonUp(HWND hwnd, int x, int y, UINT codeHitTest)
 {
     char buf[512];
-    wsprintfA(buf, "WM_NCLBUTTONUP(%d, %d, %u)", x, y, codeHitTest);
+    wsprintfA(buf, "WM_NCLBUTTONUP(x:%d, y:%d, codeHitTest:%u)", x, y, codeHitTest);
     *md_hwnd2string(hwnd) = buf;
 }
 
 void md_OnNCRButtonDown(HWND hwnd, BOOL fDoubleClick, int x, int y, UINT codeHitTest)
 {
     char buf[512];
-    wsprintfA(buf, "WM_NCRBUTTONDOWN(%d, %d, %d, %u)", fDoubleClick, x, y, codeHitTest);
+    if (fDoubleClick)
+        wsprintfA(buf, "WM_NCRBUTTONDBLCLK(x:%d, y:%d, codeHitTest%u)", x, y, codeHitTest);
+    else
+        wsprintfA(buf, "WM_NCRBUTTONDOWN(x:%d, y:%d, codeHitTest%u)", x, y, codeHitTest);
     *md_hwnd2string(hwnd) = buf;
 }
 
 void md_OnNCRButtonUp(HWND hwnd, int x, int y, UINT codeHitTest)
 {
     char buf[512];
-    wsprintfA(buf, "WM_NCRBUTTONUP(%d, %d, %u)", x, y, codeHitTest);
+    wsprintfA(buf, "WM_NCRBUTTONUP(x:%d, y:%d, codeHitTest:%u)", x, y, codeHitTest);
     *md_hwnd2string(hwnd) = buf;
 }
 
 void md_OnNCMButtonDown(HWND hwnd, BOOL fDoubleClick, int x, int y, UINT codeHitTest)
 {
     char buf[512];
-    wsprintfA(buf, "WM_NCMBUTTONDOWN(%d, %d, %d, %u)", fDoubleClick, x, y, codeHitTest);
+    if (fDoubleClick)
+        wsprintfA(buf, "WM_NCMBUTTONDBLCLK(x:%d, y:%d, codeHitTest:%u)", x, y, codeHitTest);
+    else
+        wsprintfA(buf, "WM_NCMBUTTONDOWN(x:%d, y:%d, codeHitTest:%u)", x, y, codeHitTest);
     *md_hwnd2string(hwnd) = buf;
 }
 
 void md_OnNCMButtonUp(HWND hwnd, int x, int y, UINT codeHitTest)
 {
     char buf[512];
-    wsprintfA(buf, "WM_NCMBUTTONUP(%d, %d, %u)", x, y, codeHitTest);
+    wsprintfA(buf, "WM_NCMBUTTONUP(x:%d, y:%d, codeHitTest:%u)", x, y, codeHitTest);
     *md_hwnd2string(hwnd) = buf;
 }
 
@@ -519,23 +528,23 @@ void md_OnKey(HWND hwnd, UINT vk, BOOL fDown, int cRepeat, UINT flags)
 {
     char buf[512];
     if (fDown)
-        wsprintfA(buf, "WM_KEYDOWN(%u, %d, %d, %u)", vk, fDown, cRepeat, flags);
+        wsprintfA(buf, "WM_KEYDOWN(vk:%u, cRepeat:%d, flags:%u)", vk, cRepeat, flags);
     else
-        wsprintfA(buf, "WM_KEYUP(%d, %d, %d, %u)", vk, fDown, cRepeat, flags);
+        wsprintfA(buf, "WM_KEYUP(vk:%d, cRepeat:%d, flags:%u)", vk, cRepeat, flags);
     *md_hwnd2string(hwnd) = buf;
 }
 
 void md_OnChar(HWND hwnd, TCHAR ch, int cRepeat)
 {
     char buf[512];
-    wsprintfA(buf, "WM_CHAR(%u, %d)", ch, cRepeat);
+    wsprintfA(buf, "WM_CHAR(ch:%u, cRepeat:%d)", ch, cRepeat);
     *md_hwnd2string(hwnd) = buf;
 }
 
 void md_OnDeadChar(HWND hwnd, TCHAR ch, int cRepeat)
 {
     char buf[512];
-    wsprintfA(buf, "WM_DEADCHAR(%u, %d)", ch, cRepeat);
+    wsprintfA(buf, "WM_DEADCHAR(ch:%u, cRepeat:%d)", ch, cRepeat);
     *md_hwnd2string(hwnd) = buf;
 }
 
@@ -543,93 +552,93 @@ void md_OnSysKey(HWND hwnd, UINT vk, BOOL fDown, int cRepeat, UINT flags)
 {
     char buf[512];
     if (fDown)
-        wsprintfA(buf, "WM_SYSKEYDOWN(%u, %d, %d, %u)", vk, fDown, cRepeat, flags);
+        wsprintfA(buf, "WM_SYSKEYDOWN(vk:%u, cRepeat:%d, flags:%u)", vk, cRepeat, flags);
     else
-        wsprintfA(buf, "WM_SYSKEYUP(%u, %d, %d, %u)", vk, fDown, cRepeat, flags);
+        wsprintfA(buf, "WM_SYSKEYUP(vk:%u, cRepeat:%d, flags:%u)", vk, cRepeat, flags);
     *md_hwnd2string(hwnd) = buf;
 }
 
 void md_OnSysChar(HWND hwnd, TCHAR ch, int cRepeat)
 {
     char buf[512];
-    wsprintfA(buf, "WM_SYSCHAR(%u, %d)", ch, cRepeat);
+    wsprintfA(buf, "WM_SYSCHAR(ch:%u, cRepeat:%d)", ch, cRepeat);
     *md_hwnd2string(hwnd) = buf;
 }
 
 void md_OnSysDeadChar(HWND hwnd, TCHAR ch, int cRepeat)
 {
     char buf[512];
-    wsprintfA(buf, "WM_SYSDEADCHAR(%u, %d)", ch, cRepeat);
+    wsprintfA(buf, "WM_SYSDEADCHAR(ch:%u, cRepeat:%d)", ch, cRepeat);
     *md_hwnd2string(hwnd) = buf;
 }
 
 BOOL md_OnInitDialog(HWND hwnd, HWND hwndFocus, LPARAM lParam)
 {
     char buf[512];
-    wsprintfA(buf, "WM_INITDIALOG(%p, %p)", hwndFocus, lParam);
+    wsprintfA(buf, "WM_INITDIALOG(hwndFocus:%p, lParam:%p)", hwndFocus, lParam);
     *md_hwnd2string(hwnd) = buf;
 }
 
 void md_OnCommand(HWND hwnd, int id, HWND hwndCtl, UINT codeNotify)
 {
     char buf[512];
-    wsprintfA(buf, "WM_COMMAND(%d, %p, %u)", id, hwndCtl, codeNotify);
+    wsprintfA(buf, "WM_COMMAND(id:%d, hwndCtl:%p, codeNotify:%u)", id, hwndCtl, codeNotify);
     *md_hwnd2string(hwnd) = buf;
 }
 
 void md_OnSysCommand(HWND hwnd, UINT cmd, int x, int y)
 {
     char buf[512];
-    wsprintfA(buf, "WM_SYSCOMMAND(%u, %d, %d)", cmd, x, y);
+    wsprintfA(buf, "WM_SYSCOMMAND(cmd:%u, x:%d, y:%d)", cmd, x, y);
     *md_hwnd2string(hwnd) = buf;
 }
 
 void md_OnTimer(HWND hwnd, UINT id)
 {
     char buf[512];
-    wsprintfA(buf, "WM_TIMER(%u)", id);
+    wsprintfA(buf, "WM_TIMER(id:%u)", id);
     *md_hwnd2string(hwnd) = buf;
 }
 
 void md_OnHScroll(HWND hwnd, HWND hwndCtl, UINT code, int pos)
 {
     char buf[512];
-    wsprintfA(buf, "WM_HSCROLL(%p, %u, %d)", hwndCtl, code, pos);
+    wsprintfA(buf, "WM_HSCROLL(hwndCtl:%p, code:%u, pos:%d)", hwndCtl, code, pos);
     *md_hwnd2string(hwnd) = buf;
 }
 
 void md_OnVScroll(HWND hwnd, HWND hwndCtl, UINT code, int pos)
 {
     char buf[512];
-    wsprintfA(buf, "WM_VSCROLL(%p, %u, %d)", hwndCtl, code, pos);
+    wsprintfA(buf, "WM_VSCROLL(hwndCtl:%p, code:%u, pos:%d)", hwndCtl, code, pos);
     *md_hwnd2string(hwnd) = buf;
 }
 
 void md_OnInitMenu(HWND hwnd, HMENU hMenu)
 {
     char buf[512];
-    wsprintfA(buf, "WM_INITMENU(%p)", hMenu);
+    wsprintfA(buf, "WM_INITMENU(hMenu:%p)", hMenu);
     *md_hwnd2string(hwnd) = buf;
 }
 
 void md_OnInitMenuPopup(HWND hwnd, HMENU hMenu, UINT item, BOOL fSystemMenu)
 {
     char buf[512];
-    wsprintfA(buf, "WM_INITMENUPOPUP(%p, %u, %d)", hMenu, item, fSystemMenu);
+    wsprintfA(buf, "WM_INITMENUPOPUP(hMenu:%p, item:%u, fSystemMenu:%d)", hMenu, item, fSystemMenu);
     *md_hwnd2string(hwnd) = buf;
 }
 
 void md_OnMenuSelect(HWND hwnd, HMENU hmenu, int item, HMENU hmenuPopup, UINT flags)
 {
     char buf[512];
-    wsprintfA(buf, "WM_MENUSELECT(%p, %d, %p, %u)", hmenu, item, hmenuPopup, flags);
+    wsprintfA(buf, "WM_MENUSELECT(hmenu:%p, item:%d, hmenuPopup:%p, flags:%u)", hmenu, item, hmenuPopup, flags);
     *md_hwnd2string(hwnd) = buf;
 }
 
 DWORD md_OnMenuChar(HWND hwnd, UINT ch, UINT flags, HMENU hmenu)
 {
     char buf[512];
-    wsprintfA(buf, "WM_MENUCHAR(%u, %u, %p)", ch, flags, hmenu);
+    wsprintfA(buf, "WM_MENUCHAR(ch:%u, flags:%u, hmenu:%p)", ch, flags, hmenu);
     *md_hwnd2string(hwnd) = buf;
     return 0;
 }
@@ -637,14 +646,14 @@ DWORD md_OnMenuChar(HWND hwnd, UINT ch, UINT flags, HMENU hmenu)
 void md_OnEnterIdle(HWND hwnd, UINT source, HWND hwndSource)
 {
     char buf[512];
-    wsprintfA(buf, "WM_ENTERIDLE(%u, %p)", source, hwndSource);
+    wsprintfA(buf, "WM_ENTERIDLE(source:%u, hwndSource:%p)", source, hwndSource);
     *md_hwnd2string(hwnd) = buf;
 }
 
 HBRUSH md_OnCtlColor(HWND hwnd, HDC hdc, HWND hwndChild, int type)
 {
     char buf[512];
-    wsprintfA(buf, "WM_CTLCOLOR(%p, %p, %d)", hdc, hwndChild, type);
+    wsprintfA(buf, "WM_CTLCOLOR(hdc:%p, hwndChild:%p, type:%d)", hdc, hwndChild, type);
     *md_hwnd2string(hwnd) = buf;
     return NULL;
 }
@@ -652,70 +661,79 @@ HBRUSH md_OnCtlColor(HWND hwnd, HDC hdc, HWND hwndChild, int type)
 void md_OnMouseMove(HWND hwnd, int x, int y, UINT keyFlags)
 {
     char buf[512];
-    wsprintfA(buf, "WM_MOUSEMOVE(%d, %d, %u)", x, y, keyFlags);
+    wsprintfA(buf, "WM_MOUSEMOVE(x:%d, y:%d, keyFlags:%u)", x, y, keyFlags);
     *md_hwnd2string(hwnd) = buf;
 }
 
 void md_OnLButtonDown(HWND hwnd, BOOL fDoubleClick, int x, int y, UINT keyFlags)
 {
     char buf[512];
-    wsprintfA(buf, "WM_LBUTTONDOWN(%d, %d, %d, %u)", fDoubleClick, x, y, keyFlags);
+    if (fDoubleClick)
+        wsprintfA(buf, "WM_LBUTTONDBLCLK(x:%d, y:%d, keyFlags:%u)", x, y, keyFlags);
+    else
+        wsprintfA(buf, "WM_LBUTTONDOWN(x:%d, y:%d, keyFlags:%u)", x, y, keyFlags);
     *md_hwnd2string(hwnd) = buf;
 }
 
 void md_OnLButtonUp(HWND hwnd, int x, int y, UINT keyFlags)
 {
     char buf[512];
-    wsprintfA(buf, "WM_LBUTTONUP(%d, %d, %u)", x, y, keyFlags);
+    wsprintfA(buf, "WM_LBUTTONUP(x:%d, y:%d, keyFlags:%u)", x, y, keyFlags);
     *md_hwnd2string(hwnd) = buf;
 }
 
 void md_OnRButtonDown(HWND hwnd, BOOL fDoubleClick, int x, int y, UINT keyFlags)
 {
     char buf[512];
-    wsprintfA(buf, "WM_RBUTTONDOWN(%d, %d, %d, %u)", fDoubleClick, x, y, keyFlags);
+    if (fDoubleClick)
+        wsprintfA(buf, "WM_RBUTTONDBLCLK(x:%d, y:%d, keyFlags:%u)", x, y, keyFlags);
+    else
+        wsprintfA(buf, "WM_RBUTTONDOWN(x:%d, y:%d, keyFlags:%u)", x, y, keyFlags);
     *md_hwnd2string(hwnd) = buf;
 }
 
 void md_OnRButtonUp(HWND hwnd, int x, int y, UINT flags)
 {
     char buf[512];
-    wsprintfA(buf, "WM_RBUTTONUP(%d, %d, %u)", x, y, flags);
+    wsprintfA(buf, "WM_RBUTTONUP(x:%d, y:%d, flags:%u)", x, y, flags);
     *md_hwnd2string(hwnd) = buf;
 }
 
 void md_OnMButtonDown(HWND hwnd, BOOL fDoubleClick, int x, int y, UINT keyFlags)
 {
     char buf[512];
-    wsprintfA(buf, "WM_MBUTTONDOWN(%d, %d, %d, %u)", fDoubleClick, x, y, keyFlags);
+    if (fDoubleClick)
+        wsprintfA(buf, "WM_MBUTTONDBLCLK(x:%d, y:%d, keyFlags:%u)", x, y, keyFlags);
+    else
+        wsprintfA(buf, "WM_MBUTTONDOWN(x:%d, y:%d, keyFlags:%u)", x, y, keyFlags);
     *md_hwnd2string(hwnd) = buf;
 }
 
 void md_OnMButtonUp(HWND hwnd, int x, int y, UINT flags)
 {
     char buf[512];
-    wsprintfA(buf, "WM_MBUTTONUP(%d, %d, %u)", x, y, flags);
+    wsprintfA(buf, "WM_MBUTTONUP(x:%d, y:%d, flags:%u)", x, y, flags);
     *md_hwnd2string(hwnd) = buf;
 }
 
 void md_OnMouseWheel(HWND hwnd, int xPos, int yPos, int zDelta, UINT fwKeys)
 {
     char buf[512];
-    wsprintfA(buf, "WM_MOUSEWHEEL(%d, %d, %d, %u)", xPos, yPos, zDelta, fwKeys);
+    wsprintfA(buf, "WM_MOUSEWHEEL(xPos:%d, yPos:%d, zDelta:%d, fwKeys:%u)", xPos, yPos, zDelta, fwKeys);
     *md_hwnd2string(hwnd) = buf;
 }
 
 void md_OnParentNotify(HWND hwnd, UINT msg, HWND hwndChild, int idChild)
 {
     char buf[512];
-    wsprintfA(buf, "WM_PARENTNOTIFY(%u, %p, %d)", msg, hwndChild, idChild);
+    wsprintfA(buf, "WM_PARENTNOTIFY(msg:%u, hwndChild:%p, idChild:%d)", msg, hwndChild, idChild);
     *md_hwnd2string(hwnd) = buf;
 }
 
 BOOL md_OnDeviceChange(HWND hwnd, UINT uEvent, DWORD dwEventData)
 {
     char buf[512];
-    wsprintfA(buf, "WM_DEVICECHANGE(%u, 0x%08lX)", uEvent, dwEventData);
+    wsprintfA(buf, "WM_DEVICECHANGE(uEvent:%u, dwEventData:0x%08lX)", uEvent, dwEventData);
     *md_hwnd2string(hwnd) = buf;
     return FALSE;
 }
@@ -723,7 +741,7 @@ BOOL md_OnDeviceChange(HWND hwnd, UINT uEvent, DWORD dwEventData)
 HWND md_MDICreate(HWND hwnd, const LPMDICREATESTRUCT lpmcs)
 {
     char buf[512];
-    wsprintfA(buf, "WM_MDICREATE(%p)", lpmcs);
+    wsprintfA(buf, "WM_MDICREATE(lpmcs:%p)", lpmcs);
     *md_hwnd2string(hwnd) = buf;
     return NULL;
 }
@@ -731,28 +749,28 @@ HWND md_MDICreate(HWND hwnd, const LPMDICREATESTRUCT lpmcs)
 void md_MDIDestroy(HWND hwnd, HWND hwndDestroy)
 {
     char buf[512];
-    wsprintfA(buf, "WM_MDIDESTROY(%p)", hwndDestroy);
+    wsprintfA(buf, "WM_MDIDESTROY(hwndDestroy:%p)", hwndDestroy);
     *md_hwnd2string(hwnd) = buf;
 }
 
 void md_MDIActivate(HWND hwnd, BOOL fActive, HWND hwndActivate, HWND hwndDeactivate)
 {
     char buf[512];
-    wsprintfA(buf, "WM_MDIACTIVATE(%d, %p, %p)", fActive, hwndActivate, hwndDeactivate);
+    wsprintfA(buf, "WM_MDIACTIVATE(fActive:%d, hwndActivate:%p, hwndDeactivate:%p)", fActive, hwndActivate, hwndDeactivate);
     *md_hwnd2string(hwnd) = buf;
 }
 
 void md_MDIRestore(HWND hwnd, HWND hwndRestore)
 {
     char buf[512];
-    wsprintfA(buf, "WM_MDIRESTORE(%p)", hwndRestore);
+    wsprintfA(buf, "WM_MDIRESTORE(hwndRestore:%p)", hwndRestore);
     *md_hwnd2string(hwnd) = buf;
 }
 
 HWND md_MDINext(HWND hwnd, HWND hwndCur, BOOL fPrev)
 {
     char buf[512];
-    wsprintfA(buf, "WM_MDINEXT(%p, %d)", hwndCur, fPrev);
+    wsprintfA(buf, "WM_MDINEXT(hwndCur:%p, fPrev:%d)", hwndCur, fPrev);
     *md_hwnd2string(hwnd) = buf;
     return NULL;
 }
@@ -760,14 +778,14 @@ HWND md_MDINext(HWND hwnd, HWND hwndCur, BOOL fPrev)
 void md_MDIMaximize(HWND hwnd, HWND hwndMaximize)
 {
     char buf[512];
-    wsprintfA(buf, "WM_MDIMAXIMIZE(%p)", hwndMaximize);
+    wsprintfA(buf, "WM_MDIMAXIMIZE(hwndMaximize:%p)", hwndMaximize);
     *md_hwnd2string(hwnd) = buf;
 }
 
 BOOL md_MDITile(HWND hwnd, UINT cmd)
 {
     char buf[512];
-    wsprintfA(buf, "WM_MDITILE(%u)", cmd);
+    wsprintfA(buf, "WM_MDITILE(cmd:%u)", cmd);
     *md_hwnd2string(hwnd) = buf;
     return FALSE;
 }
@@ -775,7 +793,7 @@ BOOL md_MDITile(HWND hwnd, UINT cmd)
 BOOL md_MDICascade(HWND hwnd, UINT cmd)
 {
     char buf[512];
-    wsprintfA(buf, "WM_MDICASCADE(%u)", cmd);
+    wsprintfA(buf, "WM_MDICASCADE(cmd:%u)", cmd);
     *md_hwnd2string(hwnd) = buf;
     return FALSE;
 }
@@ -793,14 +811,14 @@ HWND md_MDIGetActive(HWND hwnd)
 HMENUmd_MDISetMenu(HWND hwnd, BOOL fRefresh, HMENU hmenuFrame, HMENU hmenuWindow)
 {
     char buf[512];
-    wsprintfA(buf, "WM_MDISETMENU(%d, %p, %p)", fRefresh, hmenuFrame, hmenuWindow);
+    wsprintfA(buf, "WM_MDISETMENU(fRefresh:%d, hmenuFrame:%p, hmenuWindow:%p)", fRefresh, hmenuFrame, hmenuWindow);
     *md_hwnd2string(hwnd) = buf;
 }
 
 void md_OnDropFiles(HWND hwnd, HDROP hdrop)
 {
     char buf[512];
-    wsprintfA(buf, "WM_DROPFILES(%p)", hdrop);
+    wsprintfA(buf, "WM_DROPFILES(hdrop:%p)", hdrop);
     *md_hwnd2string(hwnd) = buf;
 }
 
@@ -832,7 +850,7 @@ void md_OnUndo(HWND hwnd)
 HANDLE md_OnRenderFormat(HWND hwnd, UINT fmt)
 {
     char buf[512];
-    wsprintfA(buf, "WM_RENDERFORMAT(%u)", fmt);
+    wsprintfA(buf, "WM_RENDERFORMAT(fmt:%u)", fmt);
     *md_hwnd2string(hwnd) = buf;
     return NULL;
 }
@@ -855,42 +873,42 @@ void md_OnDrawClipboard(HWND hwnd)
 void md_OnPaintClipboard(HWND hwnd, HWND hwndCBViewer, const LPPAINTSTRUCT lpPaintStruct)
 {
     char buf[512];
-    wsprintfA(buf, "WM_PAINTCLIPBOARD(%p, %p)", hwndCBViewer, lpPaintStruct);
+    wsprintfA(buf, "WM_PAINTCLIPBOARD(hwndCBViewer:%p, lpPaintStruct:%p)", hwndCBViewer, lpPaintStruct);
     *md_hwnd2string(hwnd) = buf;
 }
 
 void md_OnVScrollClipboard(HWND hwnd, HWND hwndCBViewer, UINT code, int pos)
 {
     char buf[512];
-    wsprintfA(buf, "WM_VSCROLLCLIPBOARD(%p, %u, %d)", hwndCBViewer, code, pos);
+    wsprintfA(buf, "WM_VSCROLLCLIPBOARD(hwndCBViewer:%p, code:%u, pos:%d)", hwndCBViewer, code, pos);
     *md_hwnd2string(hwnd) = buf;
 }
 
 void md_OnSizeClipboard(HWND hwnd, HWND hwndCBViewer, const LPRECT lprc)
 {
     char buf[512];
-    wsprintfA(buf, "WM_SIZECLIPBOARD(%p, %p)", hwndCBViewer, lprc);
+    wsprintfA(buf, "WM_SIZECLIPBOARD(hwndCBViewer:%p, lprc:%p)", hwndCBViewer, lprc);
     *md_hwnd2string(hwnd) = buf;
 }
 
 void md_OnAskCBFormatName(HWND hwnd, int cchMax, LPTSTR rgchName)
 {
     char buf[512];
-    wsprintfA(buf, "WM_ASKCBFORMATNAME(%d, %p)", cchMax, rgchName);
+    wsprintfA(buf, "WM_ASKCBFORMATNAME(cchMax:%d, rgchName:%p)", cchMax, rgchName);
     *md_hwnd2string(hwnd) = buf;
 }
 
 void md_OnChangeCBChain(HWND hwnd, HWND hwndRemove, HWND hwndNext)
 {
     char buf[512];
-    wsprintfA(buf, "WM_CHANGECBCHAIN(%p, %p)", hwndRemove, hwndNext);
+    wsprintfA(buf, "WM_CHANGECBCHAIN(hwndRemove:%p, hwndNext:%p)", hwndRemove, hwndNext);
     *md_hwnd2string(hwnd) = buf;
 }
 
 void md_OnHScrollClipboard(HWND hwnd, HWND hwndCBViewer, UINT code, int pos)
 {
     char buf[512];
-    wsprintfA(buf, "WM_HSCROLLCLIPBOARD(%p, %u, %d)", hwndCBViewer, code, pos);
+    wsprintfA(buf, "WM_HSCROLLCLIPBOARD(hwndCBViewer:%p, code:%u, pos:%d)", hwndCBViewer, code, pos);
     *md_hwnd2string(hwnd) = buf;
 }
 
@@ -902,21 +920,21 @@ BOOL md_OnQueryNewPalette(HWND hwnd)
 void md_OnPaletteIsChanging(HWND hwnd, HWND hwndPaletteChange)
 {
     char buf[512];
-    wsprintfA(buf, "WM_PALETTEISCHANGING(%p)", hwndPaletteChange);
+    wsprintfA(buf, "WM_PALETTEISCHANGING(hwndPaletteChange:%p)", hwndPaletteChange);
     *md_hwnd2string(hwnd) = buf;
 }
 
 void md_OnPaletteChanged(HWND hwnd, HWND hwndPaletteChange)
 {
     char buf[512];
-    wsprintfA(buf, "WM_PALETTECHANGED(%p)", hwndPaletteChange);
+    wsprintfA(buf, "WM_PALETTECHANGED(hwndPaletteChange:%p)", hwndPaletteChange);
     *md_hwnd2string(hwnd) = buf;
 }
 
 void md_OnHotKey(HWND hwnd, int idHotKey, UINT fuModifiers, UINT vk)
 {
     char buf[512];
-    wsprintfA(buf, "WM_HOTKEY(%d, %u, %u)", idHotKey, fuModifiers, vk);
+    wsprintfA(buf, "WM_HOTKEY(idHotKey:%d, fuModifiers:%u, vk:%u)", idHotKey, fuModifiers, vk);
     *md_hwnd2string(hwnd) = buf;
 }
 
@@ -925,7 +943,7 @@ void md_OnHotKey(HWND hwnd, int idHotKey, UINT fuModifiers, UINT vk)
 INT md_OnSetHotKey(HWND hwnd, INT nCode, UINT nOptions)
 {
     char buf[512];
-    wsprintfA(buf, "WM_SETHOTKEY(%d, %u)", nCode, nOptions);
+    wsprintfA(buf, "WM_SETHOTKEY(nCode:%d, nOptions:%u)", nCode, nOptions);
     *md_hwnd2string(hwnd) = buf;
 }
 
@@ -942,7 +960,7 @@ void md_OnPaintIcon(HWND hwnd)
 LRESULT md_OnGetObject(HWND hwnd, WPARAM wParam, DWORD dwObjId)
 {
     char buf[512];
-    wsprintfA(buf, "WM_GETOBJECT(%p, 0x%08lX)", wParam, dwObjId);
+    wsprintfA(buf, "WM_GETOBJECT(wParam:%p, dwObjId:0x%08lX)", wParam, dwObjId);
     *md_hwnd2string(hwnd) = buf;
     return 0;
 }
@@ -955,28 +973,28 @@ void md_OnCancelJournal(HWND hwnd)
 void md_OnInputLangChangeRequest(HWND hwnd, BOOL bFlag, HKL hKL)
 {
     char buf[512];
-    wsprintfA(buf, "WM_INPUTLANGCHANGEREQUEST(%d, %p)", bFlag, hKL);
+    wsprintfA(buf, "WM_INPUTLANGCHANGEREQUEST(bFlag:%d, hKL:%p)", bFlag, hKL);
     *md_hwnd2string(hwnd) = buf;
 }
 
 void md_OnInputLangChange(HWND hwnd, DWORD dwCharSet, HKL hKL)
 {
     char buf[512];
-    wsprintfA(buf, "WM_INPUTLANGCHANGE(0x%08lX, %p)", dwCharSet, hKL);
+    wsprintfA(buf, "WM_INPUTLANGCHANGE(dwCharSet:0x%08lX, hKL:%p)", dwCharSet, hKL);
     *md_hwnd2string(hwnd) = buf;
 }
 
 void md_OnTCard(HWND hwnd, UINT idAction, DWORD dwActionData)
 {
     char buf[512];
-    wsprintfA(buf, "WM_TCARD(%u, 0x%08lX)", idAction, dwActionData);
+    wsprintfA(buf, "WM_TCARD(idAction:%u, dwActionData:0x%08lX)", idAction, dwActionData);
     *md_hwnd2string(hwnd) = buf;
 }
 
 void md_OnHelp(HWND hwnd, LPHELPINFO lpHelpInfo)
 {
     char buf[512];
-    wsprintfA(buf, "WM_HELP(%p)", lpHelpInfo);
+    wsprintfA(buf, "WM_HELP(lpHelpInfo:%p)", lpHelpInfo);
     *md_hwnd2string(hwnd) = buf;
 }
 
@@ -988,35 +1006,35 @@ void md_OnUserChanged(HWND hwnd)
 INT md_OnNotifyFormat(HWND hwnd, HWND hwndTarget, INT nCommand)
 {
     char buf[512];
-    wsprintfA(buf, "WM_NOTIFYFORMAT(%p, %d)", hwndTarget, nCommand);
+    wsprintfA(buf, "WM_NOTIFYFORMAT(hwndTarget:%p, nCommand:%d)", hwndTarget, nCommand);
     *md_hwnd2string(hwnd) = buf;
 }
 
 void md_OnStyleChanging(HWND hwnd, UINT nStyleType, LPSTYLESTRUCT lpStyleStruct)
 {
     char buf[512];
-    wsprintfA(buf, "WM_STYLECHANGING(%u, %p)", nStyleType, lpStyleStruct);
+    wsprintfA(buf, "WM_STYLECHANGING(nStyleType:%u, lpStyleStruct:%p)", nStyleType, lpStyleStruct);
     *md_hwnd2string(hwnd) = buf;
 }
 
 void md_OnStyleChanged(HWND hwnd, UINT nStyleType, const STYLESTRUCT *lpStyleStruct)
 {
     char buf[512];
-    wsprintfA(buf, "WM_STYLECHANGED(%u, %p)", nStyleType, lpStyleStruct);
+    wsprintfA(buf, "WM_STYLECHANGED(nStyleType:%u, lpStyleStruct:%p)", nStyleType, lpStyleStruct);
     *md_hwnd2string(hwnd) = buf;
 }
 
 HICON md_OnGetIcon(HWND hwnd, UINT nType, LPARAM dpi)
 {
     char buf[512];
-    wsprintfA(buf, "WM_GETICON(%u, %p)", nType, dpi);
+    wsprintfA(buf, "WM_GETICON(nType:%u, dpi:%p)", nType, dpi);
     *md_hwnd2string(hwnd) = buf;
 }
 
 HICON md_OnSetIcon(HWND hwnd, UINT nType, HICON hIcon)
 {
     char buf[512];
-    wsprintfA(buf, "WM_SETICON(%u, %p)", nType, hIcon);
+    wsprintfA(buf, "WM_SETICON(nType:%u, hIcon:%p)", nType, hIcon);
     *md_hwnd2string(hwnd) = buf;
 }
 
@@ -1029,16 +1047,16 @@ void md_OnNCXButtonDown(HWND hwnd, BOOL fDoubleClick, UINT nHitTest, WORD fwButt
 {
     char buf[512];
     if (fDoubleClick)
-        wsprintfA(buf, "WM_NCXBUTTONDBLCLK(%d, %u, %u, %d, %d)", fDoubleClick, nHitTest, fwButton, xPos, yPos);
+        wsprintfA(buf, "WM_NCXBUTTONDBLCLK(nHitTest:%u, fwButton:%u, xPos:%d, yPos:%d)", nHitTest, fwButton, xPos, yPos);
     else
-        wsprintfA(buf, "WM_NCXBUTTONDOWN(%d, %u, %u, %d, %d)", fDoubleClick, nHitTest, fwButton, xPos, yPos);
+        wsprintfA(buf, "WM_NCXBUTTONDOWN(nHitTest:%u, fwButton:%u, xPos:%d, yPos:%d)", nHitTest, fwButton, xPos, yPos);
     *md_hwnd2string(hwnd) = buf;
 }
 
 void md_OnNCXButtonUp(HWND hwnd, UINT nHitTest, WORD fwButton, INT xPos, INT yPos)
 {
     char buf[512];
-    wsprintfA(buf, "WM_NCXBUTTONUP(%u, %u, %d, %d)", nHitTest, fwButton, xPos, yPos);
+    wsprintfA(buf, "WM_NCXBUTTONUP(nHitTest:%u, fwButton:%u, xPos:%d, yPos:%d)", nHitTest, fwButton, xPos, yPos);
     *md_hwnd2string(hwnd) = buf;
 }
 
@@ -1055,56 +1073,56 @@ void md_OnImeEndComposition(HWND hwnd)
 void md_OnImeComposition(HWND hwnd, WORD wChar, DWORD lAttribute)
 {
     char buf[512];
-    wsprintfA(buf, "WM_IME_COMPOSITION(%u, 0x%08lX)", wChar, lAttribute);
+    wsprintfA(buf, "WM_IME_COMPOSITION(wChar:%u, lAttribute:0x%08lX)", wChar, lAttribute);
     *md_hwnd2string(hwnd) = buf;
 }
 
 void md_OnMenuRButtonUp(HWND hwnd, UINT nPos, HMENU hMenu)
 {
     char buf[512];
-    wsprintfA(buf, "WM_MENURBUTTONUP(%u, %p)", nPos, hMenu);
+    wsprintfA(buf, "WM_MENURBUTTONUP(nPos:%u, hMenu:%p)", nPos, hMenu);
     *md_hwnd2string(hwnd) = buf;
 }
 
 UINT md_OnMenuDrag(HWND hwnd, UINT nPos, HMENU hMenu)
 {
     char buf[512];
-    wsprintfA(buf, "WM_MENUDRAG(%u, %p)", nPos, hMenu);
+    wsprintfA(buf, "WM_MENUDRAG(nPos:%u, hMenu:%p)", nPos, hMenu);
     *md_hwnd2string(hwnd) = buf;
 }
 
 UINT md_OnMenuGetObject(HWND hwnd, MENUGETOBJECTINFO *pmgoi)
 {
     char buf[512];
-    wsprintfA(buf, "WM_MENUGETOBJECT(%p)", pmgoi);
+    wsprintfA(buf, "WM_MENUGETOBJECT(pmgoi:%p)", pmgoi);
     *md_hwnd2string(hwnd) = buf;
 }
 
 void md_OnUninitMenuPopup(HWND hwnd, HMENU hMenu, UINT nFlags)
 {
     char buf[512];
-    wsprintfA(buf, "WM_UNINITMENUPOPUP(%p, %u)", hMenu, nFlags);
+    wsprintfA(buf, "WM_UNINITMENUPOPUP(hMenu:%p, nFlags:%u)", hMenu, nFlags);
     *md_hwnd2string(hwnd) = buf;
 }
 
 void md_OnMenuCommand(HWND hwnd, UINT nPos, HMENU hMenu)
 {
     char buf[512];
-    wsprintfA(buf, "WM_MENUCOMMAND(%u, %p)", nPos, hMenu);
+    wsprintfA(buf, "WM_MENUCOMMAND(nPos:%u, hMenu:%p)", nPos, hMenu);
     *md_hwnd2string(hwnd) = buf;
 }
 
 void md_OnChangeUIState(HWND hwnd, UINT nAction, UINT nUIElement)
 {
     char buf[512];
-    wsprintfA(buf, "WM_CHANGEUISTATE(%u, %u)", nAction, nUIElement);
+    wsprintfA(buf, "WM_CHANGEUISTATE(nAction:%u, nUIElement:%u)", nAction, nUIElement);
     *md_hwnd2string(hwnd) = buf;
 }
 
 void md_OnUpdateUIState(HWND hwnd, UINT nAction, UINT nUIElement)
 {
     char buf[512];
-    wsprintfA(buf, "WM_UPDATEUISTATE(%u, %u)", nAction, nUIElement);
+    wsprintfA(buf, "WM_UPDATEUISTATE(nAction:%u, nUIElement:%u)", nAction, nUIElement);
     *md_hwnd2string(hwnd) = buf;
 }
 
@@ -1117,65 +1135,65 @@ void md_OnXButtonDown(HWND hwnd, BOOL fDoubleClick, WORD fwKeys, WORD fwButton, 
 {
     char buf[512];
     if (fDoubleClick)
-        wsprintfA(buf, "WM_XBUTTONDBLCLK(%d, %u, %u, %d, %d)", fDoubleClick, fwKeys, fwButton, xPos, yPos);
+        wsprintfA(buf, "WM_XBUTTONDBLCLK(fwKeys:%u, fwButton:%u, xPos:%d, yPos:%d)", fwKeys, fwButton, xPos, yPos);
     else
-        wsprintfA(buf, "WM_XBUTTONDOWN(%d, %u, %u, %d, %d)", fDoubleClick, fwKeys, fwButton, xPos, yPos);
+        wsprintfA(buf, "WM_XBUTTONDOWN(fwKeys:%u, fwButton:%u, xPos:%d, yPos:%d)", fwKeys, fwButton, xPos, yPos);
     *md_hwnd2string(hwnd) = buf;
 }
 
 void md_OnXButtonUp(HWND hwnd, WORD fwKeys, WORD fwButton, INT xPos, INT yPos)
 {
     char buf[512];
-    wsprintfA(buf, "WM_XBUTTONUP(%u, %u, %d, %d)", fwKeys, fwButton, xPos, yPos);
+    wsprintfA(buf, "WM_XBUTTONUP(fwKeys:%u, fwButton:%u, xPos:%d, yPos:%d)", fwKeys, fwButton, xPos, yPos);
     *md_hwnd2string(hwnd) = buf;
 }
 
 void md_OnEnterMenuLoop(HWND hwnd, BOOL bIsTrackPopupMenu)
 {
     char buf[512];
-    wsprintfA(buf, "WM_ENTERMENULOOP(%d)", bIsTrackPopupMenu);
+    wsprintfA(buf, "WM_ENTERMENULOOP(bIsTrackPopupMenu:%d)", bIsTrackPopupMenu);
     *md_hwnd2string(hwnd) = buf;
 }
 
 void md_OnExitMenuLoop(HWND hwnd, BOOL bIsTrackPopupMenu)
 {
     char buf[512];
-    wsprintfA(buf, "WM_EXITMENULOOP(%d)", bIsTrackPopupMenu);
+    wsprintfA(buf, "WM_EXITMENULOOP(bIsTrackPopupMenu:%d)", bIsTrackPopupMenu);
     *md_hwnd2string(hwnd) = buf;
 }
 
 void md_OnNextMenu(HWND hwnd, INT nCode, LPMDINEXTMENU lpMDINextMenu)
 {
     char buf[512];
-    wsprintfA(buf, "WM_NEXTMENU(%d, %p)", nCode, lpMDINextMenu);
+    wsprintfA(buf, "WM_NEXTMENU(nCode:%d, lpMDINextMenu:%p)", nCode, lpMDINextMenu);
     *md_hwnd2string(hwnd) = buf;
 }
 
 void md_OnSizing(HWND hwnd, UINT nSide, LPRECT lpRect)
 {
     char buf[512];
-    wsprintfA(buf, "WM_SIZING(%u, %p)", nSide, lpRect);
+    wsprintfA(buf, "WM_SIZING(nSide:%u, lpRect:%p)", nSide, lpRect);
     *md_hwnd2string(hwnd) = buf;
 }
 
 void md_OnCaptureChanged(HWND hwnd, HWND hwndNewCapture)
 {
     char buf[512];
-    wsprintfA(buf, "WM_CAPTURECHANGED(%p)", hwndNewCapture);
+    wsprintfA(buf, "WM_CAPTURECHANGED(hwndNewCapture:%p)", hwndNewCapture);
     *md_hwnd2string(hwnd) = buf;
 }
 
 void md_OnMoving(HWND hwnd, UINT nSide, LPRECT lpRect)
 {
     char buf[512];
-    wsprintfA(buf, "WM_MOVING(%u, %p)", nSide, lpRect);
+    wsprintfA(buf, "WM_MOVING(nSide:%u, lpRect:%p)", nSide, lpRect);
     *md_hwnd2string(hwnd) = buf;
 }
 
 LRESULT md_OnPowerBroadcast(HWND hwnd, UINT nPowerEvent, UINT nEventData)
 {
     char buf[512];
-    wsprintfA(buf, "WM_POWERBROADCAST(%u, %u)", nPowerEvent, nEventData);
+    wsprintfA(buf, "WM_POWERBROADCAST(nPowerEvent:%u, nEventData:%u)", nPowerEvent, nEventData);
     *md_hwnd2string(hwnd) = buf;
 }
 
@@ -1197,28 +1215,28 @@ HMENU md_MDIRefreshMenu(HWND hwnd)
 HMENU md_MDISetMenu(HWND hwnd, BOOL fRefresh, HMENU hmenuFrame, HMENU hmenuWindow)
 {
     char buf[512];
-    wsprintfA(buf, "WM_MDISETMENU(%d, %p, %p)", fRefresh, hmenuFrame, hmenuWindow);
+    wsprintfA(buf, "WM_MDISETMENU(fRefresh:%d, hmenuFrame:%p, hmenuWindow:%p)", fRefresh, hmenuFrame, hmenuWindow);
     *md_hwnd2string(hwnd) = buf;
 }
 
 BOOL md_OnImeSetContext(HWND hwnd, BOOL fActive, DWORD dwShow)
 {
     char buf[512];
-    wsprintfA(buf, "WM_IME_SETCONTEXT(%d, 0x%08lX)", fActive, dwShow);
+    wsprintfA(buf, "WM_IME_SETCONTEXT(fActive:%d, dwShow:0x%08lX)", fActive, dwShow);
     *md_hwnd2string(hwnd) = buf;
 }
 
 LRESULT md_OnImeNotify(HWND hwnd, WPARAM wSubMessage, LPARAM lParam)
 {
     char buf[512];
-    wsprintfA(buf, "WM_IME_NOTIFY(%p, %p)", wSubMessage, lParam);
+    wsprintfA(buf, "WM_IME_NOTIFY(wSubMessage:%p, lParam:%p)", wSubMessage, lParam);
     *md_hwnd2string(hwnd) = buf;
 }
 
 LRESULT md_OnImeControl(HWND hwnd, WPARAM wSubMessage, LPVOID lpData)
 {
     char buf[512];
-    wsprintfA(buf, "WM_IME_CONTROL(%p, %p)", wSubMessage, lpData);
+    wsprintfA(buf, "WM_IME_CONTROL(wSubMessage:%p, lpData:%p)", wSubMessage, lpData);
     *md_hwnd2string(hwnd) = buf;
 }
 
@@ -1230,21 +1248,21 @@ void md_OnImeCompositionFull(HWND hwnd)
 void md_OnImeSelect(HWND hwnd, BOOL fSelect, HKL hKL)
 {
     char buf[512];
-    wsprintfA(buf, "WM_IME_SELECT(%d, %p)", fSelect, hKL);
+    wsprintfA(buf, "WM_IME_SELECT(fSelect:%d, hKL:%p)", fSelect, hKL);
     *md_hwnd2string(hwnd) = buf;
 }
 
 void md_OnImeChar(HWND hwnd, WORD wCharCode, LONG lKeyData)
 {
     char buf[512];
-    wsprintfA(buf, "WM_IME_CHAR(%u, %ld)", wCharCode, lKeyData);
+    wsprintfA(buf, "WM_IME_CHAR(wCharCode:%u, lKeyData:%ld)", wCharCode, lKeyData);
     *md_hwnd2string(hwnd) = buf;
 }
 
 LRESULT md_OnImeRequest(HWND hwnd, WPARAM wParam, LPARAM lParam)
 {
     char buf[512];
-    wsprintfA(buf, "WM_IME_REQUEST(%p, %p)", wParam, lParam);
+    wsprintfA(buf, "WM_IME_REQUEST(wParam:%p, lParam:%p)", wParam, lParam);
     *md_hwnd2string(hwnd) = buf;
     return 0;
 }
@@ -1253,16 +1271,16 @@ void md_OnImeKey(HWND hwnd, BOOL fDown, UINT nVirtKey, LONG lKeyData)
 {
     char buf[512];
     if (fDown)
-        wsprintfA(buf, "WM_IME_KEYDOWN(%d, %u, %ld)", fDown, nVirtKey, lKeyData);
+        wsprintfA(buf, "WM_IME_KEYDOWN(nVirtKey:%u, lKeyData:%ld)", nVirtKey, lKeyData);
     else
-        wsprintfA(buf, "WM_IME_KEYUP(%d, %u, %ld)", fDown, nVirtKey, lKeyData);
+        wsprintfA(buf, "WM_IME_KEYUP(nVirtKey:%u, lKeyData:%ld)", nVirtKey, lKeyData);
     *md_hwnd2string(hwnd) = buf;
 }
 
 void md_OnMouseHover(HWND hwnd, UINT nFlags, INT xPos, INT yPos)
 {
     char buf[512];
-    wsprintfA(buf, "WM_MOUSEHOVER(%u, %d, %d)", nFlags, xPos, yPos);
+    wsprintfA(buf, "WM_MOUSEHOVER(nFlags:%u, xPos:%d, yPos:%d)", nFlags, xPos, yPos);
     *md_hwnd2string(hwnd) = buf;
 }
 
@@ -1274,7 +1292,7 @@ void md_OnMouseLeave(HWND hwnd)
 void md_OnNCMouseHover(HWND hwnd, UINT nHitTest, INT xPos, INT yPos)
 {
     char buf[512];
-    wsprintfA(buf, "WM_NCMOUSEHOVER(%u, %d, %d)", nHitTest, xPos, yPos);
+    wsprintfA(buf, "WM_NCMOUSEHOVER(nHitTest:%u, xPos:%d, yPos:%d)", nHitTest, xPos, yPos);
     *md_hwnd2string(hwnd) = buf;
 }
 
@@ -1286,21 +1304,21 @@ void md_OnNCMouseLeave(HWND hwnd)
 void md_OnPrint(HWND hwnd, HDC hDC, UINT uFlags)
 {
     char buf[512];
-    wsprintfA(buf, "WM_PRINT(%p, %u)", hDC, uFlags);
+    wsprintfA(buf, "WM_PRINT(hDC:%p, uFlags:%u)", hDC, uFlags);
     *md_hwnd2string(hwnd) = buf;
 }
 
 void md_OnPrintClient(HWND hwnd, HDC hDC, UINT uFlags)
 {
     char buf[512];
-    wsprintfA(buf, "WM_PRINTCLIENT(%p, %u)", hDC, uFlags);
+    wsprintfA(buf, "WM_PRINTCLIENT(hDC:%p, uFlags:%u)", hDC, uFlags);
     *md_hwnd2string(hwnd) = buf;
 }
 
 BOOL md_OnAppCommand(HWND hwnd, HWND hwndTarget, UINT cmd, UINT nDevice, UINT nKey)
 {
     char buf[512];
-    wsprintfA(buf, "WM_APPCOMMAND(%p, %u, %u, %u)", hwndTarget, cmd, nDevice, nKey);
+    wsprintfA(buf, "WM_APPCOMMAND(hwndTarget:%p, cmd:%u, nDevice:%u, nKey:%u)", hwndTarget, cmd, nDevice, nKey);
     *md_hwnd2string(hwnd) = buf;
 }
 
