@@ -129,43 +129,42 @@ typedef LONG (WINAPI *FN_RegNotifyChangeKeyValue)(HKEY, BOOL, DWORD, HANDLE, BOO
 // [[[/types]]]
 
 //////////////////////////////////////////////////////////////////////////////
-// Task #2: Add function variables.
+// Task #2: Add variables.
 
-#define ADD_FUNC_VAR(fn_name) \
-    FN_##fn_name fn_##fn_name = NULL
+#define ADD_VAR(fn_name) FN_##fn_name fn_##fn_name = NULL
 
 // [[[vars]]]
-ADD_FUNC_VAR(MessageBoxA);
-ADD_FUNC_VAR(MessageBoxW);
-ADD_FUNC_VAR(PostMessageA);
-ADD_FUNC_VAR(PostMessageW);
-ADD_FUNC_VAR(SendMessageA);
-ADD_FUNC_VAR(SendMessageW);
-ADD_FUNC_VAR(SendNotifyMessageA);
-ADD_FUNC_VAR(SendNotifyMessageW);
-ADD_FUNC_VAR(SendMessageCallbackA);
-ADD_FUNC_VAR(SendMessageCallbackW);
-ADD_FUNC_VAR(SendMessageTimeoutA);
-ADD_FUNC_VAR(SendMessageTimeoutW);
-ADD_FUNC_VAR(BroadcastSystemMessageA);
-ADD_FUNC_VAR(BroadcastSystemMessageW);
-ADD_FUNC_VAR(NotifyWinEvent);
-ADD_FUNC_VAR(RegisterDeviceNotificationW);
-ADD_FUNC_VAR(UnregisterDeviceNotification);
-ADD_FUNC_VAR(SendDlgItemMessageA);
-ADD_FUNC_VAR(SendDlgItemMessageW);
-ADD_FUNC_VAR(SHChangeNotify);
-ADD_FUNC_VAR(SHChangeNotification_Lock);
-ADD_FUNC_VAR(SHChangeNotification_Unlock);
-ADD_FUNC_VAR(SHChangeNotifyRegister);
-ADD_FUNC_VAR(SHChangeNotifyDeregister);
-ADD_FUNC_VAR(SHChangeNotifySuspendResume);
-ADD_FUNC_VAR(Shell_NotifyIconA);
-ADD_FUNC_VAR(Shell_NotifyIconW);
-ADD_FUNC_VAR(RegNotifyChangeKeyValue);
+ADD_VAR(MessageBoxA);
+ADD_VAR(MessageBoxW);
+ADD_VAR(PostMessageA);
+ADD_VAR(PostMessageW);
+ADD_VAR(SendMessageA);
+ADD_VAR(SendMessageW);
+ADD_VAR(SendNotifyMessageA);
+ADD_VAR(SendNotifyMessageW);
+ADD_VAR(SendMessageCallbackA);
+ADD_VAR(SendMessageCallbackW);
+ADD_VAR(SendMessageTimeoutA);
+ADD_VAR(SendMessageTimeoutW);
+ADD_VAR(BroadcastSystemMessageA);
+ADD_VAR(BroadcastSystemMessageW);
+ADD_VAR(NotifyWinEvent);
+ADD_VAR(RegisterDeviceNotificationW);
+ADD_VAR(UnregisterDeviceNotification);
+ADD_VAR(SendDlgItemMessageA);
+ADD_VAR(SendDlgItemMessageW);
+ADD_VAR(SHChangeNotify);
+ADD_VAR(SHChangeNotification_Lock);
+ADD_VAR(SHChangeNotification_Unlock);
+ADD_VAR(SHChangeNotifyRegister);
+ADD_VAR(SHChangeNotifyDeregister);
+ADD_VAR(SHChangeNotifySuspendResume);
+ADD_VAR(Shell_NotifyIconA);
+ADD_VAR(Shell_NotifyIconW);
+ADD_VAR(RegNotifyChangeKeyValue);
 // [[[/vars]]]
 
-#undef ADD_FUNC_VAR
+#undef ADD_VAR
 
 extern "C" {
 
