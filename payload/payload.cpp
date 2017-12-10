@@ -149,37 +149,39 @@ typedef LONG (WINAPI *FN_RegNotifyChangeKeyValue)(HKEY, BOOL, DWORD, HANDLE, BOO
 //////////////////////////////////////////////////////////////////////////////
 // Task #2: Add function variables
 
-FN_MessageBoxA pMessageBoxA = NULL;
-FN_MessageBoxW pMessageBoxW = NULL;
-FN_PostMessageA pPostMessageA = NULL;
-FN_PostMessageW pPostMessageW = NULL;
-FN_SendMessageA pSendMessageA = NULL;
-FN_SendMessageW pSendMessageW = NULL;
-FN_SendNotifyMessageA pSendNotifyMessageA = NULL;
-FN_SendNotifyMessageW pSendNotifyMessageW = NULL;
-FN_SendMessageCallbackA pSendMessageCallbackA = NULL;
-FN_SendMessageCallbackW pSendMessageCallbackW = NULL;
-FN_SendMessageTimeoutA pSendMessageTimeoutA = NULL;
-FN_SendMessageTimeoutW pSendMessageTimeoutW = NULL;
-FN_BroadcastSystemMessageA pBroadcastSystemMessageA = NULL;
-FN_BroadcastSystemMessageW pBroadcastSystemMessageW = NULL;
-FN_NotifyWinEvent pNotifyWinEvent = NULL;
-FN_RegisterDeviceNotificationW pRegisterDeviceNotificationW = NULL;
-FN_UnregisterDeviceNotification pUnregisterDeviceNotification = NULL;
-FN_SendDlgItemMessageA pSendDlgItemMessageA = NULL;
-FN_SendDlgItemMessageW pSendDlgItemMessageW = NULL;
+#define ADD_FUNC_VAR(fn_name) \
+    FN_##fn_name p##fn_name = NULL
 
-FN_SHChangeNotify pSHChangeNotify = NULL;
-FN_SHChangeNotification_Lock pSHChangeNotification_Lock = NULL;
-FN_SHChangeNotification_Unlock pSHChangeNotification_Unlock = NULL;
-FN_SHChangeNotifyRegister pSHChangeNotifyRegister = NULL;
-FN_SHChangeNotifyDeregister pSHChangeNotifyDeregister = NULL;
-FN_SHChangeNotifySuspendResume pSHChangeNotifySuspendResume = NULL;
+ADD_FUNC_VAR(MessageBoxA);
+ADD_FUNC_VAR(MessageBoxW);
+ADD_FUNC_VAR(PostMessageA);
+ADD_FUNC_VAR(PostMessageW);
+ADD_FUNC_VAR(SendMessageA);
+ADD_FUNC_VAR(SendMessageW);
+ADD_FUNC_VAR(SendNotifyMessageA);
+ADD_FUNC_VAR(SendNotifyMessageW);
+ADD_FUNC_VAR(SendMessageCallbackA);
+ADD_FUNC_VAR(SendMessageCallbackW);
+ADD_FUNC_VAR(SendMessageTimeoutA);
+ADD_FUNC_VAR(SendMessageTimeoutW);
+ADD_FUNC_VAR(BroadcastSystemMessageA);
+ADD_FUNC_VAR(BroadcastSystemMessageW);
+ADD_FUNC_VAR(NotifyWinEvent);
+ADD_FUNC_VAR(RegisterDeviceNotificationW);
+ADD_FUNC_VAR(UnregisterDeviceNotification);
+ADD_FUNC_VAR(SendDlgItemMessageA);
+ADD_FUNC_VAR(SendDlgItemMessageW);
+ADD_FUNC_VAR(SHChangeNotify);
+ADD_FUNC_VAR(SHChangeNotification_Lock);
+ADD_FUNC_VAR(SHChangeNotification_Unlock);
+ADD_FUNC_VAR(SHChangeNotifyRegister);
+ADD_FUNC_VAR(SHChangeNotifyDeregister);
+ADD_FUNC_VAR(SHChangeNotifySuspendResume);
+ADD_FUNC_VAR(Shell_NotifyIconA);
+ADD_FUNC_VAR(Shell_NotifyIconW);
+ADD_FUNC_VAR(RegNotifyChangeKeyValue);
 
-FN_Shell_NotifyIconA pShell_NotifyIconA = NULL;
-FN_Shell_NotifyIconW pShell_NotifyIconW = NULL;
-
-FN_RegNotifyChangeKeyValue pRegNotifyChangeKeyValue = NULL;
+#undef ADD_FUNC_VAR
 
 extern "C" {
 
@@ -618,6 +620,59 @@ LONG WINAPI NewRegNotifyChangeKeyValue(
 } // extern "C"
 
 //////////////////////////////////////////////////////////////////////////////
+// Task #4: Add hooking entries
+
+struct HOOK_ENTRY
+{
+    const char *dll_file;
+    const char *fn_name;
+    FARPROC new_fn;
+    FARPROC& old_fn;
+};
+
+#define BEGIN_HOOK_ENTRIES() \
+    HOOK_ENTRY g_hook_entry[] = {
+
+#define ADD_HOOK_ENTRY(dll_file, fn_name) \
+        { dll_file, #fn_name, \
+          reinterpret_cast<FARPROC>(New##fn_name), \
+          reinterpret_cast<FARPROC&>(p##fn_name) },
+
+#define END_HOOK_ENTRIES() \
+    };
+
+BEGIN_HOOK_ENTRIES()
+    ADD_HOOK_ENTRY("user32.dll", MessageBoxA)
+    ADD_HOOK_ENTRY("user32.dll", MessageBoxW)
+    ADD_HOOK_ENTRY("user32.dll", PostMessageA)
+    ADD_HOOK_ENTRY("user32.dll", PostMessageW)
+    ADD_HOOK_ENTRY("user32.dll", SendMessageA)
+    ADD_HOOK_ENTRY("user32.dll", SendMessageW)
+    ADD_HOOK_ENTRY("user32.dll", SendNotifyMessageA)
+    ADD_HOOK_ENTRY("user32.dll", SendNotifyMessageW)
+    ADD_HOOK_ENTRY("user32.dll", SendMessageCallbackA)
+    ADD_HOOK_ENTRY("user32.dll", SendMessageCallbackW)
+    ADD_HOOK_ENTRY("user32.dll", SendMessageTimeoutA)
+    ADD_HOOK_ENTRY("user32.dll", SendMessageTimeoutW)
+    ADD_HOOK_ENTRY("user32.dll", BroadcastSystemMessageA)
+    ADD_HOOK_ENTRY("user32.dll", BroadcastSystemMessageW)
+    ADD_HOOK_ENTRY("user32.dll", NotifyWinEvent)
+    ADD_HOOK_ENTRY("user32.dll", RegisterDeviceNotificationW)
+    ADD_HOOK_ENTRY("user32.dll", UnregisterDeviceNotification)
+    ADD_HOOK_ENTRY("user32.dll", SendDlgItemMessageA)
+    ADD_HOOK_ENTRY("user32.dll", SendDlgItemMessageW)
+    ADD_HOOK_ENTRY("shell32.dll", SHChangeNotify)
+    ADD_HOOK_ENTRY("shell32.dll", SHChangeNotification_Lock)
+    ADD_HOOK_ENTRY("shell32.dll", SHChangeNotification_Unlock)
+    ADD_HOOK_ENTRY("shell32.dll", SHChangeNotifyRegister)
+    ADD_HOOK_ENTRY("shell32.dll", SHChangeNotifyDeregister)
+    ADD_HOOK_ENTRY("shell32.dll", SHChangeNotifySuspendResume)
+    ADD_HOOK_ENTRY("shell32.dll", Shell_NotifyIconA)
+    ADD_HOOK_ENTRY("shell32.dll", Shell_NotifyIconW)
+    ADD_HOOK_ENTRY("advapi32.dll", RegNotifyChangeKeyValue)
+END_HOOK_ENTRIES()
+
+//////////////////////////////////////////////////////////////////////////////
 
 FARPROC
 ApiHookModule(HMODULE hMod, const char *dll_name,
@@ -689,61 +744,6 @@ ApiHookModule(HMODULE hMod, const char *dll_name,
     //log_printf("ApiHookModule: %s: not found\n", fn_name);
     return NULL;
 }
-
-//////////////////////////////////////////////////////////////////////////////
-// Task #4: Add hooking/unhooking entries
-
-struct HOOK_ENTRY
-{
-    const char *dll_file;
-    const char *fn_name;
-    FARPROC new_fn;
-    FARPROC& old_fn;
-};
-
-#define BEGIN_HOOK_ENTRIES() \
-    HOOK_ENTRY g_hook_entry[] = {
-
-#define ADD_HOOK_ENTRY(dll_file, fn_name) \
-        { dll_file, #fn_name, \
-          reinterpret_cast<FARPROC>(New##fn_name), \
-          reinterpret_cast<FARPROC&>(p##fn_name) },
-
-#define END_HOOK_ENTRIES() \
-    };
-
-BEGIN_HOOK_ENTRIES()
-    ADD_HOOK_ENTRY("user32.dll", MessageBoxA)
-    ADD_HOOK_ENTRY("user32.dll", MessageBoxW)
-    ADD_HOOK_ENTRY("user32.dll", PostMessageA)
-    ADD_HOOK_ENTRY("user32.dll", PostMessageW)
-    ADD_HOOK_ENTRY("user32.dll", SendMessageA)
-    ADD_HOOK_ENTRY("user32.dll", SendMessageW)
-    ADD_HOOK_ENTRY("user32.dll", SendNotifyMessageA)
-    ADD_HOOK_ENTRY("user32.dll", SendNotifyMessageW)
-    ADD_HOOK_ENTRY("user32.dll", SendMessageCallbackA)
-    ADD_HOOK_ENTRY("user32.dll", SendMessageCallbackW)
-    ADD_HOOK_ENTRY("user32.dll", SendMessageTimeoutA)
-    ADD_HOOK_ENTRY("user32.dll", SendMessageTimeoutW)
-    ADD_HOOK_ENTRY("user32.dll", BroadcastSystemMessageA)
-    ADD_HOOK_ENTRY("user32.dll", BroadcastSystemMessageW)
-    ADD_HOOK_ENTRY("user32.dll", NotifyWinEvent)
-    ADD_HOOK_ENTRY("user32.dll", RegisterDeviceNotificationW)
-    ADD_HOOK_ENTRY("user32.dll", UnregisterDeviceNotification)
-    ADD_HOOK_ENTRY("user32.dll", SendDlgItemMessageA)
-    ADD_HOOK_ENTRY("user32.dll", SendDlgItemMessageW)
-    ADD_HOOK_ENTRY("shell32.dll", SHChangeNotify)
-    ADD_HOOK_ENTRY("shell32.dll", SHChangeNotification_Lock)
-    ADD_HOOK_ENTRY("shell32.dll", SHChangeNotification_Unlock)
-    ADD_HOOK_ENTRY("shell32.dll", SHChangeNotifyRegister)
-    ADD_HOOK_ENTRY("shell32.dll", SHChangeNotifyDeregister)
-    ADD_HOOK_ENTRY("shell32.dll", SHChangeNotifySuspendResume)
-    ADD_HOOK_ENTRY("shell32.dll", Shell_NotifyIconA)
-    ADD_HOOK_ENTRY("shell32.dll", Shell_NotifyIconW)
-    ADD_HOOK_ENTRY("advapi32.dll", RegNotifyChangeKeyValue)
-END_HOOK_ENTRIES()
-
-//////////////////////////////////////////////////////////////////////////////
 
 static BOOL hook(void)
 {
