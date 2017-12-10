@@ -3,7 +3,7 @@
 /****************************************************************************/
 
 #ifndef WINXX_H_
-#define WINXX_H_    0   /* Version 0 */
+#define WINXX_H_    1   /* Version 1 */
 
 #ifndef _INC_WINDOWS
     #include <windows.h>
