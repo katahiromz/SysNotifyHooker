@@ -94,6 +94,7 @@ void log_printf(const char *fmt, ...)
 }
 
 //////////////////////////////////////////////////////////////////////////////
+// Task #1: Add function types
 
 // user32: MessageBox
 typedef INT (WINAPI *FN_MESSAGEBOXA)(HWND, const char *, const char *, UINT);
@@ -145,6 +146,9 @@ typedef BOOL (STDAPICALLTYPE *FN_SHELL_NOTIFYICONW)(DWORD, PNOTIFYICONDATAW);
 // advapi32: RegNotifyChangeKeyValue
 typedef LONG (WINAPI *FN_REGNOTIFYCHANGEKEYVALUE)(HKEY, BOOL, DWORD, HANDLE, BOOL);
 
+//////////////////////////////////////////////////////////////////////////////
+// Task #2: Add function variables
+
 FN_MESSAGEBOXA pMessageBoxA = NULL;
 FN_MESSAGEBOXW pMessageBoxW = NULL;
 FN_POSTMESSAGEA pPostMessageA = NULL;
@@ -177,10 +181,10 @@ FN_SHELL_NOTIFYICONW pShell_NotifyIconW = NULL;
 
 FN_REGNOTIFYCHANGEKEYVALUE pRegNotifyChangeKeyValue = NULL;
 
-//////////////////////////////////////////////////////////////////////////////
-// user32
-
 extern "C" {
+
+//////////////////////////////////////////////////////////////////////////////
+// Task #3: Add new functions to hook
 
 __declspec(dllexport)
 INT WINAPI NewMessageBoxA(HWND hwnd, const char *text, const char *title, UINT uType)
@@ -471,13 +475,6 @@ NewSendDlgItemMessageW(HWND hWnd, int nDlgItem, UINT uMsg, WPARAM wParam, LPARAM
     return ret;
 }
 
-} // extern "C"
-
-//////////////////////////////////////////////////////////////////////////////
-// shell32
-
-extern "C" {
-
 __declspec(dllexport)
 void STDAPICALLTYPE
 NewSHChangeNotify(LONG wEventId, UINT uFlags, LPCVOID dwItem1, LPCVOID dwItem2)
@@ -598,13 +595,6 @@ NewShell_NotifyIconW(DWORD dwMessage, PNOTIFYICONDATAW lpdata)
     return ret;
 }
 
-} // extern "C"
-
-//////////////////////////////////////////////////////////////////////////////
-// advapi32
-
-extern "C" {
-
 __declspec(dllexport)
 LONG WINAPI NewRegNotifyChangeKeyValue(
     HKEY hKey,
@@ -622,6 +612,8 @@ LONG WINAPI NewRegNotifyChangeKeyValue(
     }
     return ret;
 }
+
+//////////////////////////////////////////////////////////////////////////////
 
 } // extern "C"
 
@@ -698,6 +690,9 @@ ApiHookModule(HMODULE hMod, const char *dll_name,
     return NULL;
 }
 
+//////////////////////////////////////////////////////////////////////////////
+// Task #4: Add hooking/unhooking codes
+
 static BOOL hook(void)
 {
 #define DO_HOOK(dll_file, fn_type, fn) \
@@ -743,7 +738,6 @@ static void unhook(void)
 #define DO_UNHOOK(dll_file, fn_type, fn) do { \
     ApiHookModule(NULL, dll_file, #fn, (FARPROC)p##fn, FALSE); p##fn = NULL; \
 } while (0)
-
     DO_UNHOOK("user32.dll", FN_MESSAGEBOXA, MessageBoxA);
     DO_UNHOOK("user32.dll", FN_MESSAGEBOXW, MessageBoxW);
     DO_UNHOOK("user32.dll", FN_POSTMESSAGEA, PostMessageA);
@@ -776,6 +770,8 @@ static void unhook(void)
     DO_UNHOOK("advapi32.dll", FN_REGNOTIFYCHANGEKEYVALUE, RegNotifyChangeKeyValue);
 #undef DO_UNHOOK
 }
+
+//////////////////////////////////////////////////////////////////////////////
 
 void show_window_info(const char *name, HWND hwnd)
 {
