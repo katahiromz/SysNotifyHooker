@@ -48,6 +48,8 @@ ENABLE_LANGUAGE(RC)
 
 set(BUILD_SHARED_LIBRARIES OFF)
 if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+    set(CMAKE_C_FLAGS "-static")
+    set(CMAKE_CXX_FLAGS "-static")
     message(FATAL_ERROR "clang is not supported yet")
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     # using GCC

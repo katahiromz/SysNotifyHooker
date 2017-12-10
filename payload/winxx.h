@@ -519,6 +519,14 @@
 #define FORWARD_WM_MDICREATE(hwnd, lpmcs, fn) \
     (HWND)(UINT_PTR)(fn)((hwnd), WM_MDICREATE, 0L, (LPARAM)(LPMDICREATESTRUCT)(lpmcs))
 
+/* BOOL Cls_OnNCActivate(HWND hwnd, BOOL fActive, HWND hwndActDeact, BOOL fMinimized) */
+#undef HANDLE_WM_NCACTIVATE
+#define HANDLE_WM_NCACTIVATE(hwnd, wParam, lParam, fn) \
+    (LRESULT)(DWORD)(BOOL)(fn)((hwnd), (BOOL)(wParam), 0L, 0L)
+#undef FORWARD_WM_NCACTIVATE
+#define FORWARD_WM_NCACTIVATE(hwnd, fActive, hwndActDeact, fMinimized, fn) \
+    (BOOL)(DWORD)(fn)((hwnd), WM_NCACTIVATE, (WPARAM)(BOOL)(fActive), 0L)
+
 /****************************************************************************/
 
 #endif  /* ndef WINXX_H_ */
